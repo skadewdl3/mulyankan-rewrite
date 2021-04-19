@@ -1,0 +1,172 @@
+TOP_BAR_HEIGHT = 5rem
+ACCENT_COLOR = #6c5ce7
+GRAY = #222f3e
+
+.controls
+  &__tabs
+    background #eee
+    display flex
+    align-items center
+  
+  &__tab
+    font-size 3rem
+    display flex
+    align-items center
+    font-size 2.5rem
+    background #eee
+    cursor pointer
+    padding 1rem 2rem
+    &__icon
+      margin-right 1rem
+    &__text
+      font-size 1.8rem
+    &--active
+      background #fff
+      border-top-left-radius 1rem
+      border-top-right-radius 1rem
+      font-weight bold
+
+  &__top
+    height TOP_BAR_HEIGHT
+    width 100%
+    position fixed
+    -webkit-position sticky
+    top 0
+    left 0
+    background #fff
+    z-index 4
+    box-shadow 0 0 2rem rgba(GRAY, 0.1)
+    display flex
+    align-items center
+    justify-content space-between
+
+    &__vertical-divider
+      height (TOP_BAR_HEIGHT * 0.6)
+      width 2px
+      background #ccc
+      border-radius 1rem
+    
+    &__filename
+      font-size 1.6rem
+      margin-left 1rem
+      // min-width: 5rem
+
+    &--left
+      box-shadow 0 0 0 rgba(0, 0, 0, 0)
+      display flex
+      align-items center
+      .control__btn
+        control-less-padding()
+
+    &--center
+      .control__btn
+        control-less-padding()
+
+    &--right
+      box-shadow 0 0 0 rgba(0, 0, 0, 0)
+      display flex
+      align-items center
+      
+  &__left
+    height 100vh
+    width 100vw - 80%
+    background-color #fff
+    position fixed
+    top TOP_BAR_HEIGHT
+    left 0
+    z-index 2
+
+    &__divider
+      width 90%
+      margin 2rem auto
+      height 2px
+      background #ccc
+      display flex
+      &--hidden
+        background transparent
+    &__header
+      font-size 2rem
+      font-weight bold
+      margin 1rem 1.5rem
+      margin-bottom 0
+      
+
+  &__bottom
+    background #fff
+    z-index 3
+    width 100vw - 80%
+    display flex
+    align-items center
+    justify-content center
+    position absolute
+    bottom 0
+    left 0
+    box-shadow 0 -.5rem 4rem rgba(GRAY, 0.1)
+    border-top-left-radius 1rem
+    border-top-right-radius 1rem
+    overflow hidden
+    display flex
+    align-items center
+
+  &__back
+    border 0
+    cursor pointer
+    font-size 1.8rem
+    font-family 'Roboto', sans-serif
+    font-weight bold
+    padding 0 2rem
+
+  &__tab
+    &--symbols
+      background transparent
+      padding 1rem
+      display flex
+      flex-direction column
+      align-items center
+
+  &__btn
+    control()
+    
+
+  &__name-input
+    border solid 2px #ccc
+    min-width 26rem
+    font-size 1.6rem
+    padding .5rem 1rem
+    border-radius .5rem
+    transition all .1s ease-out
+    &:hover
+      border solid 2px ACCENT_COLOR
+    &:focus
+      border solid 2px ACCENT_COLOR
+  
+  &__download
+    background ACCENT_COLOR
+    &:hover
+      background rgba(ACCENT_COLOR, 0.8)
+    &:active
+      background rgba(ACCENT_COLOR, 0.8)
+
+    padding .9rem 1rem
+    color #fff
+    i
+      color #fff
+
+.symbols
+  &__grid
+    width 100%
+    margin 1rem 1rem
+    display grid
+    grid-template-columns 1fr 1fr 1fr
+  &__image
+    transform scale(1.3)
+    &__wrapper
+      align-items center
+      justify-content center
+      display flex
+      margin auto auto
+      background #eee
+      width 90%
+      height 100%
+      padding 2rem
+      border-radius .5rem

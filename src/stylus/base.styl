@@ -1,0 +1,47 @@
+// Importing Megrim and Roboto fonts
+@import url('https://fonts.googleapis.com/css2?family=Megrim&family=Roboto:wght@100;300;700&display=swap');
+
+*
+  border 0
+  padding 0
+  margin 0
+  outline none
+  box-sizing border-box
+
+html
+  font-size 62.5%
+
+body
+  font-size inherit
+  font-family 'Roboto', sans-serif
+
+.generic
+  &__wrapper
+    padding 5rem 10rem
+
+  &__container
+    width 100%
+    height auto
+    padding 0 10rem
+
+  &__nav
+    font-size 5rem
+    font-family 'Megrim', sans-serid
+    font-weight bold
+    display inline-flex
+    align-items center
+    cursor pointer
+    i
+      font-size 5rem
+
+  &__back__icon
+    transition all .1s ease-out
+    transform translateX(0)
+
+    &--animated
+      transform translateX(-1rem)
+  
+  &__container
+    width 100%
+    height auto
+    padding 0 10rem

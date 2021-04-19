@@ -1,0 +1,38 @@
+.canvas
+  &__wrapper
+    margin 6rem 0
+    &:first-child
+      margin 1rem 0
+    &:last-child
+      margin-bottom 0
+  &__controls
+    padding 1em 2rem
+    padding-right 0
+    display flex
+    align-items center
+    justify-content flex-end
+
+    &__btn
+      background #fff
+      border-radius .5rem
+      padding 1rem
+      margin 0 1rem
+      display flex
+      align-items center
+      justify-content center
+      cursor pointer
+      transition all .2s ease-out
+      z-index 2
+      &:hover
+        transform translateY(-.2rem)
+        box-shadow 0 0 4rem rgba(#000, 0.05)
+
+      &:active
+        transform translateY(0)
+        box-shadow 0 0 0 0 rgba(0, 0, 0, 0)
+      &:last-child
+        margin-right 0
+      i
+        font-size 1.6rem
+
+      

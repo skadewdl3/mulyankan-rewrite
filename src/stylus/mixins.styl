@@ -1,0 +1,78 @@
+mobile()
+  @media (max-width: 640px)
+    {block}
+
+tablet()
+  @media (max-width: 800px)
+    {block}
+
+desktop()
+  @media (max-width: 1200px)
+    {block}
+
+atMobile()
+  @media (min-width: 640px)
+    {block}
+
+atTablet()
+  @media (min-width: 800px)
+    {block}
+
+atDesktop()
+  @media (min-width: 1200px)
+    {block}
+    
+cta(cta_color)
+  padding 1.2rem 4rem
+  font-size 1.6rem
+  border-radius .5rem
+  font-weight bold
+  color #fff
+  background-color cta_color
+  transition all .2s ease-out
+  cursor pointer
+  &:hover
+    transform translateY(-.5rem)
+    box-shadow 0 0 4rem rgba(cta_color, 0.2)
+
+  &:active
+    transform translateY(0)
+    box-shadow 0 0 0 0 rgba(0, 0, 0, 0)
+
+control()
+  padding 1.2rem 1rem
+  margin auto 1rem
+  font-size 1.6rem
+  border-radius .5rem
+  font-weight bold
+  color GRAY
+  background-color transparent
+  transition all .2s ease-out
+  cursor pointer
+  i
+    color GRAY
+    margin 0 1rem
+  &:hover
+    background-color #eee
+
+  &:active
+    background-color #ccc
+
+control-less-padding()
+  padding 1.5rem 1rem
+  margin 0
+  font-size 1.6rem
+  border-radius .5rem
+  font-weight bold
+  color GRAY
+  background-color transparent
+  transition all .2s ease-out
+  cursor pointer
+  i
+    color GRAY
+    margin 0 1rem
+  &:hover
+    background-color #eee
+
+  &:active
+    background-color #ccc
