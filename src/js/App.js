@@ -2,7 +2,7 @@ import React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 
 import Landing from './layouts/Landing';
-import Editor from './Layouts/Editor';
+import Editor from './layouts/Editor';
 
 const App = () => {
   return (
