@@ -120,19 +120,12 @@ const Preprocessor = ({
           <button
             className="controls__btn controls__download"
             onClick={() => {
-              setLoading(true);
-              let arr = [];
-              canvases.forEach((cur, i) => {
-                base64ToBlob(cur.src).then(blob => {
-                  arr.push(blob);
-                  if (i == canvases.length - 1) {
-                    console.log(arr);
-                    setPreprocess([]);
-                    setFabricCanvases(arr);
-                    setTimeout(() => setLoading(false), 1000);
-                  }
-                });
-              });
+              setLoading(true, 'Loading Mulyankan Interface');
+              setTimeout(() => {
+                setPreprocess([]);
+                setFabricCanvases(canvases);
+                setTimeout(() => setLoading(false), 1000);
+              }, 2000);
             }}
           >
             <span>Proceed To Mulyankan</span>

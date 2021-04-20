@@ -1,0 +1,126 @@
+ACCENT_COLOR = #6c5ce7
+GREEN = #27ae60
+
+.downloading
+  height 100%
+  width 100%
+  position absolute
+  top 0
+  left 0
+  background #fff
+  display flex
+  justify-content center
+  z-index 5
+
+  &__image
+    width 30vw
+    display block
+    margin 0 auto
+
+  &__nav
+    align-self flex-start
+    text-align left
+
+  &__sub-message
+    font-size 1.8rem
+    font-family 'Megrim', sans-serif
+    font-weight bold
+    color rgba(#2d3436, 0.5)
+    margin-bottom 3rem
+    text-align center
+
+  &__message
+    font-size 2rem
+    font-family 'Roboto', sans-serif
+    color #2d3436
+    text-align center
+
+  &__options
+    margin 1rem auto
+    display flex
+    align-items center
+    justify-content center
+
+    &__item
+      display grid
+      grid-template-columns 1fr 5fr
+      padding 1rem 2rem
+      border solid 2px #ccc
+      margin 0 1rem
+      border-radius .5rem
+      transition all .3s ease-out
+      cursor pointer
+
+      &:hover
+        border solid 2px ACCENT_COLOR
+
+      &--active
+        background-color rgba(ACCENT_COLOR, 0.07)
+        border solid 2px ACCENT_COLOR
+
+
+      &__icon
+        display flex
+        align-items center
+        justify-content flex-start
+        i
+          font-size 2.5rem
+
+      &__text
+        text-align justify
+        display flex
+        flex-direction column
+        font-family 'Roboto', sans-serif
+        
+        &__title
+          font-weight bold
+          font-size 1.6rem
+        
+        &__subtitle
+          font-size 1.6rem  
+  &__wrapper
+    width 90vw
+    overflow hidden
+
+  &__input
+    display flex
+    justify-content center
+    margin 1rem auto
+  &__file-name
+    background #fff
+    padding .5rem 1rem
+    transition all .3s ease-out
+    font-size 1.6rem
+    border solid 2px #ccc
+    border-radius .5rem
+    margin-bottom 1rem
+    min-width 20rem
+    &:hover, &:focus
+      border solid 2px ACCENT_COLOR
+  
+  &__cta-wrapper
+    display flex
+    margin 3rem auto
+    justify-content center
+
+  &__cta
+    cta(GREEN)
+
+@keyframes fadeIn
+  from
+    transform scale(1.2)
+    opacity 0
+  to
+    transform scale(1)
+    opacity 1
+
+@keyframes fadeOut
+  from
+    transform scale(1)
+    opacity 1
+  to
+    transform scale(1.2)
+    opacity 0
+
+.downloading__back__icon
+  transition all .2s ease-out

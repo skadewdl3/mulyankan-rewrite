@@ -12,7 +12,7 @@ import {
 import { convertFiles } from '../logic/convertFiles';
 
 const FileUpload = ({
-  setFcanvases,
+  setFCanvases,
   setLoading,
   setPreprocess,
   setFileName,
@@ -58,9 +58,9 @@ const FileUpload = ({
 
     const postProcessing = res => {
       if (shouldPreprocess) {
-        setPreprocess(res.reverse());
+        setPreprocess(res);
       } else {
-        setFcanvases(res.reverse());
+        setFCanvases(res);
       }
       setFileName(files[0].name);
       setTimeout(() => {

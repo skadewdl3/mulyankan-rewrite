@@ -1,5 +1,6 @@
 export const convertFiles = async (files, callback) => {
   let convertedFiles = [];
+  let pdfFiles = [];
   let convertedIndex = 0;
   let targetIndex = 0;
 
@@ -21,6 +22,7 @@ export const convertFiles = async (files, callback) => {
     if (file.type.includes('pdf')) {
       // Reading The PDF
       let pdf = null;
+      let processedPageIndex = 0;
       const reader = new FileReader();
       reader.readAsBinaryString(file);
       reader.addEventListener('load', async () => {
@@ -29,11 +31,10 @@ export const convertFiles = async (files, callback) => {
         pdf = res;
 
         // Converting it to Images
-        [...Array(pdf.numPages)].forEach(async (_, index) => {
+        [...Array(pdf.numPages)].forEach(async (_, index, arr) => {
           let pageIndex = index + 1;
           let scale = 2;
           let page = await pdf.getPage(pageIndex);
-          console.log(page);
           let viewport = page.getViewport({ scale });
           let canvas = document.createElement('canvas');
           canvas.height = viewport.height;
@@ -44,21 +45,28 @@ export const convertFiles = async (files, callback) => {
             viewport,
           };
           let task = page.render(renderContext);
-          task.promise.then(() => {
-            console.log(canvas.toDataURL());
-            convertedFiles.push(canvas.toDataURL());
-            convertedIndex++;
-            if (convertedIndex == targetIndex) {
-              callback(convertedFiles);
-            }
-          });
+          await task.promise;
+          pdfFiles.push({ src: canvas.toDataURL(), index: pageIndex });
+          convertedIndex++;
+          processedPageIndex++;
+          if (processedPageIndex == pdf.numPages) {
+            pdfFiles.sort((a, b) => (a.index > b.index ? 1 : -1));
+            convertedFiles = [
+              ...convertedFiles,
+              ...pdfFiles.map(cur => cur.src),
+            ];
+            pdfFiles = [];
+            processedPageIndex = 0;
+          }
+          if (convertedIndex == targetIndex) {
+            callback(convertedFiles);
+          }
         });
       });
     } else if (file.type.includes('image')) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.addEventListener('load', () => {
-        console.log(reader.result);
         convertedFiles.push(reader.result);
         convertedIndex++;
         if (convertedIndex == targetIndex) {
