@@ -107,21 +107,24 @@ export class Editor extends Component {
             <div className="editor__container__wrapper">
               <div className="editor__container">
                 {this.state.files.map((cur, index, arr) => (
-                  <Canvas
-                    src={cur}
-                    key={index}
-                    index={index}
-                    setFCanvases={this.setFCanvases}
-                    addCanvas={this.addCanvas}
-                    setZoom={this.setZoom}
-                    setActiveCanvas={this.setActiveCanvas}
-                    length={arr.length}
-                    updateMarks={this.updateMarks}
-                    getMarks={this.getMarks}
-                    copy={this.copy}
-                    paste={this.paste}
-                    remove={this.remove}
-                  />
+                  <>
+                    <Canvas
+                      src={cur}
+                      key={index}
+                      index={index}
+                      setFCanvases={this.setFCanvases}
+                      addCanvas={this.addCanvas}
+                      setZoom={this.setZoom}
+                      setActiveCanvas={this.setActiveCanvas}
+                      length={arr.length}
+                      updateMarks={this.updateMarks}
+                      getMarks={this.getMarks}
+                      copy={this.copy}
+                      paste={this.paste}
+                      remove={this.remove}
+                    />
+                    <br />
+                  </>
                 ))}
               </div>
             </div>

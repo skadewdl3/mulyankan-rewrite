@@ -50,8 +50,8 @@ export const addCopiedObject = (coords, fcanvas) => {
         ...defaultTextConfig,
         width: clone.width,
         height: clone.height,
-        top: coords.y - clone.get('height') / 2,
-        left: coords.x - clone.get('width') / 2,
+        top: coords.y,
+        left: coords.x,
         textType: 'mark',
       });
       fcanvas.add(clone);
@@ -60,18 +60,32 @@ export const addCopiedObject = (coords, fcanvas) => {
   } else if (copiedObject.textType == 'text') {
     copiedObject.clone(clone => {
       clone.set({
-        defaultObjectConfig,
-        defaultTextConfig,
+        ...defaultObjectConfig,
+        ...defaultTextConfig,
         width: clone.width,
         height: clone.height,
-        top: coords.y - clone.get('height') / 2,
-        left: coords.x - clone.get('width') / 2,
+        top: coords.y,
+        left: coords.x,
         textType: 'text',
       });
       fcanvas.add(clone);
       clone.setCoords();
     });
+  } else {
+    console.log(copiedObject);
+    copiedObject.clone(clone => {
+      clone.set({
+        ...defaultObjectConfig,
+        width: clone.width,
+        height: clone.height,
+        top: coords.y,
+        left: coords.x,
+      });
+      fcanvas.add(clone);
+      clone.setCoords();
+    });
   }
+  fcanvas.renderAll();
 };
 
 const addImage = (id, dropCoords, fcanvas) => {
@@ -175,11 +189,17 @@ export const copyActiveObject = fcanvas => {
 };
 
 export const pasteCopiedObject = (coords, fcanvas) => {
-  console.log('pasting');
   addCopiedObject(coords, fcanvas);
 };
 
 export const removeActiveObject = fcanvas => {
   let obj = fcanvas.getActiveObject();
   fcanvas.remove(obj);
+};
+
+export const removeObjectOutsideCanvas = ({ e, target }, fcanvas) => {
+  if (!target.isOnScreen()) {
+    console.log('running');
+    fcanvas.remove(target);
+  }
 };

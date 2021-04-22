@@ -66,7 +66,7 @@ const MarkingTab = ({ symbols, marks }) => {
         ))}
       </div>
       <div className="controls__left__divider"></div>
-      <div className="controls__left__header">Clipboard</div>
+      {/* <div className="controls__left__header">Clipboard</div> */}
     </>
   );
 };

@@ -5,6 +5,7 @@ import {
   copyActiveObject,
   pasteCopiedObject,
   removeActiveObject,
+  removeObjectOutsideCanvas,
 } from './canvasEventListeners';
 
 export const createCanvas = (id, canvasData) => {
@@ -54,6 +55,8 @@ const setDefaultProperties = (fcanvas, canvasData) => {
 const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('drop', e => addObject(e, fcanvas, canvasData));
   fcanvas.on('object:added', e => canvasData.updateMarks());
+  fcanvas.on('object:removed', e => canvasData.updateMarks());
+  fcanvas.on('object:moved', e => removeObjectOutsideCanvas(e, fcanvas));
   fcanvas.on('text:changed', () => canvasData.updateMarks());
   fcanvas.on('copy', e => copyActiveObject(fcanvas));
   fcanvas.on('paste', ({ coords }) => pasteCopiedObject(coords, fcanvas));
