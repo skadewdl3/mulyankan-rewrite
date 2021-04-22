@@ -1,7 +1,7 @@
 import React from 'react';
 import { chunk } from 'lodash';
 
-const MarkingTab = ({ symbols }) => {
+const MarkingTab = ({ symbols, marks }) => {
   return (
     <>
       <div className="controls__left__header">Quick Marking</div>
@@ -19,8 +19,7 @@ const MarkingTab = ({ symbols }) => {
           }}
           draggable="true"
         >
-          {/*Dyanamically Change Marks here*/}
-          10
+          {marks}
         </div>
         <span
           className="quickmarking__text"
@@ -42,7 +41,7 @@ const MarkingTab = ({ symbols }) => {
       </div>
       <div className="controls__left__divider"></div>
       <div className="controls__left__header">Symbols</div>
-      <div className="controls__tab controls__tab--symbols">
+      <div className="controls__tab--symbols">
         {chunk(symbols, 3).map((arr, i) => (
           <div className="symbols__grid" key={i}>
             {arr.map((cur, j) => (

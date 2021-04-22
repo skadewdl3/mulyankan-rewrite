@@ -1,8 +1,11 @@
 export const setZoomLevel = (val, reset, { state, setFCanvases }) => {
-  let newFcArr = state.fcanvases.map(fcanvas => {
+  let newFcArr = state.fcanvases.map((fcanvas, index) => {
     let factor;
+    let canvas = document.querySelector(`#canvas-${index}`);
     if (reset) factor = fcanvas.originalDimensions.width / fcanvas.width;
     else factor = val;
+    canvas.width = fcanvas.getWidth() * factor;
+    canvas.height = fcanvas.getHeight() * factor;
     fcanvas.setDimensions({
       width: fcanvas.getWidth() * factor,
       height: fcanvas.getHeight() * factor,

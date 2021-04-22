@@ -59,6 +59,7 @@ const MarkingTab = () => {
           </div>
         </div>
       </div>
+      <div className="controls__left__divider controls__left__divider--hidden"></div>
       <div className="controls__left__header">Text Editing</div>
       <div className="controls__left__divider controls__left__divider--hidden"></div>
       {/* {chunk(symbols, 3).map((arr, i) => (

@@ -4,15 +4,18 @@ TOP_BAR_HEIGHT = 5rem
   &__wrapper
     background #eee
     height 100vh
-    overflow scroll
 
   &__container
     margin-top TOP_BAR_HEIGHT
-    width 80%
-    display flex
+    width 100% - SIDEBAR_WIDTH
     align-items center
     justify-content center
-    flex-direction column
+    height 100vh - TOP_BAR_HEIGHT - 0.5rem
+    overflow auto
+    text-align center
+    .canvas__wrapper
+      display inline-block
+      box-shadow 0.1rem 0 0.5rem rgba(GRAY, 0.1), -0.1rem 0 0.5rem rgba(GRAY, 0.1)
 
     &__wrapper
       display flex

@@ -17,9 +17,11 @@ const Controls = ({
   setDownloading,
   setFCanvases,
   getFCanvases,
+  setFiles,
   setFileName,
   fileName,
   setZoom,
+  marks,
 }) => {
   const [tab, setTab] = useState('marking');
 
@@ -80,12 +82,11 @@ const Controls = ({
           <button
             className="controls__btn"
             onClick={() => {
-              setCanvases([]);
               setFCanvases([]);
+              setFiles([]);
             }}
           >
             <ArrowLeftOutlined style={{ margin: '0 1rem' }} />
-            <span>Home</span>
           </button>
           <div className="controls__top__vertical-divider"></div>
           <input
@@ -159,7 +160,7 @@ const Controls = ({
           </div>
         </div>
 
-        {tab == 'marking' && <MarkingTab symbols={symbols} />}
+        {tab == 'marking' && <MarkingTab symbols={symbols} marks={marks} />}
         {tab == 'text' && <TextTab />}
       </div>
     </>

@@ -1,9 +1,27 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { createCanvas } from './../logic/setupCanvas';
-// import ContextMenu from './ContextMenu';
 
-const Canvas = ({ src, index, addCanvas, getFCanvases }) => {
-  const [showMenu, setShowMenu] = useState(false);
+import ContextMenu from './ContextMenu';
+
+const Canvas = ({
+  src,
+  index,
+  addCanvas,
+  getFCanvases,
+  setZoom,
+  length,
+  updateMarks,
+  getMarks,
+  setActiveCanvas,
+  copy,
+  paste,
+  remove,
+}) => {
+  const [showMenu, setShowMenu] = useState({
+    show: false,
+    properties: 'transform',
+    pasteCoords: { x: 0, y: 0 },
+  });
 
   useLayoutEffect(() => {
     document.querySelector(
@@ -14,6 +32,14 @@ const Canvas = ({ src, index, addCanvas, getFCanvases }) => {
       addCanvas,
       index,
       src,
+      setZoom,
+      setShowMenu,
+      shouldAddZoomListener: index == length - 1,
+      updateMarks,
+      getMarks,
+      setActiveCanvas,
+      copy,
+      paste,
     };
     let img = new Image();
     img.src = src;
@@ -26,7 +52,9 @@ const Canvas = ({ src, index, addCanvas, getFCanvases }) => {
     );
   }, []);
 
-  const getDropCoords = e => {
+  const updateShowMenu = config => [setShowMenu({ ...showMenu, ...config })];
+
+  const getCoords = e => {
     let wrapper = document.querySelector(`.canvas__container--${index}`);
     let relativeCoords = {
       x: wrapper.getBoundingClientRect().left + window.scrollX,
@@ -45,31 +73,34 @@ const Canvas = ({ src, index, addCanvas, getFCanvases }) => {
 
   return (
     <>
-      {/* <ContextMenu
-        show={showMenu ? true : false}
-        coordinates={showMenu ? { x: showMenu.x, y: showMenu.y } : null}
-        dropCoords={showMenu ? showMenu.dropCoords : null}
+      <ContextMenu
+        show={showMenu.show}
+        coordinates={{ x: showMenu.x, y: showMenu.y }}
         index={index}
-        setShowMenu={setShowMenu}
-      /> */}
+        properties={showMenu.properties}
+        updateShowMenu={updateShowMenu}
+        index={index}
+        copy={copy}
+        paste={paste}
+        pasteCoords={showMenu.pasteCoords}
+        remove={remove}
+      />
       <div
-        className={`canvas__wrapper`}
-        // style={{
-        //   width: fcanvases[index] ? fcanvases[index].width : background.width,
-        //   height: fcanvases[index]
-        //     ? fcanvases[index].height
-        //     : background.height,
-        //   marginTop: showMenu ? '1rem' : '1rem',
-        // }}
-        onClick={() => setShowMenu(null)}
+        className="canvas__wrapper"
+        onClick={() => {
+          // setShowMenu(null);
+          updateShowMenu({ show: false });
+        }}
         onContextMenu={e => {
           e.preventDefault();
-          setActiveCanvas(index);
           setShowMenu({
-            x: e.clientX,
-            y: e.clientY,
-            dropCoords: getDropCoords(e),
+            show: true,
+            x: e.pageX,
+            y: e.pageY,
+            properties: showMenu.show ? 'all' : 'transform',
+            pasteCoords: getCoords(e),
           });
+          setActiveCanvas(index);
         }}
       >
         <div
@@ -78,25 +109,6 @@ const Canvas = ({ src, index, addCanvas, getFCanvases }) => {
           onDragEnter={e => e.preventDefault()}
           onDrop={e => {
             e.preventDefault();
-            let dropCoords = getDropCoords(e);
-            let type = e.dataTransfer.getData('type');
-            let image = e.dataTransfer.getData('image');
-            // addObjects(
-            //   {
-            //     type,
-            //     image,
-            //     dropCoords,
-            //     index,
-            //     markData: {
-            //       marks,
-            //       total: document.querySelector('.quickmarking__total')
-            //         ? document.querySelector('.quickmarking__total').value
-            //         : 'Total',
-            //     },
-            //   },
-            //   getFCanvases,
-            //   setFCanvases
-            // );
           }}
         >
           {/*  CANVAS IS INSERTED DYNAMICALLY BU USELAYOUTEFFECT HOOK */}

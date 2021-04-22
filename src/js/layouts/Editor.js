@@ -12,6 +12,13 @@ import Canvas from './../components/Canvas';
 
 // Transforms
 import { setZoomLevel } from './../logic/canvasTransforms';
+import {
+  changeMarks,
+  changeActiveCanvas,
+  copyObject,
+  pasteObject,
+  removeObject,
+} from './../logic/miscellaneous';
 
 export class Editor extends Component {
   constructor(props) {
@@ -24,6 +31,7 @@ export class Editor extends Component {
       loading: false,
       loadingMessage: "We're processing your documents.",
       downloading: false,
+      marks: 0,
     };
   }
 
@@ -46,6 +54,18 @@ export class Editor extends Component {
     this.setState({ fcanvases: [...this.state.fcanvases, canvas] });
 
   setZoom = (val, reset = false) => setZoomLevel(val, reset, this);
+
+  updateMarks = () => changeMarks(this);
+
+  setMarks = marks => this.setState({ marks });
+
+  getMarks = () => this.state.marks;
+
+  setActiveCanvas = index => changeActiveCanvas(index, this);
+
+  copy = index => copyObject(index, this);
+  paste = (index, coords) => pasteObject(index, coords, this);
+  remove = index => removeObject(index, this);
 
   render() {
     return (
@@ -76,20 +96,31 @@ export class Editor extends Component {
               setLoading={this.setLoading}
               // setDownloading={setDownloading}
               setFCanvases={this.setFCanvases}
+              setFiles={this.setFiles}
+              setActiveCanvas={this.setActiveCanvas}
               getFCanvases={this.getFCanvases}
               setFileName={this.setFileName}
               fileName={this.state.fileName}
               setZoom={this.setZoom}
+              marks={this.state.marks}
             />
             <div className="editor__container__wrapper">
               <div className="editor__container">
-                {this.state.files.map((cur, index) => (
+                {this.state.files.map((cur, index, arr) => (
                   <Canvas
                     src={cur}
                     key={index}
                     index={index}
                     setFCanvases={this.setFCanvases}
                     addCanvas={this.addCanvas}
+                    setZoom={this.setZoom}
+                    setActiveCanvas={this.setActiveCanvas}
+                    length={arr.length}
+                    updateMarks={this.updateMarks}
+                    getMarks={this.getMarks}
+                    copy={this.copy}
+                    paste={this.paste}
+                    remove={this.remove}
                   />
                 ))}
               </div>

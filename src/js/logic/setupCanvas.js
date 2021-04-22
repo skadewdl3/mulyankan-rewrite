@@ -1,7 +1,14 @@
 import { fabric } from 'fabric-with-gestures';
+import {
+  addObject,
+  zoomOnKeyPress,
+  copyActiveObject,
+  pasteCopiedObject,
+  removeActiveObject,
+} from './canvasEventListeners';
 
 export const createCanvas = (id, canvasData) => {
-  let { getFCanvases, addCanvas, index, src, height, width } = canvasData;
+  let { addCanvas, src, height, width } = canvasData;
 
   console.log({ id, src });
   let fcanvas = new fabric.Canvas(id);
@@ -12,7 +19,8 @@ export const createCanvas = (id, canvasData) => {
   });
 
   configureBackgroundImage(src, fcanvas, width, height);
-  setDefaultProperties(fcanvas, { width, height });
+  setDefaultProperties(fcanvas, canvasData);
+  addEventListeners(fcanvas, canvasData);
   addCanvas(fcanvas);
 };
 
@@ -37,7 +45,18 @@ const configureBackgroundImage = (src, fcanvas, width, height) => {
   });
 };
 
-const setDefaultProperties = (fcanvas, props) => {
-  const { width, height } = props;
+const setDefaultProperties = (fcanvas, canvasData) => {
+  const { width, height, index } = canvasData;
   fcanvas.originalDimensions = { width, height };
+  fcanvas.activeCanvas = index == 0 ? true : false;
+};
+
+const addEventListeners = (fcanvas, canvasData) => {
+  fcanvas.on('drop', e => addObject(e, fcanvas, canvasData));
+  fcanvas.on('object:added', e => canvasData.updateMarks());
+  fcanvas.on('text:changed', () => canvasData.updateMarks());
+  fcanvas.on('copy', e => copyActiveObject(fcanvas));
+  fcanvas.on('paste', ({ coords }) => pasteCopiedObject(coords, fcanvas));
+  fcanvas.on('remove', e => removeActiveObject(fcanvas));
+  zoomOnKeyPress(canvasData);
 };
