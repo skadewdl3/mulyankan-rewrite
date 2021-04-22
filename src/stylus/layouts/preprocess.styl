@@ -1,12 +1,15 @@
 .preprocessor
   
   &__canvases
+      
     .icon
       margin 0
     display flex
     align-items center
     flex-direction column
     margin-top TOP_BAR_HEIGHT
+    max-height 100vh
+    overflow scroll
   &__controls
     .icon
       margin 0 1rem
@@ -27,6 +30,7 @@
 
 .preprocess
   &__canvas
+    box-shadow 0.1rem 0 0.5rem rgba(GRAY, 0.1), -0.1rem 0 0.5rem rgba(GRAY, 0.1)
     &__controls
       padding 1em 2rem
       padding-right 0

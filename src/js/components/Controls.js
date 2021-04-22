@@ -14,14 +14,13 @@ import MarkingTab from './MarkingTab';
 import TextTab from './TextTab';
 
 const Controls = ({
-  setDownloading,
   setFCanvases,
-  getFCanvases,
   setFiles,
   setFileName,
   fileName,
   setZoom,
   marks,
+  setDownloading,
 }) => {
   const [tab, setTab] = useState('marking');
 
@@ -43,6 +42,7 @@ const Controls = ({
     tabs.forEach((cur, index, arr) => {
       cur.style.width = `calc(100% - ${arr.length}%)`;
     });
+    setFileName(fileName);
   }, []);
 
   let symbols = ['check', 'circle', 'cross', 'underline', 'double-underline'];

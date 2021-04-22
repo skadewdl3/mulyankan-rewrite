@@ -75,8 +75,12 @@ export class Editor extends Component {
           message={this.state.loadingMessage}
         />
         <Downloading
-          isOpen={this.state.ownloading}
+          isOpen={this.state.downloading}
           setIsOpen={this.setDownloading}
+          fileName={this.state.fileName}
+          setFileName={this.setFileName}
+          setZoom={this.setZoom}
+          fcanvases={this.state.fcanvases}
         />
 
         {!this.state.fcanvases[0] &&
@@ -103,28 +107,26 @@ export class Editor extends Component {
               fileName={this.state.fileName}
               setZoom={this.setZoom}
               marks={this.state.marks}
+              setDownloading={this.setDownloading}
             />
             <div className="editor__container__wrapper">
               <div className="editor__container">
                 {this.state.files.map((cur, index, arr) => (
-                  <>
-                    <Canvas
-                      src={cur}
-                      key={index}
-                      index={index}
-                      setFCanvases={this.setFCanvases}
-                      addCanvas={this.addCanvas}
-                      setZoom={this.setZoom}
-                      setActiveCanvas={this.setActiveCanvas}
-                      length={arr.length}
-                      updateMarks={this.updateMarks}
-                      getMarks={this.getMarks}
-                      copy={this.copy}
-                      paste={this.paste}
-                      remove={this.remove}
-                    />
-                    <br />
-                  </>
+                  <Canvas
+                    src={cur}
+                    key={index}
+                    index={index}
+                    setFCanvases={this.setFCanvases}
+                    addCanvas={this.addCanvas}
+                    setZoom={this.setZoom}
+                    setActiveCanvas={this.setActiveCanvas}
+                    length={arr.length}
+                    updateMarks={this.updateMarks}
+                    getMarks={this.getMarks}
+                    copy={this.copy}
+                    paste={this.paste}
+                    remove={this.remove}
+                  />
                 ))}
               </div>
             </div>

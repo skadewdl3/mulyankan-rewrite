@@ -1,3 +1,5 @@
+import jspdf from 'jspdf';
+
 export const convertFiles = async (files, callback) => {
   let convertedFiles = [];
   let pdfFiles = [];
@@ -78,6 +80,27 @@ export const convertFiles = async (files, callback) => {
   return convertedFiles;
 };
 
-const convertImageToDataURL = () => {};
+const getImageDimensions = src => {
+  return new Promise((resolved, rejected) => {
+    var img = new Image();
+    img.onload = () => {
+      resolved({ width: img.width, height: img.height });
+    };
+    img.src = src;
+  });
+};
 
-const download = () => {};
+export const download = (fileName, fcanvases, callback) => {
+  let doc = new jspdf('1', 'pt', 'a4');
+  fcanvases.forEach((fcanvas, index) => {
+    let src = fcanvas.toDataURL({ format: 'png' });
+    let width = fcanvas.width;
+    let height = fcanvas.height;
+    console.log(width, height);
+    doc.addPage([width, height], width > height ? 'l' : 'p');
+    doc.addImage(src, 'PNG', 0, 0, width, height, null, 'NONE');
+  });
+  doc.deletePage(1);
+  doc.save(fileName);
+  callback();
+};

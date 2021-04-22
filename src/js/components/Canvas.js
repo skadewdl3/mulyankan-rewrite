@@ -114,6 +114,7 @@ const Canvas = ({
           {/*  CANVAS IS INSERTED DYNAMICALLY BU USELAYOUTEFFECT HOOK */}
         </div>
       </div>
+      <br />
     </>
   );
 };

@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
+import {
+  ArrowLeftOutlined,
+  FilePdfOutlined,
+  FileZipOutlined,
+} from '@ant-design/icons';
+
+import { download } from './../logic/convertFiles';
 import { randomFact } from './../logic/loadingFacts';
-import { ArrowLeftOutlined } from '@ant-design/icons';
 
 const Downloading = ({
   isOpen,
   setIsOpen,
   setZoom,
-  getFCanvases,
   fileName,
   setFileName,
+  fcanvases,
 }) => {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [dropdown, setDropdown] = useState(false);
@@ -91,16 +97,17 @@ const Downloading = ({
                 className="generic__nav downloading__nav"
                 onClick={() => setIsOpen(false)}
                 onMouseOver={() => {
+                  if (downloading) return;
                   document
                     .querySelector('.downloading__back__icon')
                     .classList.add('generic__back__icon--animated');
-                  setTimeout(
-                    () =>
+                  setTimeout(() => {
+                    if (document.querySelector('.downloading__back__icon')) {
                       document
                         .querySelector('.downloading__back__icon')
-                        .classList.remove('generic__back__icon--animated'),
-                    100
-                  );
+                        .classList.remove('generic__back__icon--animated');
+                    }
+                  }, 100);
                 }}
               >
                 <ArrowLeftOutlined
@@ -145,7 +152,7 @@ const Downloading = ({
                       }}
                     >
                       <div className="downloading__options__item__icon">
-                        <i className="fa fa-icon fa-file-pdf-o"></i>
+                        <FilePdfOutlined className="downloading__icon" />
                       </div>
                       <div className="downloading__options__item__text">
                         <div className="downloading__options__item__text__title">
@@ -163,7 +170,7 @@ const Downloading = ({
                       }}
                     >
                       <div className="downloading__options__item__icon">
-                        <i className="fa fa-icon fa-file-archive-o"></i>
+                        <FileZipOutlined className="downloading__icon" />
                       </div>
                       <div className="downloading__options__item__text">
                         <div className="downloading__options__item__text__title">
@@ -179,9 +186,9 @@ const Downloading = ({
                     <button
                       className="downloading__cta"
                       onClick={() => {
+                        setZoom(1.1, true);
                         if (downloadData == 'json') {
                           setDownloading(true);
-                          setZoom(1);
                           var json = { fcanvases };
                           var data =
                             'text/json;charset=utf-8,' +
@@ -197,23 +204,14 @@ const Downloading = ({
                           setDownloading(false);
                         } else {
                           setDownloading(true);
-                          setZoom(1);
-                          let urls = [];
-                          fcanvases.forEach(({ url }) =>
-                            urls.push({
-                              url,
-                            })
-                          );
-                          // downloadPDF(
-                          //   urls,
-                          //   fileName,
-                          //   () => {
-                          //     setDownloadData('');
-                          //     setDownloading(false);
-                          //   },
-                          //   'https://mulyankan.herokuapp.com/download'
-                          // );
+
+                          setTimeout(() => {
+                            download(fileName, fcanvases, () =>
+                              setDownloading(false)
+                            );
+                          }, 500);
                         }
+                        setDownloadData('');
                       }}
                     >
                       Download
