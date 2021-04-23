@@ -16,6 +16,7 @@ const Canvas = ({
   copy,
   paste,
   remove,
+  moveActiveObject,
 }) => {
   const [showMenu, setShowMenu] = useState({
     show: false,
@@ -35,11 +36,13 @@ const Canvas = ({
       setZoom,
       setShowMenu,
       shouldAddZoomListener: index == length - 1,
+      shouldAddMoveListener: index == length - 1,
       updateMarks,
       getMarks,
       setActiveCanvas,
       copy,
       paste,
+      moveActiveObject,
     };
     let img = new Image();
     img.src = src;

@@ -11,7 +11,7 @@ import Controls from './../components/Controls';
 import Canvas from './../components/Canvas';
 
 // Transforms
-import { setZoomLevel } from './../logic/canvasTransforms';
+import { setZoomLevel, moveObject } from './../logic/canvasTransforms';
 import {
   changeMarks,
   changeActiveCanvas,
@@ -66,6 +66,8 @@ export class Editor extends Component {
   copy = index => copyObject(index, this);
   paste = (index, coords) => pasteObject(index, coords, this);
   remove = index => removeObject(index, this);
+
+  moveActiveObject = direction => moveObject(direction, this);
 
   render() {
     return (
@@ -126,6 +128,7 @@ export class Editor extends Component {
                     copy={this.copy}
                     paste={this.paste}
                     remove={this.remove}
+                    moveActiveObject={this.moveActiveObject}
                   />
                 ))}
               </div>

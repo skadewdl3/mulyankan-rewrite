@@ -155,31 +155,30 @@ const automark = (dropCoords, fcanvas, marks) => {
   fcanvas.add(text);
 };
 
-export const zoomOnKeyPress = canvasData => {
-  if (canvasData.shouldAddZoomListener) {
-    hotkeys(
-      'ctrl+-',
-      throttle(
-        e => {
-          e.preventDefault();
-          canvasData.setZoom(0.9);
-        },
-        100,
-        { trailing: false }
-      )
-    );
-    hotkeys(
-      'ctrl+=',
-      throttle(
-        e => {
-          e.preventDefault();
-          canvasData.setZoom(1.1);
-        },
-        100,
-        { trailing: false }
-      )
-    );
-  }
+export const zoomOnKeyPress = ({ shouldAddZoomListener }) => {
+  if (!shouldAddZoomListener) return;
+  hotkeys(
+    'ctrl+-',
+    throttle(
+      e => {
+        e.preventDefault();
+        canvasData.setZoom(0.9);
+      },
+      100,
+      { trailing: false }
+    )
+  );
+  hotkeys(
+    'ctrl+=',
+    throttle(
+      e => {
+        e.preventDefault();
+        canvasData.setZoom(1.1);
+      },
+      100,
+      { trailing: false }
+    )
+  );
 };
 
 export const copyActiveObject = fcanvas => {
@@ -197,9 +196,26 @@ export const removeActiveObject = fcanvas => {
   fcanvas.remove(obj);
 };
 
-export const removeObjectOutsideCanvas = ({ e, target }, fcanvas) => {
+export const removeObjectOutsideCanvas = ({ target }, fcanvas) => {
   if (!target.isOnScreen()) {
     console.log('running');
     fcanvas.remove(target);
   }
+};
+
+export const moveObjectWithArrowKeys = ({
+  shouldAddMoveListener,
+  index,
+  moveActiveObject,
+}) => {
+  if (!shouldAddMoveListener) return;
+  document.body.addEventListener('keydown', e => {
+    if (e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40) {
+      e.preventDefault();
+    }
+  });
+  hotkeys('up', () => moveActiveObject('up'));
+  hotkeys('down', () => moveActiveObject('down'));
+  hotkeys('left', () => moveActiveObject('left'));
+  hotkeys('right', () => moveActiveObject('right'));
 };

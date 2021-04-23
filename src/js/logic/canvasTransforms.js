@@ -27,3 +27,23 @@ export const setZoomLevel = (val, reset, { state, setFCanvases }) => {
   });
   setFCanvases(newFcArr);
 };
+
+export const moveObject = (direction, { state }) => {
+  let factor = 2;
+  let fcanvas = state.fcanvases.filter((fcanvas, i) => fcanvas.activeCanvas)[0];
+  if (!fcanvas) return;
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+
+  if (direction == 'up') {
+    obj.top = obj.top - factor;
+  } else if (direction == 'down') {
+    obj.top = obj.top + factor;
+  } else if (direction == 'left') {
+    obj.left = obj.left - factor;
+  } else if (direction == 'right') {
+    obj.left = obj.left + factor;
+  }
+  obj.setCoords();
+  fcanvas.renderAll();
+};
