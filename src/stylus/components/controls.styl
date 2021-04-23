@@ -3,6 +3,44 @@ ACCENT_COLOR = #6c5ce7
 GRAY = #222f3e
 
 .controls
+
+  &__favourites
+    // padding 0 1.5rem
+    width 90%
+    margin 0 auto
+
+    &__message
+      font-size 1.6rem
+      color ACCENT_COLOR
+      font-weight bold
+
+    &__item
+      display grid
+      grid-template-columns 10% 80% 10%
+      align-items center
+      background #eee
+      padding 0.5rem 1rem
+      border-radius .5rem
+      &:not(:last-child)
+        margin-bottom 1rem
+      &__delete
+        font-size 2rem
+        cursor pointer
+        span
+          transition all .2s ease-out
+          &:active
+            transform scale(0.9)
+      &__icon
+        margin-right 1rem
+        font-size 2rem
+        &--text
+          color ACCENT_COLOR
+        &--mark
+          color #27ae60
+      &__value
+        font-size 1.6rem
+        max-width 90%
+
   &__tabs
     background #eee
     display flex

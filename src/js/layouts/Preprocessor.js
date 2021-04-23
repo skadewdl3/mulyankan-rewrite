@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ImageRotation from 'image-rotation';
-import { base64ToBlob } from 'base64-blob';
 import {
   UpOutlined,
   DownOutlined,

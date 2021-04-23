@@ -1,7 +1,11 @@
 import React from 'react';
 import { chunk } from 'lodash';
-
-const MarkingTab = ({ symbols, marks }) => {
+import {
+  FontSizeOutlined,
+  CheckCircleOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
+const MarkingTab = ({ symbols, marks, quickAccess, removeFromFavourites }) => {
   return (
     <>
       <div className="controls__left__header">Quick Marking</div>
@@ -66,7 +70,57 @@ const MarkingTab = ({ symbols, marks }) => {
         ))}
       </div>
       <div className="controls__left__divider"></div>
-      {/* <div className="controls__left__header">Clipboard</div> */}
+      <div className="controls__left__header">Favourites</div>
+      <div className="controls__left__divider"></div>
+      <div className="controls__favourites">
+        {quickAccess.length == 0 ? (
+          <div className="controls__favourites__message">
+            <span>No favourites added yet.</span>
+          </div>
+        ) : (
+          quickAccess.map((cur, index) => {
+            return (
+              <div
+                className="controls__favourites__item"
+                key={index}
+                draggable="true"
+                onDragStart={e => {
+                  console.log(cur);
+                  e.dataTransfer.setData('favourite', true);
+                  e.dataTransfer.setData('type', cur.type);
+                  e.dataTransfer.setData(
+                    'content',
+                    JSON.stringify({ obj: cur.obj })
+                  );
+                }}
+              >
+                <div
+                  className={`controls__favourites__item__icon controls__favourites__item__icon--${cur.type}`}
+                >
+                  {cur.type == 'mark' ? (
+                    <CheckCircleOutlined />
+                  ) : (
+                    <FontSizeOutlined />
+                  )}
+                </div>
+                <div className="controls__favourites__item__value">
+                  {cur.value.substring(0, 60).length == cur.value.length
+                    ? cur.value
+                    : `${cur.value.substring(0, 60)}...`}
+                </div>
+                <button
+                  className="controls__favourites__item__delete"
+                  onClick={() => {
+                    removeFromFavourites(index);
+                  }}
+                >
+                  <DeleteOutlined />
+                </button>
+              </div>
+            );
+          })
+        )}
+      </div>
     </>
   );
 };

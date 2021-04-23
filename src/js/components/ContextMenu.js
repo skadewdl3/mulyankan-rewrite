@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { CopyOutlined, FormOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  CopyOutlined,
+  FormOutlined,
+  DeleteOutlined,
+  HeartOutlined,
+} from '@ant-design/icons';
 
 const ContextMenu = ({
   show,
@@ -11,6 +16,7 @@ const ContextMenu = ({
   paste,
   pasteCoords,
   remove,
+  addToQuickAccess,
 }) => {
   const [zIndex, setZIndex] = useState(-1);
 
@@ -38,8 +44,6 @@ const ContextMenu = ({
       <div
         className="contextmenu__item"
         onClick={() => {
-          // setShouldCopy(true);
-          // console.log(index);
           copy(index);
           updateShowMenu({ show: false });
         }}
@@ -50,7 +54,6 @@ const ContextMenu = ({
       <div
         className="contextmenu__item"
         onClick={e => {
-          // setShouldPaste(true);
           paste(index, pasteCoords);
           updateShowMenu({ show: false });
         }}
@@ -60,14 +63,23 @@ const ContextMenu = ({
       </div>
       <div
         className="contextmenu__item"
-        onClick={e => {
-          // setShouldPaste(true);
+        onClick={() => {
           remove(index);
           updateShowMenu({ show: false });
         }}
       >
         <DeleteOutlined />
         <span className="contextmenu__text">Remove</span>
+      </div>
+      <div
+        className="contextmenu__item"
+        onClick={() => {
+          addToQuickAccess(index);
+          updateShowMenu({ show: false });
+        }}
+      >
+        <HeartOutlined />
+        <span className="contextmenu__text">Favourite</span>
       </div>
       {/* <div className="contextmenu__item">
         <DeleteOutlined />

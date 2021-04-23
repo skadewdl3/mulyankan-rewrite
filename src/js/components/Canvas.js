@@ -17,6 +17,8 @@ const Canvas = ({
   paste,
   remove,
   moveActiveObject,
+  addToQuickAccess,
+  favouriteItem,
 }) => {
   const [showMenu, setShowMenu] = useState({
     show: false,
@@ -43,6 +45,7 @@ const Canvas = ({
       copy,
       paste,
       moveActiveObject,
+      favouriteItem,
     };
     let img = new Image();
     img.src = src;
@@ -87,6 +90,7 @@ const Canvas = ({
         paste={paste}
         pasteCoords={showMenu.pasteCoords}
         remove={remove}
+        addToQuickAccess={addToQuickAccess}
       />
       <div
         className="canvas__wrapper"

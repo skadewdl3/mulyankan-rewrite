@@ -7,6 +7,7 @@ import {
   removeActiveObject,
   removeObjectOutsideCanvas,
   moveObjectWithArrowKeys,
+  favourite,
 } from './canvasEventListeners';
 
 export const createCanvas = (id, canvasData) => {
@@ -65,6 +66,7 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('copy', () => copyActiveObject(fcanvas));
   fcanvas.on('paste', ({ coords }) => pasteCopiedObject(coords, fcanvas));
   fcanvas.on('remove', () => removeActiveObject(fcanvas));
+  fcanvas.on('favourite', () => favourite(fcanvas, canvasData));
   zoomOnKeyPress(canvasData);
   moveObjectWithArrowKeys(canvasData);
 };

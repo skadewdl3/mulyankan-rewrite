@@ -18,10 +18,20 @@ import {
   copyObject,
   pasteObject,
   removeObject,
+  updateQuickAccess,
 } from './../logic/miscellaneous';
 
 export class Editor extends Component {
   constructor(props) {
+    let quickAccess = [];
+    console.log(window.localStorage.getItem('favourites'));
+    if (window.localStorage.getItem('favourites')) {
+      let { quickAccess: temp } = JSON.parse(
+        window.localStorage.getItem('favourites')
+      );
+      quickAccess = temp;
+    }
+
     super(props);
     this.state = {
       fcanvases: [],
@@ -32,6 +42,7 @@ export class Editor extends Component {
       loadingMessage: "We're processing your documents.",
       downloading: false,
       marks: 0,
+      quickAccess: quickAccess,
     };
   }
 
@@ -68,6 +79,23 @@ export class Editor extends Component {
   remove = index => removeObject(index, this);
 
   moveActiveObject = direction => moveObject(direction, this);
+
+  setQuickAccess = quickAccess => {
+    console.log('this ran');
+    this.setState({ quickAccess });
+    window.localStorage.setItem('favourites', JSON.stringify(quickAccess));
+  };
+
+  addToQuickAccess = index => updateQuickAccess(index, this);
+
+  favouriteItem = item => {
+    this.setQuickAccess({ quickAccess: [...this.state.quickAccess, item] });
+    console.log(item);
+  };
+  removeFromFavourites = index =>
+    this.setQuickAccess(
+      [...this.state.quickAccess].filter((cur, i) => i !== index)
+    );
 
   render() {
     return (
@@ -110,6 +138,8 @@ export class Editor extends Component {
               setZoom={this.setZoom}
               marks={this.state.marks}
               setDownloading={this.setDownloading}
+              quickAccess={this.state.quickAccess}
+              removeFromFavourites={this.removeFromFavourites}
             />
             <div className="editor__container__wrapper">
               <div className="editor__container">
@@ -128,7 +158,9 @@ export class Editor extends Component {
                     copy={this.copy}
                     paste={this.paste}
                     remove={this.remove}
+                    addToQuickAccess={this.addToQuickAccess}
                     moveActiveObject={this.moveActiveObject}
+                    favouriteItem={this.favouriteItem}
                   />
                 ))}
               </div>

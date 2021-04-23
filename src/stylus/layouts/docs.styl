@@ -1,0 +1,30 @@
+ACCENT_COLOR = #6c5ce7
+
+.docs
+  &__container
+    display flex
+    justify-content space-between
+
+
+  &__sidenav__ul
+    list-style none
+    margin 5rem 2rem
+    position sticky
+    -webkit-position sticky
+    top 10%
+
+  &__sidenav__item
+    font-size 1.6rem
+    margin 1rem 0
+    cursor pointer
+
+    &--active
+      color ACCENT_COLOR
+      font-weight bold
+
+  &__content
+    margin 5rem 0
+    width 85%
+    font-size 2rem
+    font-family 'Roboto', sans-serif
+

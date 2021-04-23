@@ -52,3 +52,11 @@ export const removeObject = (index, { state }) => {
     }
   });
 };
+
+export const updateQuickAccess = (index, { state, setQuickAccess }) => {
+  [...state.fcanvases].forEach((fcanvas, i) => {
+    if (i == index) {
+      fcanvas.fire('favourite');
+    }
+  });
+};

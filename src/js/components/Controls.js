@@ -21,6 +21,8 @@ const Controls = ({
   setZoom,
   marks,
   setDownloading,
+  quickAccess,
+  removeFromFavourites,
 }) => {
   const [tab, setTab] = useState('marking');
 
@@ -160,7 +162,14 @@ const Controls = ({
           </div>
         </div>
 
-        {tab == 'marking' && <MarkingTab symbols={symbols} marks={marks} />}
+        {tab == 'marking' && (
+          <MarkingTab
+            symbols={symbols}
+            marks={marks}
+            quickAccess={quickAccess}
+            removeFromFavourites={removeFromFavourites}
+          />
+        )}
         {tab == 'text' && <TextTab />}
       </div>
     </>

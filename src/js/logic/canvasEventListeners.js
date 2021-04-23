@@ -33,16 +33,54 @@ export const addObject = ({ e }, fcanvas, canvasData) => {
   let dropCoords = fcanvas.getPointer(e);
   let type = e.dataTransfer.getData('type');
   let imageId = e.dataTransfer.getData('image');
+  let favourite = e.dataTransfer.getData('favourite');
+  let obj = e.dataTransfer.getData('content');
 
-  if (type == 'image') addImage(imageId, dropCoords, fcanvas);
-  else if (type == 'text') addText(dropCoords, fcanvas);
-  else if (type == 'mark') addMark(dropCoords, fcanvas);
-  else if (type == 'automark')
-    automark(dropCoords, fcanvas, canvasData.getMarks());
+  if (favourite) addFavouritedObject(type, obj, dropCoords, fcanvas);
+  else {
+    if (type == 'image') addImage(imageId, dropCoords, fcanvas);
+    else if (type == 'text') addText(dropCoords, fcanvas);
+    else if (type == 'mark') addMark(dropCoords, fcanvas);
+    else if (type == 'automark')
+      automark(dropCoords, fcanvas, canvasData.getMarks());
+  }
+
   fcanvas.renderAll();
 };
 
+const addFavouritedObject = (type, content, coords, fcanvas) => {
+  let { obj } = JSON.parse(content);
+  fabric.util.enlivenObjects([obj], ([clone]) => {
+    if (type == 'text') {
+      clone.set({
+        ...defaultObjectConfig,
+        ...defaultTextConfig,
+        width: clone.width,
+        height: clone.height,
+        top: coords.y - clone.height / 2,
+        left: coords.x - clone.width / 2,
+        textType: 'text',
+      });
+      fcanvas.add(clone);
+      clone.setCoords();
+    } else if (type == 'mark') {
+      clone.set({
+        ...defaultObjectConfig,
+        ...defaultTextConfig,
+        width: clone.width,
+        height: clone.height,
+        top: coords.y - clone.height / 2,
+        left: coords.x - clone.width / 2,
+        textType: 'mark',
+      });
+      fcanvas.add(clone);
+      clone.setCoords();
+    }
+  });
+};
+
 export const addCopiedObject = (coords, fcanvas) => {
+  if (!copiedObject) return;
   if (copiedObject.textType == 'mark') {
     copiedObject.clone(clone => {
       clone.set({
@@ -72,7 +110,6 @@ export const addCopiedObject = (coords, fcanvas) => {
       clone.setCoords();
     });
   } else {
-    console.log(copiedObject);
     copiedObject.clone(clone => {
       clone.set({
         ...defaultObjectConfig,
@@ -155,14 +192,14 @@ const automark = (dropCoords, fcanvas, marks) => {
   fcanvas.add(text);
 };
 
-export const zoomOnKeyPress = ({ shouldAddZoomListener }) => {
+export const zoomOnKeyPress = ({ shouldAddZoomListener, setZoom }) => {
   if (!shouldAddZoomListener) return;
   hotkeys(
     'ctrl+-',
     throttle(
       e => {
         e.preventDefault();
-        canvasData.setZoom(0.9);
+        setZoom(0.9);
       },
       100,
       { trailing: false }
@@ -173,7 +210,7 @@ export const zoomOnKeyPress = ({ shouldAddZoomListener }) => {
     throttle(
       e => {
         e.preventDefault();
-        canvasData.setZoom(1.1);
+        setZoom(1.1);
       },
       100,
       { trailing: false }
@@ -184,7 +221,6 @@ export const zoomOnKeyPress = ({ shouldAddZoomListener }) => {
 export const copyActiveObject = fcanvas => {
   let obj = fcanvas.getActiveObject();
   copiedObject = obj;
-  console.log(obj);
 };
 
 export const pasteCopiedObject = (coords, fcanvas) => {
@@ -198,7 +234,6 @@ export const removeActiveObject = fcanvas => {
 
 export const removeObjectOutsideCanvas = ({ target }, fcanvas) => {
   if (!target.isOnScreen()) {
-    console.log('running');
     fcanvas.remove(target);
   }
 };
@@ -218,4 +253,16 @@ export const moveObjectWithArrowKeys = ({
   hotkeys('down', () => moveActiveObject('down'));
   hotkeys('left', () => moveActiveObject('left'));
   hotkeys('right', () => moveActiveObject('right'));
+};
+
+export const favourite = (fcanvas, { favouriteItem }) => {
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (!obj.textType) return;
+  let config = {
+    type: obj.textType,
+    value: obj.text,
+    obj,
+  };
+  favouriteItem(config);
 };
