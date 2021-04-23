@@ -89,7 +89,7 @@ export class Editor extends Component {
   addToQuickAccess = index => updateQuickAccess(index, this);
 
   favouriteItem = item => {
-    this.setQuickAccess({ quickAccess: [...this.state.quickAccess, item] });
+    this.setQuickAccess([...this.state.quickAccess, item]);
     console.log(item);
   };
   removeFromFavourites = index =>
