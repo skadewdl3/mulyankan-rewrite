@@ -26,9 +26,8 @@ export class Editor extends Component {
     let quickAccess = [];
     console.log(window.localStorage.getItem('favourites'));
     if (window.localStorage.getItem('favourites')) {
-      let { quickAccess: temp } = JSON.parse(
-        window.localStorage.getItem('favourites')
-      );
+      let temp = JSON.parse(window.localStorage.getItem('favourites'));
+      // console.log(temp);
       quickAccess = temp;
     }
 
