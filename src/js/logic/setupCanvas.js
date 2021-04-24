@@ -8,6 +8,7 @@ import {
   removeObjectOutsideCanvas,
   moveObjectWithArrowKeys,
   favourite,
+  changeFont,
 } from './canvasEventListeners';
 
 export const createCanvas = (id, canvasData) => {
@@ -62,11 +63,24 @@ const addEventListeners = (fcanvas, canvasData) => {
   });
   fcanvas.on('object:removed', () => canvasData.updateMarks());
   fcanvas.on('object:moved', e => removeObjectOutsideCanvas(e, fcanvas));
+  fcanvas.on('selection:created', ({ selected }) => {
+    let obj = selected[0];
+    if (!obj) return;
+    if (!obj.textType) return;
+    canvasData.updateDefaultFontOption(obj.fontFamily);
+  });
+  fcanvas.on('selection:updated', ({ selected }) => {
+    let obj = selected[0];
+    if (!obj) return;
+    if (!obj.textType) return;
+    canvasData.updateDefaultFontOption(obj.fontFamily);
+  });
   fcanvas.on('text:changed', () => canvasData.updateMarks());
   fcanvas.on('copy', () => copyActiveObject(fcanvas));
   fcanvas.on('paste', ({ coords }) => pasteCopiedObject(coords, fcanvas));
   fcanvas.on('remove', () => removeActiveObject(fcanvas));
   fcanvas.on('favourite', () => favourite(fcanvas, canvasData));
+  fcanvas.on('changeFont', ({ font }) => changeFont(font, fcanvas));
   zoomOnKeyPress(canvasData);
   moveObjectWithArrowKeys(canvasData);
 };

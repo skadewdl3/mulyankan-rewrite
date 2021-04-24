@@ -1,8 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import GoogleFontLoader from 'react-google-font-loader';
 
-const MarkingTab = () => {
+const MarkingTab = ({ changeFont, defaultFontOption }) => {
+  const [activeFontIndex, setActiveFontIndex] = useState(1);
+
+  const fontNames = [
+    { name: 'Professional', font: 'Source Serif Pro' },
+    { name: 'Modern', font: 'Roboto' },
+    { name: 'Casual', font: 'Open Sans' },
+    { name: 'Handwritten', font: 'Gochi Hand' },
+    { name: 'Cursive', font: 'Dancing Script' },
+  ];
+
+  const fonts = fontNames.map(({ font }) => {
+    return {
+      font,
+      weights: [400],
+    };
+  });
+
+  useEffect(() => {
+    changeFont(fontNames[activeFontIndex].font);
+  }, [activeFontIndex]);
+
+  useEffect(() => {
+    let index = fontNames.indexOf(
+      fontNames.filter(cur => cur.font == defaultFontOption)[0]
+    );
+    setActiveFontIndex(index);
+  }, [defaultFontOption]);
+
   return (
     <>
+      <GoogleFontLoader fonts={fonts} />
       <div className="controls__left__header">Textboxes</div>
       <div className="controls__left__divider controls__left__divider--hidden"></div>
       <div className="symbols__text">
@@ -60,8 +90,26 @@ const MarkingTab = () => {
         </div>
       </div>
       <div className="controls__left__divider controls__left__divider--hidden"></div>
-      {/* <div className="controls__left__header">Text Editing</div> */}
+      <div className="controls__left__header">Font Family</div>
       <div className="controls__left__divider controls__left__divider--hidden"></div>
+      <div className="controls__families">
+        {fontNames.map((cur, index) => (
+          <div
+            className="controls__family"
+            onClick={() => setActiveFontIndex(index)}
+            key={Math.random()}
+          >
+            <span
+              className={`controls__family-indicator ${
+                index == activeFontIndex
+                  ? 'controls__family-indicator--active'
+                  : ''
+              }`}
+            ></span>
+            <p style={{ fontFamily: cur.font }}>{cur.name}</p>
+          </div>
+        ))}
+      </div>
       {/* {chunk(symbols, 3).map((arr, i) => (
           <div className="symbols__grid" key={i}>
             {arr.map((cur, j) => (

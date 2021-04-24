@@ -11,7 +11,11 @@ import Controls from './../components/Controls';
 import Canvas from './../components/Canvas';
 
 // Transforms
-import { setZoomLevel, moveObject } from './../logic/canvasTransforms';
+import {
+  setZoomLevel,
+  moveObject,
+  updateFont,
+} from './../logic/canvasTransforms';
 import {
   changeMarks,
   changeActiveCanvas,
@@ -35,14 +39,21 @@ export class Editor extends Component {
       fcanvases: [],
       files: [],
       preprocess: [],
+      json: [],
+      uploadMethod: 'pdf',
       fileName: 'Document',
       loading: false,
       loadingMessage: "We're processing your documents.",
       downloading: false,
       marks: 0,
       quickAccess: quickAccess,
+      defaultFontOption: 'Roboto',
     };
   }
+
+  setJSON = json => this.setState({ json });
+
+  setUploadMethod = uploadMethod => this.setState({ uploadMethod });
 
   setFiles = files => this.setState({ files });
 
@@ -95,6 +106,13 @@ export class Editor extends Component {
       [...this.state.quickAccess].filter((cur, i) => i !== index)
     );
 
+  changeFont = font => updateFont(font, this);
+
+  updateDefaultFontOption = defaultFontOption =>
+    this.setState({
+      defaultFontOption,
+    });
+
   render() {
     return (
       <div className="editor__wrapper">
@@ -138,6 +156,8 @@ export class Editor extends Component {
               setDownloading={this.setDownloading}
               quickAccess={this.state.quickAccess}
               removeFromFavourites={this.removeFromFavourites}
+              changeFont={this.changeFont}
+              defaultFontOption={this.state.defaultFontOption}
             />
             <div className="editor__container__wrapper">
               <div className="editor__container">
@@ -159,6 +179,7 @@ export class Editor extends Component {
                     addToQuickAccess={this.addToQuickAccess}
                     moveActiveObject={this.moveActiveObject}
                     favouriteItem={this.favouriteItem}
+                    updateDefaultFontOption={this.updateDefaultFontOption}
                   />
                 ))}
               </div>

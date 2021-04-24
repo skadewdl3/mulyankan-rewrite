@@ -19,6 +19,7 @@ const Canvas = ({
   moveActiveObject,
   addToQuickAccess,
   favouriteItem,
+  updateDefaultFontOption,
 }) => {
   const [showMenu, setShowMenu] = useState({
     show: false,
@@ -46,6 +47,7 @@ const Canvas = ({
       paste,
       moveActiveObject,
       favouriteItem,
+      updateDefaultFontOption,
     };
     let img = new Image();
     img.src = src;

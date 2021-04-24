@@ -24,6 +24,8 @@ const Controls = ({
   quickAccess,
   removeFromFavourites,
   setPreprocess,
+  changeFont,
+  defaultFontOption,
 }) => {
   const [tab, setTab] = useState('marking');
 
@@ -178,7 +180,12 @@ const Controls = ({
             removeFromFavourites={removeFromFavourites}
           />
         )}
-        {tab == 'text' && <TextTab />}
+        {tab == 'text' && (
+          <TextTab
+            changeFont={changeFont}
+            defaultFontOption={defaultFontOption}
+          />
+        )}
       </div>
     </>
   );

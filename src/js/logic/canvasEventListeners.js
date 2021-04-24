@@ -24,7 +24,7 @@ const defaultTextConfig = {
   width: 100,
   height: 30,
   fontSize: 40,
-  fontFamily: 'sans-serif',
+  fontFamily: 'Roboto',
   fill: '#ff0000',
   textAlign: 'center',
 };
@@ -265,4 +265,15 @@ export const favourite = (fcanvas, { favouriteItem }) => {
     obj,
   };
   favouriteItem(config);
+};
+
+export const changeFont = (fontFamily, fcanvas) => {
+  console.log(fontFamily);
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (!obj.textType) return;
+  obj.set({
+    fontFamily,
+  });
+  fcanvas.renderAll();
 };

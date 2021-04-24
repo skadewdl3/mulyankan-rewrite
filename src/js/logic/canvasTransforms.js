@@ -47,3 +47,11 @@ export const moveObject = (direction, { state }) => {
   obj.setCoords();
   fcanvas.renderAll();
 };
+
+export const updateFont = (font, { state }) => {
+  [...state.fcanvases].forEach((fcanvas, i) => {
+    if (fcanvas.activeCanvas) {
+      fcanvas.fire('changeFont', { font });
+    }
+  });
+};
