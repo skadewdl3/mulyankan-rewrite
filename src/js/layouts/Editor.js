@@ -27,7 +27,6 @@ export class Editor extends Component {
     console.log(window.localStorage.getItem('favourites'));
     if (window.localStorage.getItem('favourites')) {
       let temp = JSON.parse(window.localStorage.getItem('favourites'));
-      // console.log(temp);
       quickAccess = temp;
     }
 
@@ -127,7 +126,7 @@ export class Editor extends Component {
           <>
             <Controls
               setLoading={this.setLoading}
-              // setDownloading={setDownloading}
+              setPreprocess={this.setPreprocess}
               setFCanvases={this.setFCanvases}
               setFiles={this.setFiles}
               setActiveCanvas={this.setActiveCanvas}

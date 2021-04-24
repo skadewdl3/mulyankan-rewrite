@@ -59,10 +59,11 @@ const FileUpload = ({
     const postProcessing = res => {
       if (shouldPreprocess) {
         setPreprocess(res);
+        setFileName(files[0].name);
       } else {
         setFCanvases(res);
+        setFileName(files[0].name);
       }
-      setFileName(files[0].name);
       setTimeout(() => {
         setLoading(false);
       }, 2000);

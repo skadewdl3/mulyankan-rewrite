@@ -23,6 +23,7 @@ const Controls = ({
   setDownloading,
   quickAccess,
   removeFromFavourites,
+  setPreprocess,
 }) => {
   const [tab, setTab] = useState('marking');
 
@@ -47,7 +48,14 @@ const Controls = ({
     setFileName(fileName);
   }, []);
 
-  let symbols = ['check', 'circle', 'cross', 'underline', 'double-underline'];
+  let symbols = [
+    'check',
+    'circle',
+    'cross',
+    'underline',
+    'double-underline',
+    'arrow',
+  ];
 
   const debouncedSearch = debounce(val => {
     setFileName(val);
@@ -63,7 +71,6 @@ const Controls = ({
                 className="symbols-cp__image__wrapper"
                 key={j}
                 onDragStart={e => {
-                  console.log(cur);
                   e.dataTransfer.setData('image', cur);
                   e.dataTransfer.setData('type', 'image');
                 }}
@@ -85,7 +92,9 @@ const Controls = ({
             className="controls__btn"
             onClick={() => {
               setFCanvases([]);
+              setPreprocess([]);
               setFiles([]);
+              setFileName('Document');
             }}
           >
             <ArrowLeftOutlined style={{ margin: '0 1rem' }} />
@@ -96,7 +105,6 @@ const Controls = ({
             defaultValue={fileName}
             onChange={e => {
               e.target.style.width = `${e.target.value.length + 1}ch`;
-              console.log(e.target.value);
               debouncedSearch(e.target.value.trim());
             }}
           />
