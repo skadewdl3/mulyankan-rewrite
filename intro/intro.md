@@ -4,13 +4,13 @@ Here we'll explore the basic interface of Mulyankan and get you up and running.
 <br>
 <br>
 
-\`\`\`
+```
 Contents:
 
 1. What is Mulyankan ?
 2. What Mulyankan isn't ?
 3. Purpose
-\`\`\`
+```
 
 <br>
 <br>
