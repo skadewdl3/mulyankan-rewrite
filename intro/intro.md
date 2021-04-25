@@ -10,7 +10,6 @@ Contents:
 1. What is Mulyankan ?
 2. What Mulyankan isn't ?
 3. Purpose
-4. Getting Started
 \`\`\`
 
 <br>
