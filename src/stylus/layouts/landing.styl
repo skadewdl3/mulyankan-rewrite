@@ -1,11 +1,11 @@
 .landing
   &__wrapper
-    width 100vw
+    width 100%
     // height 100vh
     background rgba(#fff, 0.4)
     
   &__nav
-    width 100vw
+    width 100%
     height 6rem
     list-style none
     display flex
@@ -47,31 +47,69 @@
   &__cta-wrapper
     margin 5rem 0
 
+  &__secondary-cta
+    margin 1rem auto
+    cta(#27ae60)
+
+
   &__cta
     cta(ACCENT_COLOR)
   
-  &__features
-    // padding 0 15rem
-    // height 10rem
-    // background red
-    // &__header
-    //   font-size 5rem
-    //   font-family 'Megrim', sans-serif
-    //   font-weight bold
-    //   text-align center
-    //   display inline-block
+  &__beginning
+    &__header
+      font-size 5rem
+      font-family 'Megrim', sans-serif
+      font-weight bold
+      text-align center
+    &__message
+      font-size 4rem
+      font-weight 100
+      text-align center
+      span
+        color ACCENT_COLOR
+        font-weight 400
+    &__sub-message
+      margin 2rem auto
+      font-size 2.5rem
+      font-weight 400
+      text-align center
 
-    // &__grid
-    //   display grid
-    //   max-width 90%
-    //   grid-template-columns 1fr 1fr 1fr
-    //   // padding 1rem 2rem
+  &__features
+    &__header
+      font-size 5rem
+      font-family 'Megrim', sans-serif
+      font-weight bold
+      text-align center
+
+    &__grid
+      display grid
+      padding 10rem 4rem
+      width 100%
+      grid-template-columns 1fr 1fr 1fr
+      margin 0 auto
+    
+    &__feature
+      margin 0 auto
+      &__img
+        width 100%
     
   &__feature
     margin 0 4rem
     background #fff
     border-radius 2rem
     width 70%
+    margin 0 auto
+    padding 2rem
+    overfl
+
+    &__title
+      font-size 2.5rem
+      text-align center
+      margin 1rem auto
+
+    &__description
+      font-size 1.8rem
+      text-align justify
     &__img
       img
         width 100%

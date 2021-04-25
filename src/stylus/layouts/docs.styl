@@ -6,12 +6,33 @@ ACCENT_COLOR = #6c5ce7
     justify-content space-between
 
 
+  &__sidenav
+    position sticky
+    top 0
+    height 100%
+    margin-top 3%
+  &__sidenav__back
+    display flex
+    align-items center
+    font-size 3.5rem
+    transform translateX(-10%)
+    opacity 0
+    transition all .3s ease-out
+    
+
+    &--visible
+      cursor pointer
+      transform translateX(0)
+      opacity 1
+      position sticky
+      top 2%
+
   &__sidenav__ul
     list-style none
     margin 5rem 2rem
     position sticky
     -webkit-position sticky
-    top 10%
+    top 20%
 
   &__sidenav__item
     font-size 1.6rem
@@ -27,4 +48,44 @@ ACCENT_COLOR = #6c5ce7
     width 85%
     font-size 2rem
     font-family 'Roboto', sans-serif
+
+    img
+      width 100%
+      margin 1rem 0
+      border-radius .5rem
+      background-color rgba(ACCENT_COLOR, 0.1)
+      padding 4rem
+
+    h2
+      font-weight 400
+      font-size 4rem
+    h3
+      font-weight 400
+      font-size 3rem
+      margin 1rem 0
+    
+    h4
+      font-weight 300
+      font-size 2.5rem
+    
+    .contains-task-list
+      list-style none
+    
+    p
+      width 70%
+
+    strong
+      color ACCENT_COLOR
+
+    em
+      color #27ae60
+      font-weight bold
+
+    pre
+      display inline-block
+      padding 2rem
+      background rgba(#27ae60, 0.1)
+      border-radius .5rem
+      min-width 40%
+
 

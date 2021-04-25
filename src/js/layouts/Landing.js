@@ -36,16 +36,22 @@ const Landing = () => {
       <div className="landing__wrapper">
         <ul className="landing__nav">
           <li
+            onClick={() => document.querySelector('.contact-link').click()}
             className="landing__nav__item"
-            onClick={() => document.querySelector('.docs-link').click()}
           >
-            Documentation
+            Our Beginning
           </li>
           <li
             onClick={() => document.querySelector('.contact-link').click()}
             className="landing__nav__item"
           >
-            Contact Us
+            Features
+          </li>
+          <li
+            onClick={() => document.querySelector('.contact-link').click()}
+            className="landing__nav__item"
+          >
+            Get in Touch
           </li>
         </ul>
         <div className="landing__hero">
@@ -65,6 +71,15 @@ const Landing = () => {
               >
                 Check it Out
               </button>
+              <br />
+              <button
+                className="landing__secondary-cta"
+                onClick={() => {
+                  document.querySelector('.docs-link').click();
+                }}
+              >
+                Documentation
+              </button>
             </div>
           </div>
           <div className="landing__image">
@@ -72,7 +87,38 @@ const Landing = () => {
           </div>
         </div>
 
-        {/* <div className="landing__features"></div> */}
+        <div className="landing__beginning">
+          {/* <div className="landing__beginning__header">Our Beginning</div> */}
+          <div className="landing__beginning__message">
+            We truly understand a <span>teachers needs.</span>
+          </div>
+          <div className="landing__beginning__sub-message">
+            That's why we made Mulyankan tailored to provide an optimal
+            experience to teachers.
+          </div>
+          <div className="landing__beginning__header">
+            Here's how we got started...
+          </div>
+        </div>
+
+        <div className="landing__features">
+          <div className="landing__features__header">Features</div>
+          <div className="landing__features__grid">
+            {features.map(feature => (
+              <div className="landing__feature">
+                <div className="landing__feature__img">
+                  <img src={feature.src} alt="" />
+                </div>
+                <div className="landing__feature__title">{feature.title}</div>
+                <div className="landing__feature__description">
+                  {feature.description}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="landing__reviews"></div>
       </div>
     </>
   );
