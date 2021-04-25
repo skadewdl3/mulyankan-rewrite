@@ -5,13 +5,13 @@ This section will cover uploading files to Mulyankan and accessing the Mulyankan
 <br>
 <br>
 
-\`\`\`
+```
 Contents:
 
 1. First Steps...
 2. Uploading Files
 3. Introduction to the Interface
-\`\`\`
+```
 
 <br>
 <br>
