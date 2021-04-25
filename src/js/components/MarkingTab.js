@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { chunk } from 'lodash';
 import {
   FontSizeOutlined,
   CheckCircleOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-const MarkingTab = ({ symbols, marks, quickAccess, removeFromFavourites }) => {
+const MarkingTab = ({
+  symbols,
+  marks,
+  quickAccess,
+  removeFromFavourites,
+  colors,
+  color,
+  setColor,
+}) => {
   return (
     <>
       <div className="controls__left__header">Quick Marking</div>
@@ -54,7 +62,13 @@ const MarkingTab = ({ symbols, marks, quickAccess, removeFromFavourites }) => {
                 key={j}
                 onDragStart={e => {
                   console.log(cur);
-                  e.dataTransfer.setData('image', cur);
+                  e.dataTransfer.setData(
+                    'image',
+                    JSON.stringify({
+                      id: cur,
+                      color: colors.find(clr => clr.name == color).hex,
+                    })
+                  );
                   e.dataTransfer.setData('type', 'image');
                 }}
                 draggable="true"
@@ -62,11 +76,27 @@ const MarkingTab = ({ symbols, marks, quickAccess, removeFromFavourites }) => {
                 <img
                   src={`./images/${cur}.svg`}
                   alt=""
-                  className={`symbols__image symbols__${cur}`}
+                  className={`symbols__image symbols__${cur} symbols__image--${color}`}
                 />
               </div>
             ))}
           </div>
+        ))}
+      </div>
+      <div className="controls__color-picker">
+        {colors.map(clr => (
+          <div
+            key={`color-${clr.name}`}
+            className="controls__color"
+            style={{
+              backgroundColor: color == clr.name ? '#fff' : clr.hex,
+              border:
+                color == clr.name
+                  ? `solid .5rem ${clr.hex}`
+                  : `solid 0rem #fff`,
+            }}
+            onClick={() => setColor(clr.name)}
+          ></div>
         ))}
       </div>
       <div className="controls__left__divider"></div>

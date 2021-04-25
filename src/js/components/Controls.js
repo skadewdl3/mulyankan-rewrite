@@ -27,7 +27,26 @@ const Controls = ({
   changeFont,
   defaultFontOption,
 }) => {
+  let defaultColor = 'red';
+  console.log(window.localStorage.getItem('color'));
+  if (window.localStorage.getItem('color')) {
+    let temp = window.localStorage.getItem('color');
+    defaultColor = temp;
+  }
+
   const [tab, setTab] = useState('marking');
+  const colors = [
+    { name: 'red', hex: '#ff0000' },
+    { name: 'purple', hex: '#6c5ce7' },
+    { name: 'green', hex: '#16a085' },
+    { name: 'pink', hex: '#e84393' },
+  ];
+
+  const [color, setColor] = useState(defaultColor);
+
+  useEffect(() => {
+    window.localStorage.setItem('color', color);
+  }, [color]);
 
   useEffect(() => {
     document.querySelectorAll('.controls__tab').forEach(cur => {
@@ -178,12 +197,18 @@ const Controls = ({
             marks={marks}
             quickAccess={quickAccess}
             removeFromFavourites={removeFromFavourites}
+            colors={colors}
+            setColor={setColor}
+            color={color}
           />
         )}
         {tab == 'text' && (
           <TextTab
             changeFont={changeFont}
             defaultFontOption={defaultFontOption}
+            colors={colors}
+            setColor={setColor}
+            color={color}
           />
         )}
       </div>

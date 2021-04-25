@@ -24,6 +24,20 @@
       
   &__image
     width 3rem
+    filter brightness(0) saturate(100%)
+
+    &--red
+      filter: brightness(0) saturate(100%) invert(10%) sepia(97%) saturate(6897%) hue-rotate(3deg) brightness(109%) contrast(113%)
+
+    &--purple
+      filter: brightness(0) saturate(100%) invert(34%) sepia(35%) saturate(4616%) hue-rotate(234deg) brightness(97%) contrast(87%)
+
+    &--green
+      filter: brightness(0) saturate(100%) invert(50%) sepia(12%) saturate(3786%) hue-rotate(124deg) brightness(94%) contrast(83%)
+
+    &--pink
+      filter: brightness(0) saturate(100%) invert(69%) sepia(87%) saturate(6081%) hue-rotate(306deg) brightness(95%) contrast(92%)
+
     &__wrapper
       cursor move
       cursor grab

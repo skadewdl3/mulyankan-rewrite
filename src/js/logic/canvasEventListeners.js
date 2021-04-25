@@ -32,15 +32,17 @@ const defaultTextConfig = {
 export const addObject = ({ e }, fcanvas, canvasData) => {
   let dropCoords = fcanvas.getPointer(e);
   let type = e.dataTransfer.getData('type');
-  let imageId = e.dataTransfer.getData('image');
+  let imageData = e.dataTransfer.getData('image');
   let favourite = e.dataTransfer.getData('favourite');
   let obj = e.dataTransfer.getData('content');
+  let fill = e.dataTransfer.getData('fill');
+  console.log(fill);
 
   if (favourite) addFavouritedObject(type, obj, dropCoords, fcanvas);
   else {
-    if (type == 'image') addImage(imageId, dropCoords, fcanvas);
-    else if (type == 'text') addText(dropCoords, fcanvas);
-    else if (type == 'mark') addMark(dropCoords, fcanvas);
+    if (type == 'image') addImage(imageData, dropCoords, fcanvas);
+    else if (type == 'text') addText(dropCoords, fill, fcanvas);
+    else if (type == 'mark') addMark(dropCoords, fill, fcanvas);
     else if (type == 'automark')
       automark(dropCoords, fcanvas, canvasData.getMarks());
   }
@@ -60,6 +62,7 @@ const addFavouritedObject = (type, content, coords, fcanvas) => {
         top: coords.y - clone.height / 2,
         left: coords.x - clone.width / 2,
         textType: 'text',
+        fill: clone.fill,
       });
       fcanvas.add(clone);
       clone.setCoords();
@@ -72,6 +75,7 @@ const addFavouritedObject = (type, content, coords, fcanvas) => {
         top: coords.y - clone.height / 2,
         left: coords.x - clone.width / 2,
         textType: 'mark',
+        fill: clone.fill,
       });
       fcanvas.add(clone);
       clone.setCoords();
@@ -91,6 +95,7 @@ export const addCopiedObject = (coords, fcanvas) => {
         top: coords.y,
         left: coords.x,
         textType: 'mark',
+        fill: clone.fill,
       });
       fcanvas.add(clone);
       clone.setCoords();
@@ -105,6 +110,7 @@ export const addCopiedObject = (coords, fcanvas) => {
         top: coords.y,
         left: coords.x,
         textType: 'text',
+        fill: clone.fill,
       });
       fcanvas.add(clone);
       clone.setCoords();
@@ -125,7 +131,9 @@ export const addCopiedObject = (coords, fcanvas) => {
   fcanvas.renderAll();
 };
 
-const addImage = (id, dropCoords, fcanvas) => {
+const addImage = (data, dropCoords, fcanvas) => {
+  fcanvas.filterBackend = new fabric.WebglFilterBackend();
+  let { id, color } = JSON.parse(data);
   let imgEl = document.querySelector(`.symbols-cp__${id}`);
   let img = new fabric.Image(imgEl);
   img.scaleToWidth(defaultImageWidth);
@@ -137,27 +145,37 @@ const addImage = (id, dropCoords, fcanvas) => {
     ...defaultObjectConfig,
   };
   img.set(imageConfig);
+  img.filters.push(
+    new fabric.Image.filters.BlendColor({
+      color,
+      mode: 'tint',
+      opacity: 0,
+    })
+  );
+  img.applyFilters();
   fcanvas.add(img);
 };
 
-const addText = (dropCoords, fcanvas) => {
+const addText = (dropCoords, fill, fcanvas) => {
   let text = new fabric.Textbox('Text', {
     left: dropCoords.x - defaultTextConfig.width / 2,
     top: dropCoords.y - defaultTextConfig.height / 2,
     textType: 'text',
     ...defaultObjectConfig,
     ...defaultTextConfig,
+    fill,
   });
   fcanvas.add(text);
 };
 
-const addMark = (dropCoords, fcanvas) => {
+const addMark = (dropCoords, fill, fcanvas) => {
   let mark = new fabric.Textbox('1', {
     left: dropCoords.x - defaultTextConfig.width / 2,
     top: dropCoords.y - defaultTextConfig.height / 2,
     textType: 'mark',
     ...defaultObjectConfig,
     ...defaultTextConfig,
+    fill,
   });
   fcanvas.add(mark);
 };

@@ -2,6 +2,27 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Landing = () => {
+  const features = [
+    {
+      title: 'Simple and Elegant',
+      description:
+        'Mulyankan provides an interface which is easy to pick up even for new users. It takes no more than 5 minutes to become a pro at checking papers using Mulyankan.',
+      src: './images/feature-interface.svg',
+    },
+    {
+      title: 'Check, Mark, Comment',
+      description:
+        "Correcting mistakes and marking is a breeze with Mulyankan. Just add the marks. We'll do the calculations for you.",
+      src: './images/feature-check.svg',
+    },
+    {
+      title: 'Fast. Free. Forever.',
+      description:
+        "Mulyankan is the fastest paper checking app out there. And it's free! All features included, because education should never be restricted by anything.",
+      src: './images/feature-fast.svg',
+    },
+  ];
+
   return (
     <>
       <Link to="/editor" className="cta-link" style={{ display: 'none' }} />
@@ -50,6 +71,8 @@ const Landing = () => {
             <img src="./images/hero.jpg" alt="Teachers teaching Students" />
           </div>
         </div>
+
+        {/* <div className="landing__features"></div> */}
       </div>
     </>
   );

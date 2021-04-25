@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import GoogleFontLoader from 'react-google-font-loader';
 
-const MarkingTab = ({ changeFont, defaultFontOption }) => {
+const MarkingTab = ({
+  changeFont,
+  defaultFontOption,
+  color,
+  setColor,
+  colors,
+}) => {
   const [activeFontIndex, setActiveFontIndex] = useState(1);
 
   const fontNames = [
@@ -40,6 +46,10 @@ const MarkingTab = ({ changeFont, defaultFontOption }) => {
           className="symbols__text__wrapper"
           onDragStart={e => {
             e.dataTransfer.setData('type', 'text');
+            e.dataTransfer.setData(
+              'fill',
+              colors.find(clr => clr.name == color).hex
+            );
           }}
           draggable="true"
         >
@@ -50,6 +60,10 @@ const MarkingTab = ({ changeFont, defaultFontOption }) => {
             draggable="true"
             onDragStart={e => {
               e.dataTransfer.setData('type', 'text');
+              e.dataTransfer.setData(
+                'fill',
+                colors.find(clr => clr.name == color).hex
+              );
             }}
           />
           <div
@@ -57,6 +71,10 @@ const MarkingTab = ({ changeFont, defaultFontOption }) => {
             draggable="true"
             onDragStart={e => {
               e.dataTransfer.setData('type', 'text');
+              e.dataTransfer.setData(
+                'fill',
+                colors.find(clr => clr.name == color).hex
+              );
             }}
           >
             Textbox
@@ -67,6 +85,10 @@ const MarkingTab = ({ changeFont, defaultFontOption }) => {
           draggable="true"
           onDragStart={e => {
             e.dataTransfer.setData('type', 'mark');
+            e.dataTransfer.setData(
+              'fill',
+              colors.find(clr => clr.name == color).hex
+            );
           }}
         >
           <img
@@ -76,6 +98,10 @@ const MarkingTab = ({ changeFont, defaultFontOption }) => {
             draggable="true"
             onDragStart={e => {
               e.dataTransfer.setData('type', 'mark');
+              e.dataTransfer.setData(
+                'fill',
+                colors.find(clr => clr.name == color).hex
+              );
             }}
           />
           <div
@@ -83,11 +109,31 @@ const MarkingTab = ({ changeFont, defaultFontOption }) => {
             draggable="true"
             onDragStart={e => {
               e.dataTransfer.setData('type', 'mark');
+              e.dataTransfer.setData(
+                'fill',
+                colors.find(clr => clr.name == color).hex
+              );
             }}
           >
             Markbox
           </div>
         </div>
+      </div>
+      <div className="controls__color-picker">
+        {colors.map(clr => (
+          <div
+            key={`color-${clr.name}`}
+            className="controls__color"
+            style={{
+              backgroundColor: color == clr.name ? '#fff' : clr.hex,
+              border:
+                color == clr.name
+                  ? `solid .5rem ${clr.hex}`
+                  : `solid 0rem #fff`,
+            }}
+            onClick={() => setColor(clr.name)}
+          ></div>
+        ))}
       </div>
       <div className="controls__left__divider controls__left__divider--hidden"></div>
       <div className="controls__left__header">Font Family</div>
