@@ -1,5 +1,5 @@
 
-## Basic Usage
+## Getting Started
 <br>
 This section will cover uploading files to Mulyankan and accessing the Mulyankan interface.
 <br>
