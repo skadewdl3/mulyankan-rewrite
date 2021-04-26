@@ -10,7 +10,8 @@ const App = () => {
     <HashRouter>
       <Route exact path="/" component={Landing} />
       <Route path="/editor" component={Editor} />
-      <Route path="/docs" component={Docs} />
+      {/* <Route path="/docs" component={Docs} /> */}
+      <Route path="/docs/:id?" component={Docs} />
     </HashRouter>
   );
 };

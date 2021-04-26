@@ -11,6 +11,8 @@ import {
   RightOutlined,
 } from '@ant-design/icons';
 
+import Preloader from './../components/Preloader';
+
 export const docsOptions = [
   { name: 'Introduction', id: 'intro' },
   { name: 'Getting Started', id: 'getting-started' },
@@ -20,42 +22,68 @@ export const docsOptions = [
   // { name: 'Advanced', id: 'advanced' },
 ];
 
-const Docs = () => {
-  const [id, setId] = useState('intro');
+const Docs = props => {
+  let { id: urlId } = props.match.params;
+
+  console.log(urlId);
+
+  const [id, setId] = useState(urlId ? urlId : 'intro');
   const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(false);
   const [showDocsSubLink, setShowDocsSubLink] = useState(false);
 
   const str = `
 ## Basic Usage
 <br>
-This section will cover uploading files to Mulyankan and accessing the Mulyankan interface.
+In this section, we'll learn how to check papers usng symbols, text boxes and mark boxes.
 <br>
 <br>
 
 \`\`\`
 Contents:
 
-1. First Steps...
-2. Uploading Files
-3. Introduction to the Interface
+1. Introduction
+2. Adding Symbols
+3. Adding Comments (Text Boxes)
+4. Adding Marks (Mark Boxes)
 \`\`\`
 
 <br>
 <br>
 
-### First Steps...
-When you first go to the Mulyankan Website, you will see the Landing Page would look similar to this.
+### Introduction
+Once you access the Mulyankan Editing interface, you will the Sidebar to the left of the screen. It contains two tabs at the top namely _Marking_ and _Text_. 
 ![Mulyankan Landing Page](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/getting-started/getting-started-1.png)
 <br>
 <br>
-To upload files and get started, click the **Check it Out** button. <br>
-On doing so, you will be presented with a File Upload Screen which would look like this.
-![Mulyankan File Upload](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/getting-started/getting-started-2.png)
 
+These divide the functionality provided by Mulyankan into two parts.
 <br>
 <br>
+\`\`\`
+The Marking Tab contains:
 
-### Uploading Files
+1. Symbols
+2. Quick Marking
+3. Favourites
+\`\`\`
+
+\`\`\`
+The Text Tab contains:
+
+1. Textbox
+2. Markbox
+3. Font Family
+\`\`\`
+<br>
+<br>
+In this section, we will discuss the basic functionality in Marking and Text tabs.<br>
+More advanced functionality will be covered in separate sections.
+<br>
+<br>
+<br>
+
+### Adding Symbols
 
 Click on the Select Files button. This will open a file picker where you can pick files. Once you have selected them, they should appear in the grey section like so.
 
@@ -115,19 +143,26 @@ Good. In the next section, we'll start checking the exam paper using symbols in 
 
   useEffect(() => {
     // let newStr = str;
+    setLoading(true);
     axios
       .get(
         `https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/${id}/${id}.md`
       )
       .then(({ data }) => {
         let str = data;
-        console.log(data);
+        // console.log(data);
         // str = str.replaceAll('\n', '  ');
         setContent(str);
+        console.log('this ran');
+        setLoading(false);
       });
     // setContent(newStr);
     window.scrollTo(0, 0);
   }, [id]);
+
+  useEffect(() => {
+    if (urlId) setId(urlId);
+  }, [urlId]);
 
   const isInViewport = el => {
     const rect = el.getBoundingClientRect();
@@ -158,6 +193,15 @@ Good. In the next section, we'll start checking the exam paper using symbols in 
 
   return (
     <>
+      <div className="docs-links">
+        {docsOptions.map(option => (
+          <Link
+            to={`/docs/${option.id}`}
+            className={`docs-${option.id}-link`}
+            key={option.id}
+          />
+        ))}
+      </div>
       <Link to="/" className="docs__back" style={{ display: 'none' }} />
       <div className="generic__wrapper">
         <div
@@ -227,7 +271,9 @@ Good. In the next section, we'll start checking the exam paper using symbols in 
                 className={`docs__sidenav__item docs__sidenav__item--${
                   cur.id
                 } ${id == cur.id ? 'docs__sidenav__item--active' : ''}`}
-                onClick={() => setId(cur.id)}
+                onClick={() => {
+                  document.querySelector(`.docs-${cur.id}-link`).click();
+                }}
               >
                 {cur.name}
               </li>
@@ -235,43 +281,52 @@ Good. In the next section, we'll start checking the exam paper using symbols in 
           </ul>
         </div>
         <div className="docs__content">
-          <ReactMarkdown
-            remarkPlugins={[gfm]}
-            rehypePlugins={[rehypeRaw]}
-            children={content}
-          ></ReactMarkdown>
-          <div className="docs__content__buttons">
-            <button
-              className="docs__content__button"
-              onClick={() => {
-                if (id == docsOptions[0].id) return;
-                let newId =
-                  docsOptions[
-                    docsOptions.indexOf(docsOptions.find(doc => doc.id == id)) -
-                      1
-                  ].id;
-                setId(newId);
-              }}
-            >
-              <LeftOutlined />
-              <span>Previous</span>
-            </button>
-            <button
-              className="docs__content__button"
-              onClick={() => {
-                if (id == docsOptions[docsOptions.length - 1].id) return;
-                let newId =
-                  docsOptions[
-                    docsOptions.indexOf(docsOptions.find(doc => doc.id == id)) +
-                      1
-                  ].id;
-                setId(newId);
-              }}
-            >
-              <span>Next</span>
-              <RightOutlined />
-            </button>
-          </div>
+          {!loading ? (
+            <>
+              <ReactMarkdown
+                remarkPlugins={[gfm]}
+                rehypePlugins={[rehypeRaw]}
+                children={content}
+              ></ReactMarkdown>
+              <div className="docs__content__buttons">
+                <button
+                  className="docs__content__button"
+                  onClick={() => {
+                    if (id == docsOptions[0].id) return;
+                    let newId =
+                      docsOptions[
+                        docsOptions.indexOf(
+                          docsOptions.find(doc => doc.id == id)
+                        ) - 1
+                      ].id;
+                    // setId(newId);
+                    document.querySelector(`.docs-${newId}-link`).click();
+                  }}
+                >
+                  <LeftOutlined />
+                  <span>Previous</span>
+                </button>
+                <button
+                  className="docs__content__button"
+                  onClick={() => {
+                    if (id == docsOptions[docsOptions.length - 1].id) return;
+                    let newId =
+                      docsOptions[
+                        docsOptions.indexOf(
+                          docsOptions.find(doc => doc.id == id)
+                        ) + 1
+                      ].id;
+                    document.querySelector(`.docs-${newId}-link`).click();
+                  }}
+                >
+                  <span>Next</span>
+                  <RightOutlined />
+                </button>
+              </div>
+            </>
+          ) : (
+            <Preloader accent={true} scale={1} />
+          )}
         </div>
       </div>
     </>
