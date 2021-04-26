@@ -10,6 +10,7 @@ import {
   favourite,
   changeFont,
   changeColor,
+  contextMenuListsners,
 } from './canvasEventListeners';
 
 export const createCanvas = (id, canvasData) => {
@@ -85,4 +86,5 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('updateColor', ({ hex }) => changeColor(hex, fcanvas));
   zoomOnKeyPress(canvasData);
   moveObjectWithArrowKeys(canvasData);
+  contextMenuListsners(canvasData, fcanvas);
 };

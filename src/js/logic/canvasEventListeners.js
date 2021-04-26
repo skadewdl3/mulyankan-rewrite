@@ -209,8 +209,8 @@ const automark = (dropCoords, fcanvas, marks) => {
   fcanvas.add(text);
 };
 
-export const zoomOnKeyPress = ({ shouldAddZoomListener, setZoom }) => {
-  if (!shouldAddZoomListener) return;
+export const zoomOnKeyPress = ({ shouldAddEventListeners, setZoom }) => {
+  if (!shouldAddEventListeners) return;
   hotkeys(
     'ctrl+-',
     throttle(
@@ -256,11 +256,10 @@ export const removeObjectOutsideCanvas = ({ target }, fcanvas) => {
 };
 
 export const moveObjectWithArrowKeys = ({
-  shouldAddMoveListener,
-  index,
+  shouldAddEventListeners,
   moveActiveObject,
 }) => {
-  if (!shouldAddMoveListener) return;
+  if (!shouldAddEventListeners) return;
   document.body.addEventListener('keydown', e => {
     if (e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40) {
       e.preventDefault();
@@ -295,7 +294,6 @@ export const changeFont = (fontFamily, fcanvas) => {
 };
 
 export const changeColor = (hex, fcanvas) => {
-  console.log(hex);
   let obj = fcanvas.getActiveObject();
   if (!obj) return;
   if (obj.textType) obj.set({ fill: hex });
@@ -310,4 +308,21 @@ export const changeColor = (hex, fcanvas) => {
     obj.applyFilters();
   }
   fcanvas.renderAll();
+};
+
+export const contextMenuListsners = ({ shouldAddEventListeners }, fcanvas) => {
+  if (!shouldAddEventListeners) return;
+  document.body.addEventListener('keydown', e => {
+    if (e.which == 70 && e.ctrlKey) {
+      e.preventDefault();
+    }
+  });
+  hotkeys('ctrl+c', () => fcanvas.fire('copy'));
+  hotkeys('ctrl+v', () =>
+    fcanvas.fire('paste', {
+      coords: { x: fcanvas.width / 2, y: fcanvas.height / 2 },
+    })
+  );
+  hotkeys('del', () => fcanvas.fire('remove'));
+  hotkeys('ctrl+f', () => fcanvas.fire('favourite'));
 };
