@@ -39,16 +39,10 @@ const Landing = () => {
             onClick={() => document.querySelector('.contact-link').click()}
             className="landing__nav__item"
           >
-            Our Beginning
-          </li>
-          <li
-            onClick={() => document.querySelector('.contact-link').click()}
-            className="landing__nav__item"
-          >
             Features
           </li>
           <li
-            onClick={() => document.querySelector('.contact-link').click()}
+            // onClick={() => document.querySelector('.contact-link').click()}
             className="landing__nav__item"
           >
             Get in Touch
