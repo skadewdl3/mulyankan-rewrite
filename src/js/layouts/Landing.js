@@ -87,22 +87,18 @@ const Landing = () => {
           </div>
         </div>
 
-        <div className="landing__beginning">
-          {/* <div className="landing__beginning__header">Our Beginning</div> */}
-          <div className="landing__beginning__message">
-            We truly understand a <span>teachers needs.</span>
-          </div>
-          <div className="landing__beginning__sub-message">
-            That's why we made Mulyankan tailored to provide an optimal
-            experience to teachers.
-          </div>
-          <div className="landing__beginning__header">
-            Here's how we got started...
-          </div>
-        </div>
-
         <div className="landing__features">
           <div className="landing__features__header">Features</div>
+          <div className="landing__features__messages">
+            <div className="landing__features__message">
+              We truly understand a <span>teachers needs.</span>
+            </div>
+            <div className="landing__features__sub-message">
+              That's why we made Mulyankan tailored to provide an optimal
+              experience to teachers.
+            </div>
+          </div>
+
           <div className="landing__features__grid">
             {features.map(feature => (
               <div className="landing__feature">

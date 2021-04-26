@@ -49,6 +49,24 @@ ACCENT_COLOR = #6c5ce7
     font-size 2rem
     font-family 'Roboto', sans-serif
 
+    &__buttons
+      // background red
+      display flex
+      align-items center
+      justify-content space-between
+      margin-top 5rem
+
+    &__button
+      &:first-child
+        cta(#fff)
+        border solid .2rem ACCENT_COLOR
+        color ACCENT_COLOR
+
+      &:last-child
+        cta(ACCENT_COLOR)
+        
+
+
     img
       width 100%
       margin 1rem 0
