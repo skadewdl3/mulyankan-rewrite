@@ -55,3 +55,12 @@ export const updateFont = (font, { state }) => {
     }
   });
 };
+
+export const updateColor = (hex, { state }) => {
+  [...state.fcanvases].forEach((fcanvas, i) => {
+    if (fcanvas.activeCanvas) {
+      fcanvas.fire('updateColor', { hex });
+    }
+  });
+  console.log('this ran');
+};

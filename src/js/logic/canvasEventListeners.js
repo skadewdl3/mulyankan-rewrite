@@ -36,7 +36,6 @@ export const addObject = ({ e }, fcanvas, canvasData) => {
   let favourite = e.dataTransfer.getData('favourite');
   let obj = e.dataTransfer.getData('content');
   let fill = e.dataTransfer.getData('fill');
-  console.log(fill);
 
   if (favourite) addFavouritedObject(type, obj, dropCoords, fcanvas);
   else {
@@ -286,12 +285,29 @@ export const favourite = (fcanvas, { favouriteItem }) => {
 };
 
 export const changeFont = (fontFamily, fcanvas) => {
-  console.log(fontFamily);
   let obj = fcanvas.getActiveObject();
   if (!obj) return;
   if (!obj.textType) return;
   obj.set({
     fontFamily,
   });
+  fcanvas.renderAll();
+};
+
+export const changeColor = (hex, fcanvas) => {
+  console.log(hex);
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (obj.textType) obj.set({ fill: hex });
+  else {
+    obj.filters.push(
+      new fabric.Image.filters.BlendColor({
+        color: hex,
+        mode: 'tint',
+        opacity: 0,
+      })
+    );
+    obj.applyFilters();
+  }
   fcanvas.renderAll();
 };

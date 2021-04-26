@@ -131,7 +131,7 @@ const MarkingTab = ({
                   ? `solid .5rem ${clr.hex}`
                   : `solid 0rem #fff`,
             }}
-            onClick={() => setColor(clr.name)}
+            onClick={() => setColor(clr)}
           ></div>
         ))}
       </div>

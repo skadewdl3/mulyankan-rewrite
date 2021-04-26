@@ -100,8 +100,8 @@ const Landing = () => {
           </div>
 
           <div className="landing__features__grid">
-            {features.map(feature => (
-              <div className="landing__feature">
+            {features.map((feature, index) => (
+              <div className="landing__feature" key={`feature=${index}`}>
                 <div className="landing__feature__img">
                   <img src={feature.src} alt="" />
                 </div>

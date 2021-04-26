@@ -15,6 +15,7 @@ import {
   setZoomLevel,
   moveObject,
   updateFont,
+  updateColor,
 } from './../logic/canvasTransforms';
 import {
   changeMarks,
@@ -27,11 +28,23 @@ import {
 
 export class Editor extends Component {
   constructor(props) {
+    // Load Favourites from Local Storage
     let quickAccess = [];
     console.log(window.localStorage.getItem('favourites'));
     if (window.localStorage.getItem('favourites')) {
       let temp = JSON.parse(window.localStorage.getItem('favourites'));
       quickAccess = temp;
+    }
+
+    // Load default color from Local Storage
+    let color = 'red';
+    console.log(window.localStorage.getItem('color'));
+    if (
+      window.localStorage.getItem('color') &&
+      window.localStorage.getItem('color') != 'undefined'
+    ) {
+      let temp = window.localStorage.getItem('color');
+      color = temp;
     }
 
     super(props);
@@ -46,7 +59,8 @@ export class Editor extends Component {
       loadingMessage: "We're processing your documents.",
       downloading: false,
       marks: 0,
-      quickAccess: quickAccess,
+      quickAccess,
+      color,
       defaultFontOption: 'Roboto',
     };
   }
@@ -113,6 +127,11 @@ export class Editor extends Component {
       defaultFontOption,
     });
 
+  setColor = color => {
+    this.setState({ color: color.name });
+    updateColor(color.hex, this);
+  };
+
   render() {
     return (
       <div className="editor__wrapper">
@@ -158,6 +177,8 @@ export class Editor extends Component {
               removeFromFavourites={this.removeFromFavourites}
               changeFont={this.changeFont}
               defaultFontOption={this.state.defaultFontOption}
+              color={this.state.color}
+              setColor={this.setColor}
             />
             <div className="editor__container__wrapper">
               <div className="editor__container">

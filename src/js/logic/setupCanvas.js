@@ -9,6 +9,7 @@ import {
   moveObjectWithArrowKeys,
   favourite,
   changeFont,
+  changeColor,
 } from './canvasEventListeners';
 
 export const createCanvas = (id, canvasData) => {
@@ -81,6 +82,7 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('remove', () => removeActiveObject(fcanvas));
   fcanvas.on('favourite', () => favourite(fcanvas, canvasData));
   fcanvas.on('changeFont', ({ font }) => changeFont(font, fcanvas));
+  fcanvas.on('updateColor', ({ hex }) => changeColor(hex, fcanvas));
   zoomOnKeyPress(canvasData);
   moveObjectWithArrowKeys(canvasData);
 };

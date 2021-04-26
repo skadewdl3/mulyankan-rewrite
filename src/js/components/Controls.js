@@ -26,14 +26,9 @@ const Controls = ({
   setPreprocess,
   changeFont,
   defaultFontOption,
+  color,
+  setColor,
 }) => {
-  let defaultColor = 'red';
-  console.log(window.localStorage.getItem('color'));
-  if (window.localStorage.getItem('color')) {
-    let temp = window.localStorage.getItem('color');
-    defaultColor = temp;
-  }
-
   const [tab, setTab] = useState('marking');
   const colors = [
     { name: 'red', hex: '#ff0000' },
@@ -42,9 +37,8 @@ const Controls = ({
     { name: 'pink', hex: '#e84393' },
   ];
 
-  const [color, setColor] = useState(defaultColor);
-
   useEffect(() => {
+    console.log(color);
     window.localStorage.setItem('color', color);
   }, [color]);
 
