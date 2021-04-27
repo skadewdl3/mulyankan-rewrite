@@ -30,7 +30,6 @@ export class Editor extends Component {
   constructor(props) {
     // Load Favourites from Local Storage
     let quickAccess = [];
-    console.log(window.localStorage.getItem('favourites'));
     if (window.localStorage.getItem('favourites')) {
       let temp = JSON.parse(window.localStorage.getItem('favourites'));
       quickAccess = temp;
@@ -38,7 +37,6 @@ export class Editor extends Component {
 
     // Load default color from Local Storage
     let color = 'red';
-    console.log(window.localStorage.getItem('color'));
     if (
       window.localStorage.getItem('color') &&
       window.localStorage.getItem('color') != 'undefined'
@@ -104,7 +102,6 @@ export class Editor extends Component {
   moveActiveObject = direction => moveObject(direction, this);
 
   setQuickAccess = quickAccess => {
-    console.log('this ran');
     this.setState({ quickAccess });
     window.localStorage.setItem('favourites', JSON.stringify(quickAccess));
   };
@@ -113,7 +110,6 @@ export class Editor extends Component {
 
   favouriteItem = item => {
     this.setQuickAccess([...this.state.quickAccess, item]);
-    console.log(item);
   };
   removeFromFavourites = index =>
     this.setQuickAccess(

@@ -36,7 +36,11 @@ const Landing = () => {
       <div className="landing__wrapper">
         <ul className="landing__nav">
           <li
-            onClick={() => document.querySelector('.contact-link').click()}
+            onClick={() =>
+              document
+                .querySelector('.landing__features__header')
+                .scrollIntoView()
+            }
             className="landing__nav__item"
           >
             Features

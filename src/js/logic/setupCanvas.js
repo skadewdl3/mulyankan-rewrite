@@ -58,6 +58,10 @@ const setDefaultProperties = (fcanvas, canvasData) => {
 };
 
 const addEventListeners = (fcanvas, canvasData) => {
+  let prevActiveObj = null;
+
+  let getPrevActiveObj = () => prevActiveObj;
+
   fcanvas.on('drop', e => addObject(e, fcanvas, canvasData));
   fcanvas.on('object:added', () => {
     canvasData.updateMarks();
@@ -68,12 +72,16 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('selection:created', ({ selected }) => {
     let obj = selected[0];
     if (!obj) return;
+    console.log(obj);
+    prevActiveObj = obj;
     if (!obj.textType) return;
     canvasData.updateDefaultFontOption(obj.fontFamily);
   });
   fcanvas.on('selection:updated', ({ selected }) => {
     let obj = selected[0];
     if (!obj) return;
+    console.log(obj);
+    prevActiveObj = obj;
     if (!obj.textType) return;
     canvasData.updateDefaultFontOption(obj.fontFamily);
   });
@@ -86,5 +94,5 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('updateColor', ({ hex }) => changeColor(hex, fcanvas));
   zoomOnKeyPress(canvasData);
   moveObjectWithArrowKeys(canvasData);
-  contextMenuListsners(canvasData, fcanvas);
+  contextMenuListsners(canvasData, fcanvas, getPrevActiveObj);
 };

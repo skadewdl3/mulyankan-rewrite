@@ -4,6 +4,8 @@ import { throttle } from 'lodash';
 
 let copiedObject = null;
 
+let copiedObjectOffset = 50;
+
 const defaultImageWidth = 50;
 
 const automarkConfig = {
@@ -310,7 +312,11 @@ export const changeColor = (hex, fcanvas) => {
   fcanvas.renderAll();
 };
 
-export const contextMenuListsners = ({ shouldAddEventListeners }, fcanvas) => {
+export const contextMenuListsners = (
+  { shouldAddEventListeners },
+  fcanvas,
+  getPrevActiveObj
+) => {
   if (!shouldAddEventListeners) return;
   document.body.addEventListener('keydown', e => {
     if (e.which == 70 && e.ctrlKey) {
@@ -318,11 +324,32 @@ export const contextMenuListsners = ({ shouldAddEventListeners }, fcanvas) => {
     }
   });
   hotkeys('ctrl+c', () => fcanvas.fire('copy'));
-  hotkeys('ctrl+v', () =>
+  hotkeys('ctrl+v', () => {
+    let prevActiveObj = getPrevActiveObj();
+    let coords = { x: 0, y: 0 };
+    console.log(fcanvas);
+    let obj = fcanvas.getActiveObject();
+    if (obj) {
+      coords = {
+        x: obj.left + copiedObjectOffset,
+        y: obj.top + copiedObjectOffset,
+      };
+    } else if (prevActiveObj) {
+      console.log('this ran');
+      coords = {
+        x: prevActiveObj.left + copiedObjectOffset,
+        y: prevActiveObj.top + copiedObjectOffset,
+      };
+    } else {
+      coords = {
+        x: fcanvas.getWidth() / 2,
+        y: fcanvas.getHeight() / 2,
+      };
+    }
     fcanvas.fire('paste', {
-      coords: { x: fcanvas.width / 2, y: fcanvas.height / 2 },
-    })
-  );
+      coords,
+    });
+  });
   hotkeys('del', () => fcanvas.fire('remove'));
   hotkeys('ctrl+f', () => fcanvas.fire('favourite'));
 };

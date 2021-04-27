@@ -10,6 +10,7 @@ import {
   LeftOutlined,
   RightOutlined,
 } from '@ant-design/icons';
+import { Redirect } from 'react-router-dom';
 
 import Preloader from './../components/Preloader';
 
@@ -189,10 +190,15 @@ Good. In the next section, we'll start checking the exam paper using symbols in 
       }
     }, 50);
     window.addEventListener('scroll', fn);
+
+    return () => {
+      window.removeEventListener('scroll', fn);
+    };
   }, []);
 
   return (
     <>
+      {!urlId && <Redirect to="/docs/intro" />}
       <div className="docs-links">
         {docsOptions.map(option => (
           <Link
