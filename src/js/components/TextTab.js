@@ -1,12 +1,18 @@
+import {
+  BoldOutlined,
+  ItalicOutlined,
+  UnderlineOutlined,
+} from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import GoogleFontLoader from 'react-google-font-loader';
 
 const MarkingTab = ({
-  changeFont,
+  changeText,
   defaultFontOption,
   color,
   setColor,
   colors,
+  defaultFontStyles,
 }) => {
   const [activeFontIndex, setActiveFontIndex] = useState(1);
 
@@ -18,6 +24,12 @@ const MarkingTab = ({
     { name: 'Cursive', font: 'Dancing Script' },
   ];
 
+  const fontStyles = [
+    { name: 'Bold', icon: <BoldOutlined />, id: 'bold' },
+    { name: 'Italic', icon: <ItalicOutlined />, id: 'italic' },
+    { name: 'Underline', icon: <UnderlineOutlined />, id: 'underline' },
+  ];
+
   const fonts = fontNames.map(({ font }) => {
     return {
       font,
@@ -26,7 +38,9 @@ const MarkingTab = ({
   });
 
   useEffect(() => {
-    changeFont(fontNames[activeFontIndex].font);
+    changeText({
+      font: fontNames[activeFontIndex].font,
+    });
   }, [activeFontIndex]);
 
   useEffect(() => {
@@ -156,26 +170,24 @@ const MarkingTab = ({
           </div>
         ))}
       </div>
-      {/* {chunk(symbols, 3).map((arr, i) => (
-          <div className="symbols__grid" key={i}>
-            {arr.map((cur, j) => (
-              <div
-                className="symbols__image__wrapper"
-                key={j}
-                onDragStart={e => {
-                  e.dataTransfer.setData('image', cur);
-                }}
-                draggable="true"
-              >
-                <img
-                  src={`./images/${cur}.svg`}
-                  alt=""
-                  className={`symbols__image symbols__${cur}`}
-                />
-              </div>
-            ))}
+      <div className="controls__left__divider controls__left__divider--hidden"></div>
+      <div className="controls__left__header">Font Style</div>
+      <div className="controls__left__divider controls__left__divider--hidden"></div>
+      <div className="controls__fontstyles">
+        {fontStyles.map(style => (
+          <div
+            key={style.name}
+            className={`controls__fontstyle ${
+              defaultFontStyles[style.id] ? 'controls__fontstyle--active' : ''
+            }`}
+            onClick={() =>
+              changeText({ [style.id]: !defaultFontStyles[style.id] })
+            }
+          >
+            <div className="controls__fontstyle__icon">{style.icon}</div>
           </div>
-        ))} */}
+        ))}
+      </div>
     </>
   );
 };

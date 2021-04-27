@@ -15,6 +15,7 @@ import {
   setZoomLevel,
   moveObject,
   updateFont,
+  updateText,
   updateColor,
 } from './../logic/canvasTransforms';
 import {
@@ -59,7 +60,12 @@ export class Editor extends Component {
       marks: 0,
       quickAccess,
       color,
-      defaultFontOption: 'Roboto',
+      defaultTextOptions: {
+        font: 'Roboto',
+        bold: false,
+        italic: false,
+        underline: false,
+      },
     };
   }
 
@@ -118,9 +124,11 @@ export class Editor extends Component {
 
   changeFont = font => updateFont(font, this);
 
-  updateDefaultFontOption = defaultFontOption =>
+  changeText = data => updateText(data, this);
+
+  updateDefaultTextOptions = toUpdate =>
     this.setState({
-      defaultFontOption,
+      defaultTextOptions: { ...this.state.defaultTextOptions, ...toUpdate },
     });
 
   setColor = color => {
@@ -171,8 +179,8 @@ export class Editor extends Component {
               setDownloading={this.setDownloading}
               quickAccess={this.state.quickAccess}
               removeFromFavourites={this.removeFromFavourites}
-              changeFont={this.changeFont}
-              defaultFontOption={this.state.defaultFontOption}
+              changeText={this.changeText}
+              defaultTextOptions={this.state.defaultTextOptions}
               color={this.state.color}
               setColor={this.setColor}
             />
@@ -196,7 +204,7 @@ export class Editor extends Component {
                     addToQuickAccess={this.addToQuickAccess}
                     moveActiveObject={this.moveActiveObject}
                     favouriteItem={this.favouriteItem}
-                    updateDefaultFontOption={this.updateDefaultFontOption}
+                    updateDefaultTextOptions={this.updateDefaultTextOptions}
                   />
                 ))}
               </div>

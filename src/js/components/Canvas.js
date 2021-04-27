@@ -19,7 +19,7 @@ const Canvas = ({
   moveActiveObject,
   addToQuickAccess,
   favouriteItem,
-  updateDefaultFontOption,
+  updateDefaultTextOptions,
 }) => {
   const [showMenu, setShowMenu] = useState({
     show: false,
@@ -39,7 +39,6 @@ const Canvas = ({
       setZoom,
       setShowMenu,
       shouldAddEventListeners: index == length - 1,
-      // shouldAddMoveListener: index == length - 1,
       updateMarks,
       getMarks,
       setActiveCanvas,
@@ -47,7 +46,7 @@ const Canvas = ({
       paste,
       moveActiveObject,
       favouriteItem,
-      updateDefaultFontOption,
+      updateDefaultTextOptions,
     };
     let img = new Image();
     img.src = src;

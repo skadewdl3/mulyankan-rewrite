@@ -64,3 +64,28 @@ export const updateColor = (hex, { state }) => {
   });
   console.log('this ran');
 };
+
+export const updateText = (data, { state, updateDefaultTextOptions }) => {
+  [...state.fcanvases].forEach((fcanvas, i) => {
+    if (fcanvas.activeCanvas) {
+      if (data.font) {
+        updateDefaultTextOptions(data);
+
+        fcanvas.fire('changeFont', data);
+      }
+      if (data.bold != null && data.bold != undefined) {
+        updateDefaultTextOptions(data);
+        fcanvas.fire('bold', data);
+      }
+
+      if (data.italic != null && data.italic != undefined) {
+        updateDefaultTextOptions(data);
+        fcanvas.fire('italic', data);
+      }
+      if (data.underline != null && data.underline != undefined) {
+        updateDefaultTextOptions(data);
+        fcanvas.fire('underline', data);
+      }
+    }
+  });
+};

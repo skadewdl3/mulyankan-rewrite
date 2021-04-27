@@ -11,6 +11,7 @@ import {
   changeFont,
   changeColor,
   contextMenuListsners,
+  textChange,
 } from './canvasEventListeners';
 
 export const createCanvas = (id, canvasData) => {
@@ -75,7 +76,12 @@ const addEventListeners = (fcanvas, canvasData) => {
     console.log(obj);
     prevActiveObj = obj;
     if (!obj.textType) return;
-    canvasData.updateDefaultFontOption(obj.fontFamily);
+    canvasData.updateDefaultTextOptions({
+      font: obj.fontFamily,
+      italic: obj.fontStyle == 'italic',
+      bold: obj.fontWeight == 'bolf',
+      underline: obj.underline,
+    });
   });
   fcanvas.on('selection:updated', ({ selected }) => {
     let obj = selected[0];
@@ -83,14 +89,38 @@ const addEventListeners = (fcanvas, canvasData) => {
     console.log(obj);
     prevActiveObj = obj;
     if (!obj.textType) return;
-    canvasData.updateDefaultFontOption(obj.fontFamily);
+    canvasData.updateDefaultTextOptions({
+      font: obj.fontFamily,
+      italic: obj.fontStyle == 'italic',
+      bold: obj.fontWeight == 'bolf',
+      underline: obj.underline,
+    });
+  });
+  fcanvas.on('selection:cleared', () => {
+    canvasData.updateDefaultTextOptions({
+      font: 'Roboto',
+      bold: false,
+      italic: false,
+      underline: false,
+    });
   });
   fcanvas.on('text:changed', () => canvasData.updateMarks());
   fcanvas.on('copy', () => copyActiveObject(fcanvas));
   fcanvas.on('paste', ({ coords }) => pasteCopiedObject(coords, fcanvas));
   fcanvas.on('remove', () => removeActiveObject(fcanvas));
   fcanvas.on('favourite', () => favourite(fcanvas, canvasData));
-  fcanvas.on('changeFont', ({ font }) => changeFont(font, fcanvas));
+  fcanvas.on('changeFont', ({ font }) =>
+    textChange('font', { fontFamily: font }, canvasData, fcanvas)
+  );
+  fcanvas.on('bold', ({ bold }) =>
+    textChange('bold', { bold }, canvasData, fcanvas)
+  );
+  fcanvas.on('italic', ({ italic }) =>
+    textChange('italic', { italic }, canvasData, fcanvas)
+  );
+  fcanvas.on('underline', ({ underline }) =>
+    textChange('underline', { underline }, canvasData, fcanvas)
+  );
   fcanvas.on('updateColor', ({ hex }) => changeColor(hex, fcanvas));
   zoomOnKeyPress(canvasData);
   moveObjectWithArrowKeys(canvasData);

@@ -24,8 +24,8 @@ const Controls = ({
   quickAccess,
   removeFromFavourites,
   setPreprocess,
-  changeFont,
-  defaultFontOption,
+  changeText,
+  defaultTextOptions,
   color,
   setColor,
 }) => {
@@ -198,8 +198,13 @@ const Controls = ({
         )}
         {tab == 'text' && (
           <TextTab
-            changeFont={changeFont}
-            defaultFontOption={defaultFontOption}
+            changeText={changeText}
+            defaultFontOption={defaultTextOptions.font}
+            defaultFontStyles={{
+              bold: defaultTextOptions.bold,
+              italic: defaultTextOptions.italic,
+              underline: defaultTextOptions.underline,
+            }}
             colors={colors}
             setColor={setColor}
             color={color}

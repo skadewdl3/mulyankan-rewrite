@@ -285,16 +285,6 @@ export const favourite = (fcanvas, { favouriteItem }) => {
   favouriteItem(config);
 };
 
-export const changeFont = (fontFamily, fcanvas) => {
-  let obj = fcanvas.getActiveObject();
-  if (!obj) return;
-  if (!obj.textType) return;
-  obj.set({
-    fontFamily,
-  });
-  fcanvas.renderAll();
-};
-
 export const changeColor = (hex, fcanvas) => {
   let obj = fcanvas.getActiveObject();
   if (!obj) return;
@@ -308,6 +298,44 @@ export const changeColor = (hex, fcanvas) => {
       })
     );
     obj.applyFilters();
+  }
+  fcanvas.renderAll();
+};
+
+export const changeFont = (fontFamily, fcanvas) => {
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (!obj.textType) return;
+  obj.set({
+    fontFamily,
+  });
+  fcanvas.renderAll();
+};
+export const textChange = (type, data, canvasData, fcanvas) => {
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (!obj.textType) return;
+  if (type == 'font') {
+    let { fontFamily } = data;
+    obj.set({
+      fontFamily,
+    });
+  } else if (type == 'bold') {
+    let { bold } = data;
+    obj.set({
+      fontWeight: bold ? 'bold' : 'normal',
+    });
+  } else if (type == 'italic') {
+    let { italic } = data;
+    obj.set({
+      fontStyle: italic ? 'italic' : 'normal',
+    });
+  } else if (type == 'underline') {
+    let { underline } = data;
+    // console.log('underlining');
+    obj.set({
+      underline,
+    });
   }
   fcanvas.renderAll();
 };
