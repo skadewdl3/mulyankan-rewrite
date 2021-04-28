@@ -18,10 +18,11 @@ const ContextMenu = ({
   remove,
   addToQuickAccess,
 }) => {
+  // zIndex property to show/hide context menu
   const [zIndex, setZIndex] = useState(-1);
 
+  // Show menu by changing zIndex if show === true
   useEffect(() => {
-    let prev;
     if (show) {
       setZIndex(100);
     } else {
@@ -36,7 +37,13 @@ const ContextMenu = ({
         zIndex,
         top: coordinates.y,
         left: coordinates.x,
-        transform: show ? 'scale(1)' : 'scale(0)',
+        transform: show ? 'scale(1)' : 'scale(0)', // Show scale transition if context menu is opening
+        /*
+        There can be two cases for opening context menu:
+        1. Context menu is newly opened --> Only animate transform (scale) property
+        
+        2. Context menu is already open and user right-clicks elsewhere on canvas --> smoothly move context menu to that position by animating all properties (top, left)
+        */
         transition: `${properties} .2s ease-out`,
         transformOrigin: '0 0',
       }}
@@ -54,6 +61,11 @@ const ContextMenu = ({
       <div
         className="contextmenu__item"
         onClick={e => {
+          /*
+          pasteCoords are coordinates of opening context menu
+          because object should be pasted where context menu is opened
+          */
+
           paste(index, pasteCoords);
           updateShowMenu({ show: false });
         }}
@@ -81,10 +93,6 @@ const ContextMenu = ({
         <HeartOutlined />
         <span className="contextmenu__text">Favourite</span>
       </div>
-      {/* <div className="contextmenu__item">
-        <DeleteOutlined />
-        <span className="contextmenu__text">Remove</span>
-      </div> */}
     </div>
   );
 };

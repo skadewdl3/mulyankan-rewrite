@@ -1,14 +1,43 @@
 import jspdf from 'jspdf';
 
-// FIXME: Images are converted before PDF due to async nature of pdf.js library
+const sorter = arr => {
+  let toSort = arr.map(el => el.order);
+  console.log(toSort);
+  toSort.sort((a, b) => {
+    if (a[0] < b[0]) {
+      return -1;
+    } else if (a[0] > b[0]) {
+      return 1;
+    } else if (a[0] == b[0]) {
+      if (a[1] < b[1]) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+  });
+
+  let newArr = [];
+  toSort.forEach(order => {
+    let el = arr.find(cur => cur.order == order);
+    newArr.push(el);
+  });
+
+  let finalArr = newArr.map(cur => cur.src);
+
+  return finalArr;
+};
 
 export const convertFiles = async (files, callback) => {
   let convertedFiles = [];
   let pdfFiles = [];
+  let rawFiles = [];
   let convertedIndex = 0;
   let targetIndex = 0;
+  let noOfFiles = files.length;
+  let rawIndex = 0;
 
-  files.forEach(file => {
+  files.forEach((file, sortIndex) => {
     if (file.type.includes('pdf')) {
       const reader = new FileReader();
       reader.readAsBinaryString(file);
@@ -16,83 +45,109 @@ export const convertFiles = async (files, callback) => {
         const task = pdfjsLib.getDocument({ data: reader.result });
         let res = await task.promise;
         targetIndex += res.numPages;
+        rawIndex++;
+        console.log('pdf ', sortIndex);
+        rawFiles.push({ file, index: sortIndex });
       });
     } else if (file.type.includes('image')) {
-      targetIndex++;
+      let waitForPdfToProcess = (file, sortIndex) => {
+        if (rawIndex == sortIndex) {
+          console.log('image ', sortIndex);
+          targetIndex++;
+          rawFiles.push({ file, index: sortIndex });
+        } else {
+          setTimeout(() => {
+            console.log(rawIndex, sortIndex);
+            waitForPdfToProcess(file, sortIndex);
+          }, 100);
+        }
+      };
+      waitForPdfToProcess(file, sortIndex);
     }
   });
 
-  files.forEach(file => {
-    if (file.type.includes('pdf')) {
-      // Reading The PDF
-      let pdf = null;
-      let processedPageIndex = 0;
-      const reader = new FileReader();
-      reader.readAsBinaryString(file);
-      reader.addEventListener('load', async () => {
-        const task = pdfjsLib.getDocument({ data: reader.result });
-        let res = await task.promise;
-        pdf = res;
+  const waitForRawFiles = () => {
+    if (noOfFiles == rawFiles.length) {
+      rawFiles.forEach(({ file, index: sortIndex }) => {
+        console.log(file);
+        if (file.type.includes('pdf')) {
+          // Reading The PDF
+          let pdf = null;
+          let processedPageIndex = 0;
+          const reader = new FileReader();
+          reader.readAsBinaryString(file);
+          reader.addEventListener('load', async () => {
+            const task = pdfjsLib.getDocument({ data: reader.result });
+            let res = await task.promise;
+            pdf = res;
 
-        // Converting it to Images
-        [...Array(pdf.numPages)].forEach(async (_, index, arr) => {
-          // COnfigure pdf.js page
-          let pageIndex = index + 1;
-          let scale = 2;
-          let page = await pdf.getPage(pageIndex);
-          let viewport = page.getViewport({ scale });
+            // Converting it to Images
+            [...Array(pdf.numPages)].forEach(async (_, index, arr) => {
+              // COnfigure pdf.js page
+              let pageIndex = index + 1;
+              let scale = 2;
+              let page = await pdf.getPage(pageIndex);
+              let viewport = page.getViewport({ scale });
 
-          // Render PDF pagr to canvas using pdf.js
-          let canvas = document.createElement('canvas');
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
-          let canvasContext = canvas.getContext('2d');
-          let renderContext = {
-            canvasContext,
-            viewport,
-          };
-          let task = page.render(renderContext);
-          await task.promise;
+              // Render PDF pagr to canvas using pdf.js
+              let canvas = document.createElement('canvas');
+              canvas.height = viewport.height;
+              canvas.width = viewport.width;
+              let canvasContext = canvas.getContext('2d');
+              let renderContext = {
+                canvasContext,
+                viewport,
+              };
+              let task = page.render(renderContext);
+              await task.promise;
 
-          // Use dataurl of canvas as source for fcanvas
-          pdfFiles.push({ src: canvas.toDataURL(), index: pageIndex });
-          convertedIndex++;
-          processedPageIndex++;
+              // Use dataurl of canvas as source for fcanvas
+              pdfFiles.push({
+                src: canvas.toDataURL(),
+                order: [sortIndex, pageIndex],
+              });
+              convertedIndex++;
+              processedPageIndex++;
 
-          // Sort pages according to index (again due to adync nature of pdf.js this step is needed)
-          if (processedPageIndex == pdf.numPages) {
-            pdfFiles.sort((a, b) => (a.index > b.index ? 1 : -1));
-            convertedFiles = [
-              ...convertedFiles,
-              ...pdfFiles.map(cur => cur.src),
-            ];
-            pdfFiles = [];
-            processedPageIndex = 0;
-          }
+              // Sort pages according to index (again due to async nature of pdf.js this step is needed)
+              if (processedPageIndex == pdf.numPages) {
+                pdfFiles.sort((a, b) => (a.index > b.index ? 1 : -1));
+                convertedFiles = [...convertedFiles, ...pdfFiles];
+                pdfFiles = [];
+              }
 
-          // If all pages have been converted and sorted, call setFiles in Editor.js
-          if (convertedIndex == targetIndex) {
-            callback(convertedFiles);
-          }
-        });
-      });
-    } else if (file.type.includes('image')) {
-      // Read Imahe
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+              // If all pages have been converted and sorted, call setFiles in Editor.js
+              if (convertedIndex == targetIndex) {
+                console.log('finally its done');
+                callback(sorter(convertedFiles));
+              }
+            });
+          });
+        } else if (file.type.includes('image')) {
+          // Read Imahe
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
 
-      // Once image is loaded, use its dataurl as source for fcanvas
-      reader.addEventListener('load', () => {
-        convertedFiles.push(reader.result);
-        convertedIndex++;
+          // Once image is loaded, use its dataurl as source for fcanvas
+          reader.addEventListener('load', () => {
+            convertedFiles.push({ src: reader.result, order: [sortIndex, -1] });
+            convertedIndex++;
 
-        // If all pages (including images) have been converted and sorted, call setFiles in Editor.js
-        if (convertedIndex == targetIndex) {
-          callback(convertedFiles);
+            // If all pages (including images) have been converted and sorted, call setFiles in Editor.js
+            if (convertedIndex == targetIndex) {
+              callback(sorter(convertedFiles));
+              console.log('finally its done');
+            }
+          });
         }
       });
+    } else {
+      setTimeout(() => {
+        waitForRawFiles();
+      }, 100);
     }
-  });
+  };
+  waitForRawFiles();
   return convertedFiles;
 };
 
