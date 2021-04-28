@@ -22,15 +22,17 @@ const Canvas = ({
   updateDefaultTextOptions,
 }) => {
   const [showMenu, setShowMenu] = useState({
-    show: false,
-    properties: 'transform',
-    pasteCoords: { x: 0, y: 0 },
+    show: false, // Context Menu is visible or not
+    properties: 'transform', // Property to transition smoothly
+    pasteCoords: { x: 0, y: 0 }, // Coordinate (pageX, pageY) at which menu is shown
   });
 
   useLayoutEffect(() => {
     document.querySelector(
       `.canvas__container--${index}`
     ).innerHTML = `<canvas className="canvas" id="canvas-${index}"></canvas>`;
+
+    // Methods required for initialising Fabric.js canvas and event listeners
     let canvasData = {
       getFCanvases,
       addCanvas,
@@ -48,19 +50,22 @@ const Canvas = ({
       favouriteItem,
       updateDefaultTextOptions,
     };
+
+    // Load image from dataurl and render it to Fabric.js canvas when image is loaded
     let img = new Image();
     img.src = src;
-    img.addEventListener('load', () =>
+    img.addEventListener('load', () => {
       createCanvas(`canvas-${index}`, {
         ...canvasData,
         width: img.width,
         height: img.height,
-      })
-    );
+      });
+    });
   }, []);
 
   const updateShowMenu = config => [setShowMenu({ ...showMenu, ...config })];
 
+  // Uses some complicated math stuff to calculate context menu coordinates
   const getCoords = e => {
     let wrapper = document.querySelector(`.canvas__container--${index}`);
     let relativeCoords = {
@@ -96,7 +101,6 @@ const Canvas = ({
       <div
         className="canvas__wrapper"
         onClick={() => {
-          // setShowMenu(null);
           updateShowMenu({ show: false });
         }}
         onContextMenu={e => {
@@ -105,7 +109,7 @@ const Canvas = ({
             show: true,
             x: e.pageX,
             y: e.pageY,
-            properties: showMenu.show ? 'all' : 'transform',
+            properties: showMenu.show ? 'all' : 'transform', // Smoothly moves menu to new coordinates if it is already open
             pasteCoords: getCoords(e),
           });
           setActiveCanvas(index);
@@ -119,7 +123,7 @@ const Canvas = ({
             e.preventDefault();
           }}
         >
-          {/*  CANVAS IS INSERTED DYNAMICALLY BU USELAYOUTEFFECT HOOK */}
+          {/*  Canvas is inserted dynamically using useLayoutEffect hook (useful in initialising Fabric.js canvas beforrehand) */}
         </div>
       </div>
       <br />

@@ -17,17 +17,23 @@ import {
 export const createCanvas = (id, canvasData) => {
   let { addCanvas, src, height, width } = canvasData;
 
-  console.log({ id, src });
+  // Initialize fcanvas
   let fcanvas = new fabric.Canvas(id);
 
+  // Set width and height of fcanvas
   fcanvas.setDimensions({
     width,
     height,
   });
 
+  // Make background image unmovable, unselectable and a bunch of other stuff
   configureBackgroundImage(src, fcanvas, width, height);
+
+  // set some defautl properties like activeCanvas which are used for event listeners
   setDefaultProperties(fcanvas, canvasData);
   addEventListeners(fcanvas, canvasData);
+
+  // Add canvas to fcanvases in the state
   addCanvas(fcanvas);
 };
 
@@ -59,17 +65,21 @@ const setDefaultProperties = (fcanvas, canvasData) => {
 };
 
 const addEventListeners = (fcanvas, canvasData) => {
-  let prevActiveObj = null;
-
+  let prevActiveObj = null; // Used to place copied object
   let getPrevActiveObj = () => prevActiveObj;
 
+  // Add Object on Drop
   fcanvas.on('drop', e => addObject(e, fcanvas, canvasData));
+
+  // Object Event Listeners
   fcanvas.on('object:added', () => {
     canvasData.updateMarks();
     canvasData.setActiveCanvas(canvasData.index);
   });
   fcanvas.on('object:removed', () => canvasData.updateMarks());
   fcanvas.on('object:moved', e => removeObjectOutsideCanvas(e, fcanvas));
+
+  // Selection Event Listeners
   fcanvas.on('selection:created', ({ selected }) => {
     let obj = selected[0];
     if (!obj) return;
@@ -104,11 +114,9 @@ const addEventListeners = (fcanvas, canvasData) => {
       underline: false,
     });
   });
+
+  // Text Event Listeners
   fcanvas.on('text:changed', () => canvasData.updateMarks());
-  fcanvas.on('copy', () => copyActiveObject(fcanvas));
-  fcanvas.on('paste', ({ coords }) => pasteCopiedObject(coords, fcanvas));
-  fcanvas.on('remove', () => removeActiveObject(fcanvas));
-  fcanvas.on('favourite', () => favourite(fcanvas, canvasData));
   fcanvas.on('changeFont', ({ font }) =>
     textChange('font', { fontFamily: font }, canvasData, fcanvas)
   );
@@ -121,6 +129,14 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('underline', ({ underline }) =>
     textChange('underline', { underline }, canvasData, fcanvas)
   );
+
+  // Context Menu Event Listeners
+  fcanvas.on('copy', () => copyActiveObject(fcanvas));
+  fcanvas.on('paste', ({ coords }) => pasteCopiedObject(coords, fcanvas));
+  fcanvas.on('remove', () => removeActiveObject(fcanvas));
+  fcanvas.on('favourite', () => favourite(fcanvas, canvasData));
+
+  // Miscellaneous Event Listeners
   fcanvas.on('updateColor', ({ hex }) => changeColor(hex, fcanvas));
   zoomOnKeyPress(canvasData);
   moveObjectWithArrowKeys(canvasData);

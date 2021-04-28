@@ -10,7 +10,7 @@ import Downloading from './Downloading';
 import Controls from './../components/Controls';
 import Canvas from './../components/Canvas';
 
-// Transforms
+// Fire Events on Canvas for Text/Image Changes
 import {
   setZoomLevel,
   moveObject,
@@ -18,6 +18,8 @@ import {
   updateText,
   updateColor,
 } from './../logic/canvasTransforms';
+
+// Fire Events on Canvas for Copy/Paste/Favourite/Remove etc.
 import {
   changeMarks,
   changeActiveCanvas,
@@ -47,6 +49,7 @@ export class Editor extends Component {
     }
 
     super(props);
+
     this.state = {
       fcanvases: [],
       files: [],
@@ -69,10 +72,13 @@ export class Editor extends Component {
     };
   }
 
+  // TODO: Implement loading fcanvases from JSON
   setJSON = json => this.setState({ json });
 
+  // Redundant as of now. Will be used when implementing loading from JSON.
   setUploadMethod = uploadMethod => this.setState({ uploadMethod });
 
+  // Used as an initial phase before setPreprocess or setFCanvases
   setFiles = files => this.setState({ files });
 
   setFCanvases = fcanvases => this.setState({ fcanvases });
@@ -83,11 +89,14 @@ export class Editor extends Component {
 
   setFileName = fileName => this.setState({ fileName });
 
+  // Showing Loading screen while switching between screens
   setLoading = (loading, loadingMessage) =>
     this.setState({ loading, loadingMessage });
 
+  // Show downloading interface when button is clicked
   setDownloading = downloading => this.setState({ downloading });
 
+  // Add canvas to fcanvases (used in setupCanvas.js)
   addCanvas = canvas =>
     this.setState({ fcanvases: [...this.state.fcanvases, canvas] });
 
@@ -107,6 +116,7 @@ export class Editor extends Component {
 
   moveActiveObject = direction => moveObject(direction, this);
 
+  // Add/Update/Remove objects from quickAccess array
   setQuickAccess = quickAccess => {
     this.setState({ quickAccess });
     window.localStorage.setItem('favourites', JSON.stringify(quickAccess));
@@ -126,11 +136,13 @@ export class Editor extends Component {
 
   changeText = data => updateText(data, this);
 
+  // Change defaultTextOptions (which control UI in TextTab.js) according to activeObject on canvas
   updateDefaultTextOptions = toUpdate =>
     this.setState({
       defaultTextOptions: { ...this.state.defaultTextOptions, ...toUpdate },
     });
 
+  // Change color (which control UI in MarkingTab.js and TextTab.js) according to activeObject on canvas
   setColor = color => {
     this.setState({ color: color.name });
     updateColor(color.hex, this);

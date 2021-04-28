@@ -46,7 +46,11 @@ const Landing = () => {
             Features
           </li>
           <li
-            // onClick={() => document.querySelector('.contact-link').click()}
+            /*
+            TODO: Create Contact Page (Uncomment this once done)
+            
+            onClick={() => document.querySelector('.contact-link').click()}
+            */
             className="landing__nav__item"
           >
             Get in Touch

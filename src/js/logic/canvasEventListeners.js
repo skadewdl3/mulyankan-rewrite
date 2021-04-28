@@ -2,26 +2,22 @@ import { fabric } from 'fabric-with-gestures';
 import hotkeys from 'hotkeys-js';
 import { throttle } from 'lodash';
 
+// Default Configuration for Objects
 let copiedObject = null;
-
 let copiedObjectOffset = 50;
-
 const defaultImageWidth = 50;
-
 const automarkConfig = {
   imgWidth: 300,
   imgHeight: 80,
   textWidth: 200,
   textHeight: 30,
 };
-
 const defaultObjectConfig = {
   fireRightClick: true,
   transparentCorners: false,
   cornerColor: '#6c5ce7',
   cornerSize: 7,
 };
-
 const defaultTextConfig = {
   width: 100,
   height: 30,
@@ -31,6 +27,7 @@ const defaultTextConfig = {
   textAlign: 'center',
 };
 
+// Add Object on Drop
 export const addObject = ({ e }, fcanvas, canvasData) => {
   let dropCoords = fcanvas.getPointer(e);
   let type = e.dataTransfer.getData('type');
@@ -51,6 +48,7 @@ export const addObject = ({ e }, fcanvas, canvasData) => {
   fcanvas.renderAll();
 };
 
+// Add Favourited Object
 const addFavouritedObject = (type, content, coords, fcanvas) => {
   let { obj } = JSON.parse(content);
   fabric.util.enlivenObjects([obj], ([clone]) => {
@@ -84,6 +82,7 @@ const addFavouritedObject = (type, content, coords, fcanvas) => {
   });
 };
 
+// Add Copied Object
 export const addCopiedObject = (coords, fcanvas) => {
   if (!copiedObject) return;
   if (copiedObject.textType == 'mark') {
@@ -132,6 +131,7 @@ export const addCopiedObject = (coords, fcanvas) => {
   fcanvas.renderAll();
 };
 
+// Listeners called withing addObject
 const addImage = (data, dropCoords, fcanvas) => {
   fcanvas.filterBackend = new fabric.WebglFilterBackend();
   let { id, color } = JSON.parse(data);
@@ -211,32 +211,7 @@ const automark = (dropCoords, fcanvas, marks) => {
   fcanvas.add(text);
 };
 
-export const zoomOnKeyPress = ({ shouldAddEventListeners, setZoom }) => {
-  if (!shouldAddEventListeners) return;
-  hotkeys(
-    'ctrl+-',
-    throttle(
-      e => {
-        e.preventDefault();
-        setZoom(0.9);
-      },
-      100,
-      { trailing: false }
-    )
-  );
-  hotkeys(
-    'ctrl+=',
-    throttle(
-      e => {
-        e.preventDefault();
-        setZoom(1.1);
-      },
-      100,
-      { trailing: false }
-    )
-  );
-};
-
+// Context Menu Functions
 export const copyActiveObject = fcanvas => {
   let obj = fcanvas.getActiveObject();
   copiedObject = obj;
@@ -251,12 +226,26 @@ export const removeActiveObject = fcanvas => {
   fcanvas.remove(obj);
 };
 
+export const favourite = (fcanvas, { favouriteItem }) => {
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (!obj.textType) return;
+  let config = {
+    type: obj.textType,
+    value: obj.text,
+    obj,
+  };
+  favouriteItem(config);
+};
+
+// Remove Object if it is draagged-and-dropped outside canvas
 export const removeObjectOutsideCanvas = ({ target }, fcanvas) => {
   if (!target.isOnScreen()) {
     fcanvas.remove(target);
   }
 };
 
+// Keyboard Event Listeners
 export const moveObjectWithArrowKeys = ({
   shouldAddEventListeners,
   moveActiveObject,
@@ -271,73 +260,6 @@ export const moveObjectWithArrowKeys = ({
   hotkeys('down', () => moveActiveObject('down'));
   hotkeys('left', () => moveActiveObject('left'));
   hotkeys('right', () => moveActiveObject('right'));
-};
-
-export const favourite = (fcanvas, { favouriteItem }) => {
-  let obj = fcanvas.getActiveObject();
-  if (!obj) return;
-  if (!obj.textType) return;
-  let config = {
-    type: obj.textType,
-    value: obj.text,
-    obj,
-  };
-  favouriteItem(config);
-};
-
-export const changeColor = (hex, fcanvas) => {
-  let obj = fcanvas.getActiveObject();
-  if (!obj) return;
-  if (obj.textType) obj.set({ fill: hex });
-  else {
-    obj.filters.push(
-      new fabric.Image.filters.BlendColor({
-        color: hex,
-        mode: 'tint',
-        opacity: 0,
-      })
-    );
-    obj.applyFilters();
-  }
-  fcanvas.renderAll();
-};
-
-export const changeFont = (fontFamily, fcanvas) => {
-  let obj = fcanvas.getActiveObject();
-  if (!obj) return;
-  if (!obj.textType) return;
-  obj.set({
-    fontFamily,
-  });
-  fcanvas.renderAll();
-};
-export const textChange = (type, data, canvasData, fcanvas) => {
-  let obj = fcanvas.getActiveObject();
-  if (!obj) return;
-  if (!obj.textType) return;
-  if (type == 'font') {
-    let { fontFamily } = data;
-    obj.set({
-      fontFamily,
-    });
-  } else if (type == 'bold') {
-    let { bold } = data;
-    obj.set({
-      fontWeight: bold ? 'bold' : 'normal',
-    });
-  } else if (type == 'italic') {
-    let { italic } = data;
-    obj.set({
-      fontStyle: italic ? 'italic' : 'normal',
-    });
-  } else if (type == 'underline') {
-    let { underline } = data;
-    // console.log('underlining');
-    obj.set({
-      underline,
-    });
-  }
-  fcanvas.renderAll();
 };
 
 export const contextMenuListsners = (
@@ -380,4 +302,88 @@ export const contextMenuListsners = (
   });
   hotkeys('del', () => fcanvas.fire('remove'));
   hotkeys('ctrl+f', () => fcanvas.fire('favourite'));
+};
+
+export const zoomOnKeyPress = ({ shouldAddEventListeners, setZoom }) => {
+  if (!shouldAddEventListeners) return;
+  hotkeys(
+    'ctrl+-',
+    throttle(
+      e => {
+        e.preventDefault();
+        setZoom(0.9);
+      },
+      100,
+      { trailing: false }
+    )
+  );
+  hotkeys(
+    'ctrl+=',
+    throttle(
+      e => {
+        e.preventDefault();
+        setZoom(1.1);
+      },
+      100,
+      { trailing: false }
+    )
+  );
+};
+
+// Text Event Listeners
+export const changeFont = (fontFamily, fcanvas) => {
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (!obj.textType) return;
+  obj.set({
+    fontFamily,
+  });
+  fcanvas.renderAll();
+};
+
+export const textChange = (type, data, canvasData, fcanvas) => {
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (!obj.textType) return;
+  if (type == 'font') {
+    let { fontFamily } = data;
+    obj.set({
+      fontFamily,
+    });
+  } else if (type == 'bold') {
+    let { bold } = data;
+    obj.set({
+      fontWeight: bold ? 'bold' : 'normal',
+    });
+  } else if (type == 'italic') {
+    let { italic } = data;
+    obj.set({
+      fontStyle: italic ? 'italic' : 'normal',
+    });
+  } else if (type == 'underline') {
+    let { underline } = data;
+    // console.log('underlining');
+    obj.set({
+      underline,
+    });
+  }
+  fcanvas.renderAll();
+};
+
+// Miscellaneous Event Listeners
+export const changeColor = (hex, fcanvas) => {
+  let obj = fcanvas.getActiveObject();
+  if (!obj) return;
+  if (obj.textType) obj.set({ fill: hex });
+  else {
+    obj.filters.push(
+      new fabric.Image.filters.BlendColor({
+        color: hex,
+        mode: 'tint',
+        opacity: 0,
+      })
+    );
+    obj.applyFilters();
+  }
+  fcanvas.renderAll();
 };

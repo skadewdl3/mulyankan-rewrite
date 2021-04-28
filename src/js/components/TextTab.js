@@ -43,6 +43,7 @@ const MarkingTab = ({
     });
   }, [activeFontIndex]);
 
+  // Used to change selected font when textbox is selected or font is changed
   useEffect(() => {
     let index = fontNames.indexOf(
       fontNames.filter(cur => cur.font == defaultFontOption)[0]
