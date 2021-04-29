@@ -1,5 +1,6 @@
 import jspdf from 'jspdf';
-
+import { getDocument, GlobalWorkerOptions} from 'pdfjs-dist';
+GlobalWorkerOptions.workerSrc = 'bundle.worker.js'
 const sorter = arr => {
   let toSort = arr.map(el => el.order);
   console.log(toSort);
@@ -42,7 +43,7 @@ export const convertFiles = async (files, callback) => {
       const reader = new FileReader();
       reader.readAsBinaryString(file);
       reader.addEventListener('load', async () => {
-        const task = pdfjsLib.getDocument({ data: reader.result });
+        const task = getDocument({ data: reader.result });
         let res = await task.promise;
         targetIndex += res.numPages;
         rawIndex++;
@@ -77,7 +78,7 @@ export const convertFiles = async (files, callback) => {
           const reader = new FileReader();
           reader.readAsBinaryString(file);
           reader.addEventListener('load', async () => {
-            const task = pdfjsLib.getDocument({ data: reader.result });
+            const task = getDocument({ data: reader.result });
             let res = await task.promise;
             pdf = res;
 
