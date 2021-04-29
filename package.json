@@ -35,7 +35,7 @@
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "unique-random-array": "^3.0.0",
-    "pdfjs-dist": ""
+    "pdfjs-dist": "^2.5.207"
   },
   "devDependencies": {
     "webpack": "^5.11.0",
