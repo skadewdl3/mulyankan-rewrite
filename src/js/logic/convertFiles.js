@@ -37,7 +37,7 @@ export const convertFiles = async (files, callback) => {
   let noOfFiles = files.length;
   let rawIndex = 0;
 
-  files.forEach((file, sortIndex) => {
+  files.forEach(async (file, sortIndex) => {
     if (file.type.includes('pdf')) {
       const reader = new FileReader();
       reader.readAsBinaryString(file);
@@ -46,23 +46,11 @@ export const convertFiles = async (files, callback) => {
         let res = await task.promise;
         targetIndex += res.numPages;
         rawIndex++;
-        console.log('pdf ', sortIndex);
         rawFiles.push({ file, index: sortIndex });
       });
     } else if (file.type.includes('image')) {
-      let waitForPdfToProcess = (file, sortIndex) => {
-        if (rawIndex == sortIndex) {
-          console.log('image ', sortIndex);
-          targetIndex++;
-          rawFiles.push({ file, index: sortIndex });
-        } else {
-          setTimeout(() => {
-            console.log(rawIndex, sortIndex);
-            waitForPdfToProcess(file, sortIndex);
-          }, 100);
-        }
-      };
-      waitForPdfToProcess(file, sortIndex);
+      targetIndex++;
+      rawFiles.push({ file, index: sortIndex });
     }
   });
 
