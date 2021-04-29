@@ -68,6 +68,8 @@ export class Editor extends Component {
         bold: false,
         italic: false,
         underline: false,
+        superscript: false,
+        subscript: false,
       },
     };
   }

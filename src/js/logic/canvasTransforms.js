@@ -110,6 +110,14 @@ export const updateText = (data, { state, updateDefaultTextOptions }) => {
         updateDefaultTextOptions(data);
         fcanvas.fire('underline', data);
       }
+      if (data.superscript != null && data.underline != undefined) {
+        updateDefaultTextOptions(data);
+        fcanvas.fire('superscript', data);
+      }
+      if (data.subscript != null && data.underline != subscript) {
+        updateDefaultTextOptions(data);
+        fcanvas.fire('subscript', data);
+      }
     }
   });
 };

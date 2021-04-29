@@ -129,6 +129,12 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('underline', ({ underline }) =>
     textChange('underline', { underline }, canvasData, fcanvas)
   );
+  fcanvas.on('superscript', ({ superscript }) =>
+    textChange('superscript', { superscript }, canvasData, fcanvas)
+  );
+  fcanvas.on('subscript', ({ subscript }) =>
+    textChange('subscript', { subscript }, canvasData, fcanvas)
+  );
 
   // Context Menu Event Listeners
   fcanvas.on('copy', () => copyActiveObject(fcanvas));

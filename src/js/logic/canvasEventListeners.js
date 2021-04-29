@@ -362,10 +362,15 @@ export const textChange = (type, data, canvasData, fcanvas) => {
     });
   } else if (type == 'underline') {
     let { underline } = data;
-    // console.log('underlining');
     obj.set({
       underline,
     });
+  } else if (type == 'superscript') {
+    let { superscript } = data;
+    obj.setSuperScript(superscript);
+  } else if (type == 'subscript') {
+    let { subscript } = data;
+    obj.setSubScript(subscript);
   }
   fcanvas.renderAll();
 };

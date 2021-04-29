@@ -204,6 +204,8 @@ const Controls = ({
               bold: defaultTextOptions.bold,
               italic: defaultTextOptions.italic,
               underline: defaultTextOptions.underline,
+              superscript: defaultTextOptions.superscript,
+              subscript: defaultTextOptions.subscript,
             }}
             colors={colors}
             setColor={setColor}

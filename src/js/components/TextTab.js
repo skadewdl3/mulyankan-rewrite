@@ -2,6 +2,8 @@ import {
   BoldOutlined,
   ItalicOutlined,
   UnderlineOutlined,
+  RiseOutlined,
+  FallOutlined,
 } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import GoogleFontLoader from 'react-google-font-loader';
@@ -28,6 +30,8 @@ const MarkingTab = ({
     { name: 'Bold', icon: <BoldOutlined />, id: 'bold' },
     { name: 'Italic', icon: <ItalicOutlined />, id: 'italic' },
     { name: 'Underline', icon: <UnderlineOutlined />, id: 'underline' },
+    { name: 'Superscript', icon: <RiseOutlined />, id: 'superscript' },
+    { name: 'Subscript', icon: <FallOutlined />, id: 'subscript' },
   ];
 
   const fonts = fontNames.map(({ font }) => {

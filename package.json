@@ -22,21 +22,20 @@
     "image-rotation": "^1.0.6",
     "jspdf": "^2.3.1",
     "lodash": "^4.17.21",
-    "pdfjs-dist": "^2.7.570",
     "prettysize": "^2.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-font-loader": "^1.1.0",
     "react-hot-loader": "^4.12.21",
     "react-markdown": "^6.0.0",
-    "react-radio-buttons": "^1.2.2",
     "react-router-dom": "^5.2.0",
     "rehype-raw": "^5.1.0",
     "remark-gfm": "^1.0.0",
     "style-loader": "^1.2.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "unique-random-array": "^3.0.0"
+    "unique-random-array": "^3.0.0",
+    "pdfjs-dist": ""
   },
   "devDependencies": {
     "webpack": "^5.11.0",
