@@ -1,4 +1,7 @@
 import jspdf from 'jspdf';
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
+
+GlobalWorkerOptions.workerSrc = 'bundle.worker.js';
 
 const sorter = arr => {
   let toSort = arr.map(el => el.order);
@@ -42,7 +45,7 @@ export const convertFiles = async (files, callback) => {
       const reader = new FileReader();
       reader.readAsBinaryString(file);
       reader.addEventListener('load', async () => {
-        const task = pdfjsLib.getDocument({ data: reader.result });
+        const task = getDocument({ data: reader.result });
         let res = await task.promise;
         targetIndex += res.numPages;
         rawIndex++;
@@ -65,7 +68,7 @@ export const convertFiles = async (files, callback) => {
           const reader = new FileReader();
           reader.readAsBinaryString(file);
           reader.addEventListener('load', async () => {
-            const task = pdfjsLib.getDocument({ data: reader.result });
+            const task = getDocument({ data: reader.result });
             let res = await task.promise;
             pdf = res;
 
@@ -136,7 +139,6 @@ export const convertFiles = async (files, callback) => {
     }
   };
   waitForRawFiles();
-  return convertedFiles;
 };
 
 // Use jspdf to convert dataurls from fcanvases (Editor.js state) to pdf

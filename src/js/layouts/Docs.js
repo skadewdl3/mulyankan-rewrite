@@ -20,7 +20,6 @@ export const docsOptions = [
   { name: 'Basic Usage', id: 'basic-usage' },
   { name: 'Text and Marks', id: 'text-and-marks' },
   { name: 'Keyboard Shortcuts', id: 'keyboard-shortcuts' },
-  // { name: 'Advanced', id: 'advanced' },
 ];
 
 const Docs = props => {
