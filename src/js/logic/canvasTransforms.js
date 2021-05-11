@@ -114,9 +114,13 @@ export const updateText = (data, { state, updateDefaultTextOptions }) => {
         updateDefaultTextOptions(data);
         fcanvas.fire('superscript', data);
       }
-      if (data.subscript != null && data.underline != subscript) {
+      if (data.subscript != null && data.subscript != undefined) {
         updateDefaultTextOptions(data);
         fcanvas.fire('subscript', data);
+      }
+      if (data.align != null && data.align != undefined) {
+        updateDefaultTextOptions(data);
+        fcanvas.fire('align', data);
       }
     }
   });

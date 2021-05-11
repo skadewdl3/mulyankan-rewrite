@@ -23,7 +23,6 @@ const Preprocessor = ({
       let img = document.createElement('img');
       let canvasContext = canvas.getContext('2d');
       img.src = src;
-      console.log(canvas);
       img.addEventListener('load', () => {
         canvas.width = img.width;
         canvas.height = img.height;

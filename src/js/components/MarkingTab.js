@@ -61,7 +61,6 @@ const MarkingTab = ({
                 className="symbols__image__wrapper"
                 key={j}
                 onDragStart={e => {
-                  console.log(cur);
                   e.dataTransfer.setData(
                     'image',
                     JSON.stringify({
@@ -115,7 +114,6 @@ const MarkingTab = ({
                 key={index}
                 draggable="true"
                 onDragStart={e => {
-                  console.log(cur);
                   e.dataTransfer.setData('favourite', true);
                   e.dataTransfer.setData('type', cur.type);
                   e.dataTransfer.setData(

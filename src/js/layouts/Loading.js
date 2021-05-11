@@ -18,7 +18,6 @@ const Loading = ({ isOpen, message }) => {
     if (isOpen) {
       setRandomFact();
       setShouldRender(true);
-      console.log(isOpen);
     }
     if (!isOpen) {
       setFact('');

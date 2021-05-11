@@ -70,6 +70,7 @@ export class Editor extends Component {
         underline: false,
         superscript: false,
         subscript: false,
+        align: null,
       },
     };
   }

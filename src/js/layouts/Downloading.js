@@ -36,7 +36,6 @@ const Downloading = ({
     if (isOpen) {
       setRandomFact();
       setShouldRender(true);
-      console.log(isOpen);
     }
     if (!isOpen) {
       setFact('');

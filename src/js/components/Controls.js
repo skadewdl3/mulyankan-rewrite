@@ -38,7 +38,6 @@ const Controls = ({
   ];
 
   useEffect(() => {
-    console.log(color);
     window.localStorage.setItem('color', color);
   }, [color]);
 
@@ -206,6 +205,7 @@ const Controls = ({
               underline: defaultTextOptions.underline,
               superscript: defaultTextOptions.superscript,
               subscript: defaultTextOptions.subscript,
+              align: defaultTextOptions.align,
             }}
             colors={colors}
             setColor={setColor}

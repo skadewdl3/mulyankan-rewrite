@@ -83,7 +83,6 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('selection:created', ({ selected }) => {
     let obj = selected[0];
     if (!obj) return;
-    console.log(obj);
     prevActiveObj = obj;
     if (!obj.textType) return;
     canvasData.updateDefaultTextOptions({
@@ -91,19 +90,20 @@ const addEventListeners = (fcanvas, canvasData) => {
       italic: obj.fontStyle == 'italic',
       bold: obj.fontWeight == 'bolf',
       underline: obj.underline,
+      align: obj.textAlign,
     });
   });
   fcanvas.on('selection:updated', ({ selected }) => {
     let obj = selected[0];
     if (!obj) return;
-    console.log(obj);
     prevActiveObj = obj;
     if (!obj.textType) return;
     canvasData.updateDefaultTextOptions({
       font: obj.fontFamily,
       italic: obj.fontStyle == 'italic',
-      bold: obj.fontWeight == 'bolf',
+      bold: obj.fontWeight == 'bold',
       underline: obj.underline,
+      align: obj.textAlign,
     });
   });
   fcanvas.on('selection:cleared', () => {
@@ -112,6 +112,7 @@ const addEventListeners = (fcanvas, canvasData) => {
       bold: false,
       italic: false,
       underline: false,
+      align: null,
     });
   });
 
@@ -134,6 +135,9 @@ const addEventListeners = (fcanvas, canvasData) => {
   );
   fcanvas.on('subscript', ({ subscript }) =>
     textChange('subscript', { subscript }, canvasData, fcanvas)
+  );
+  fcanvas.on('align', ({ align }) =>
+    textChange('align', { align }, canvasData, fcanvas)
   );
 
   // Context Menu Event Listeners

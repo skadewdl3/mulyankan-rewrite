@@ -69,27 +69,23 @@ const FileUpload = ({
       }, 2000);
     };
     setTimeout(() => {
-      convertFiles(newArr, postProcessing).catch(err => {
-        console.log(err);
-      });
+      convertFiles(newArr, postProcessing).catch(err => {});
     }, 2000);
-
-    // let res = await convertFiles(files).catch(err => console.log(err));
-    // setTimeout(() => {
-    //   setLoading(false);
-    // }, 1000);
-    // console.log(res.data);
-
-    // if (shouldPreprocess) {
-    //   setPreprocess(res.data.reverse());
-    // } else {
-    //   setFcanvases(res.data.reverse());
-    // }
   };
 
   return (
     <>
-      <div className="file__wrapper">
+      <div
+        className="file__wrapper"
+        onDragOver={e => {
+          e.preventDefault();
+        }}
+        onDrop={e => {
+          e.preventDefault();
+          console.log(e.dataTransfer.files);
+          updateFiles(e.dataTransfer.files);
+        }}
+      >
         <input
           type="file"
           style={{ display: 'none' }}

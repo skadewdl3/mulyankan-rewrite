@@ -24,7 +24,7 @@ const defaultTextConfig = {
   fontSize: 40,
   fontFamily: 'Roboto',
   fill: '#ff0000',
-  textAlign: 'center',
+  textAlign: 'left',
 };
 
 // Add Object on Drop
@@ -277,7 +277,6 @@ export const contextMenuListsners = (
   hotkeys('ctrl+v', () => {
     let prevActiveObj = getPrevActiveObj();
     let coords = { x: 0, y: 0 };
-    console.log(fcanvas);
     let obj = fcanvas.getActiveObject();
     if (obj) {
       coords = {
@@ -285,7 +284,6 @@ export const contextMenuListsners = (
         y: obj.top + copiedObjectOffset,
       };
     } else if (prevActiveObj) {
-      console.log('this ran');
       coords = {
         x: prevActiveObj.left + copiedObjectOffset,
         y: prevActiveObj.top + copiedObjectOffset,
@@ -371,6 +369,12 @@ export const textChange = (type, data, canvasData, fcanvas) => {
   } else if (type == 'subscript') {
     let { subscript } = data;
     obj.setSubScript(subscript);
+  } else if ('align') {
+    let { align } = data;
+    console.log(align);
+    obj.set({
+      textAlign: align,
+    });
   }
   fcanvas.renderAll();
 };

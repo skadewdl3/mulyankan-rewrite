@@ -4,6 +4,9 @@ import {
   UnderlineOutlined,
   RiseOutlined,
   FallOutlined,
+  AlignLeftOutlined,
+  AlignCenterOutlined,
+  AlignRightOutlined,
 } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import GoogleFontLoader from 'react-google-font-loader';
@@ -32,6 +35,12 @@ const MarkingTab = ({
     { name: 'Underline', icon: <UnderlineOutlined />, id: 'underline' },
     { name: 'Superscript', icon: <RiseOutlined />, id: 'superscript' },
     { name: 'Subscript', icon: <FallOutlined />, id: 'subscript' },
+  ];
+
+  const textAligns = [
+    { name: 'Left', icon: <AlignLeftOutlined />, id: 'left' },
+    { name: 'Right', icon: <AlignRightOutlined />, id: 'right' },
+    { name: 'Center', icon: <AlignCenterOutlined />, id: 'center' },
   ];
 
   const fonts = fontNames.map(({ font }) => {
@@ -190,6 +199,24 @@ const MarkingTab = ({
             }
           >
             <div className="controls__fontstyle__icon">{style.icon}</div>
+          </div>
+        ))}
+      </div>
+      <div></div>
+      <div className="controls__left__header">Text Align</div>
+      <div className="controls__left__divider controls__left__divider--hidden"></div>
+      <div className="controls__aligns">
+        {textAligns.map(align => (
+          <div
+            key={align.name}
+            className={`controls__align ${
+              defaultFontStyles.align == align.id
+                ? 'controls__align--active'
+                : ''
+            }`}
+            onClick={() => changeText({ align: align.id })}
+          >
+            <div className="controls__align__icon">{align.icon}</div>
           </div>
         ))}
       </div>

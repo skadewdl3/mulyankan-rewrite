@@ -25,8 +25,6 @@ export const docsOptions = [
 const Docs = props => {
   let { id: urlId } = props.match.params;
 
-  console.log(urlId);
-
   const [id, setId] = useState(urlId ? urlId : 'intro');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
