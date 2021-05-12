@@ -1,7 +1,3 @@
 {
-  "rewrites": [
-    { "source": "/bundle.js", "destination": "/bundle.js" },
-    { "source": "/editor", "destination": "/index.html" },
-    { "source": "/docs/:id", "destination": "/index.html" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "index.html" }]
 }
