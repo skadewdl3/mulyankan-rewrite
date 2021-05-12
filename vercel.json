@@ -1,6 +1,8 @@
 {
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/editor", "dest": "/index.html" },
+    { "src": "/docs", "dest": "/index.html" }
   ]
 }
