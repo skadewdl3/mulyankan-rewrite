@@ -1,7 +1,6 @@
 {
-  "redirects": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/editor", "destination": "/index.html" },
-    { "source": "/docs", "destination": "/index.html" }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
