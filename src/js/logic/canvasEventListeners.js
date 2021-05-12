@@ -365,10 +365,26 @@ export const textChange = (type, data, canvasData, fcanvas) => {
     });
   } else if (type == 'superscript') {
     let { superscript } = data;
-    obj.setSuperScript(superscript);
+    obj.setSelectionStyles({
+      fontSize: undefined,
+      deltaY: undefined,
+    });
+    if (!superscript) {
+      fcanvas.requestRenderAll();
+      return;
+    }
+    obj.setSuperscript();
   } else if (type == 'subscript') {
     let { subscript } = data;
-    obj.setSubScript(subscript);
+    obj.setSelectionStyles({
+      fontSize: undefined,
+      deltaY: undefined,
+    });
+    if (!subscript) {
+      fcanvas.requestRenderAll();
+      return;
+    }
+    obj.setSubscript();
   } else if ('align') {
     let { align } = data;
     console.log(align);

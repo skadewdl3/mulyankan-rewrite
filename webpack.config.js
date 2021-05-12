@@ -4,6 +4,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -38,5 +39,7 @@ module.exports = {
     port: 3000,
     inline: true,
     hot: true,
+    historyApiFallback: true,
+    host: '0.0.0.0',
   },
 };
