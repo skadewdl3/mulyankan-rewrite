@@ -1,8 +1,6 @@
 {
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/editor", "dest": "/index.html" },
-    { "src": "/docs", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/editor", "destination": "/index.html" },
+    { "source": "/docs/:id", "destination": "/index.html" }
   ]
 }
