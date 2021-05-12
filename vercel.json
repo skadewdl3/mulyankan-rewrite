@@ -1,3 +1,6 @@
 {
-  "redirects": [{ "source": "/(.*)", "destination": "/" }]
+  "redirects": [
+    { "source": "/editor", "destination": "/" },
+    { "source": "/docs", "destination": "/" }
+  ]
 }
