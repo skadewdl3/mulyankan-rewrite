@@ -1,6 +1,6 @@
 {
   "redirects": [
-    { "source": "/editor", "destination": "/" },
-    { "source": "/docs", "destination": "/" }
+    { "source": "/editor", "destination": "/editor" },
+    { "source": "/docs", "destination": "/docs" }
   ]
 }
