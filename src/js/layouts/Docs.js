@@ -33,87 +33,87 @@ const Docs = props => {
   const [loading, setLoading] = useState(false);
   const [showDocsSubLink, setShowDocsSubLink] = useState(false);
 
-  const str = `
-  ## Text and Marks
-<br>
-This section will cover adding textboxes to and marking the paper using Mulyankans automatic marking system.
-<br>
-<br>
+  //   const str = `
+  //   ## Text and Marks
+  // <br>
+  // This section will cover adding textboxes to and marking the paper using Mulyankans automatic marking system.
+  // <br>
+  // <br>
 
-\`\`\`
-Contents:
+  // \`\`\`
+  // Contents:
 
-1. Adding Textboxes
-2. Adding Markboxes
-3. Understanding Automatic Marking
-4. Quickly Inserting Marks
-\`\`\`
+  // 1. Adding Textboxes
+  // 2. Adding Markboxes
+  // 3. Understanding Automatic Marking
+  // 4. Quickly Inserting Marks
+  // \`\`\`
 
-<br>
-<br>
+  // <br>
+  // <br>
 
-All the options about text are present in the _Text Tab_ in the Sidebar. You can access it by clicking on the text tab in the Sidebar. 
+  // All the options about text are present in the _Text Tab_ in the Sidebar. You can access it by clicking on the text tab in the Sidebar.
 
-<br>
+  // <br>
 
-![Switching to Text Tab](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/text-and-marks/text-and-marks-1.webp)
+  // ![Switching to Text Tab](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/text-and-marks/text-and-marks-1.webp)
 
-<br>
-<br>
+  // <br>
+  // <br>
 
-### Adding Textboxes
-Adding textboxes is similar to adding symbols. You can drag the option from the Sidebar onto the editing area to add a textbox. You can _single click_ a textbox to select and and _double click_ a textbox to edit it.
-<br>
-<br>
+  // ### Adding Textboxes
+  // Adding textboxes is similar to adding symbols. You can drag the option from the Sidebar onto the editing area to add a textbox. You can _single click_ a textbox to select and and _double click_ a textbox to edit it.
+  // <br>
+  // <br>
 
-![Adding Textboxes](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/text-and-marks/text-and-marks-2.webp)
+  // ![Adding Textboxes](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/text-and-marks/text-and-marks-2.webp)
 
-<br>
-Textboxes can be removed in a similar way to symbols. You can _right-click_ and select remove or you can drag them out of the page.
+  // <br>
+  // Textboxes can be removed in a similar way to symbols. You can _right-click_ and select remove or you can drag them out of the page.
 
-<br>
-<br>
+  // <br>
+  // <br>
 
-### Adding Markboxes
-Markboxes are meant specifically for marking. They are added in the same way as textboxes. If you enter a number in the markbox, Mulyankan will automatically add it up to the total of the marks. The total marks are visible in the _Marking Tab_.
-<br>
-<br>
-![Removing Symbols](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/basic-usage/basic-usage-2.webp)
-<br>
-<br>
-### Zooming
-Sometimes, a PDF has a large/small size page. You can zoom in/out to make the page smaller or bigger. You can click _Zoom In_ button in the Menu Bar to zoom in. You can click the _Zoom Out_ button in the Menu Bar to zoom out.
-<br>
-<br>
-![Zooming In and Out](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/basic-usage/basic-usage-3.webp)
-<br>
-Clicking the _Reset Zoom_ button sets the size of page to initial size (the one you say when the pdf opened).
-<br>
-<br>
-<br>
+  // ### Adding Markboxes
+  // Markboxes are meant specifically for marking. They are added in the same way as textboxes. If you enter a number in the markbox, Mulyankan will automatically add it up to the total of the marks. The total marks are visible in the _Marking Tab_.
+  // <br>
+  // <br>
+  // ![Removing Symbols](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/basic-usage/basic-usage-2.webp)
+  // <br>
+  // <br>
+  // ### Zooming
+  // Sometimes, a PDF has a large/small size page. You can zoom in/out to make the page smaller or bigger. You can click _Zoom In_ button in the Menu Bar to zoom in. You can click the _Zoom Out_ button in the Menu Bar to zoom out.
+  // <br>
+  // <br>
+  // ![Zooming In and Out](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/basic-usage/basic-usage-3.webp)
+  // <br>
+  // Clicking the _Reset Zoom_ button sets the size of page to initial size (the one you say when the pdf opened).
+  // <br>
+  // <br>
+  // <br>
 
-In the next section, we will cover adding text and using Mulyankans automatic marking system.
+  // In the next section, we will cover adding text and using Mulyankans automatic marking system.
 
-`;
+  // `;
 
   useEffect(() => {
     setLoading(true);
-    // axios
-    //   .get(
-    //     `https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/${id}/${id}.md`
-    //   )
-    //   .then(({ data }) => {
-    //     let str = data;
-    //     setContent(str);
-    //     setLoading(false);
-    //   });
+    axios
+      .get(
+        `https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/${id}/${id}.md`
+      )
+      .then(({ data }) => {
+        let str = data;
+        setContent(str);
+        setLoading(false);
+      });
 
     // NOTE: The below code is only for testing and writing documentation. Use the above code in production.
-    let newStr = str;
-    setContent(newStr);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    // let newStr = str;
+    // setContent(newStr);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 2000);
 
     window.scrollTo(0, 0);
   }, [id]);
