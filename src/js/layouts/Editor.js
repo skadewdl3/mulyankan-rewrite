@@ -90,7 +90,12 @@ export class Editor extends Component {
 
   setPreprocess = preprocess => this.setState({ preprocess });
 
-  setFileName = fileName => this.setState({ fileName });
+  setFileName = fileName => {
+    this.setState({ fileName });
+    setInterval(() => {
+      console.log(this.state.fileName);
+    }, 1000);
+  };
 
   // Showing Loading screen while switching between screens
   setLoading = (loading, loadingMessage) =>
@@ -151,6 +156,24 @@ export class Editor extends Component {
     updateColor(color.hex, this);
   };
 
+  cleanup = () => {
+    this.setFCanvases([]);
+    this.setPreprocess([]);
+    this.setFiles([]);
+    // this.setFileName('Document');
+    this.updateDefaultTextOptions({
+      defaultTextOptions: {
+        font: 'Roboto',
+        bold: false,
+        italic: false,
+        underline: false,
+        superscript: false,
+        subscript: false,
+        align: null,
+      },
+    });
+  };
+
   render() {
     return (
       <div className="editor__wrapper">
@@ -182,9 +205,6 @@ export class Editor extends Component {
           <>
             <Controls
               setLoading={this.setLoading}
-              setPreprocess={this.setPreprocess}
-              setFCanvases={this.setFCanvases}
-              setFiles={this.setFiles}
               setActiveCanvas={this.setActiveCanvas}
               getFCanvases={this.getFCanvases}
               setFileName={this.setFileName}
@@ -198,6 +218,7 @@ export class Editor extends Component {
               defaultTextOptions={this.state.defaultTextOptions}
               color={this.state.color}
               setColor={this.setColor}
+              cleanup={this.cleanup}
             />
             <div className="editor__container__wrapper">
               <div className="editor__container">

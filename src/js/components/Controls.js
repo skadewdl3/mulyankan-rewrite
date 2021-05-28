@@ -14,8 +14,6 @@ import MarkingTab from './MarkingTab';
 import TextTab from './TextTab';
 
 const Controls = ({
-  setFCanvases,
-  setFiles,
   setFileName,
   fileName,
   setZoom,
@@ -23,11 +21,11 @@ const Controls = ({
   setDownloading,
   quickAccess,
   removeFromFavourites,
-  setPreprocess,
   changeText,
   defaultTextOptions,
   color,
   setColor,
+  cleanup,
 }) => {
   const [tab, setTab] = useState('marking');
   const colors = [
@@ -59,7 +57,7 @@ const Controls = ({
     tabs.forEach((cur, index, arr) => {
       cur.style.width = `calc(100% - ${arr.length}%)`;
     });
-    setFileName(fileName);
+    // setFileName(fileName);
   }, []);
 
   let symbols = [
@@ -105,10 +103,7 @@ const Controls = ({
           <button
             className="controls__btn"
             onClick={() => {
-              setFCanvases([]);
-              setPreprocess([]);
-              setFiles([]);
-              setFileName('Document');
+              cleanup();
             }}
           >
             <ArrowLeftOutlined style={{ margin: '0 1rem' }} />

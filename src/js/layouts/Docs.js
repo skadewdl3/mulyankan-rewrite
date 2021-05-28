@@ -19,6 +19,9 @@ export const docsOptions = [
   { name: 'Getting Started', id: 'getting-started' },
   { name: 'Basic Usage', id: 'basic-usage' },
   { name: 'Text and Marks', id: 'text-and-marks' },
+  { name: 'Text Editing', id: 'text-editing' },
+  { name: 'Copy and Paste', id: 'copy-and-paste' },
+  { name: 'Changing Colors', id: 'colors' },
   { name: 'Keyboard Shortcuts', id: 'keyboard-shortcuts' },
 ];
 
@@ -31,130 +34,87 @@ const Docs = props => {
   const [showDocsSubLink, setShowDocsSubLink] = useState(false);
 
   const str = `
-## Basic Usage
+  ## Text and Marks
 <br>
-In this section, we'll learn how to check papers usng symbols, text boxes and mark boxes.
+This section will cover adding textboxes to and marking the paper using Mulyankans automatic marking system.
 <br>
 <br>
 
 \`\`\`
 Contents:
 
-1. Introduction
-2. Adding Symbols
-3. Adding Comments (Text Boxes)
-4. Adding Marks (Mark Boxes)
+1. Adding Textboxes
+2. Adding Markboxes
+3. Understanding Automatic Marking
+4. Quickly Inserting Marks
 \`\`\`
 
 <br>
 <br>
 
-### Introduction
-Once you access the Mulyankan Editing interface, you will the Sidebar to the left of the screen. It contains two tabs at the top namely _Marking_ and _Text_. 
-![Mulyankan Landing Page](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/getting-started/getting-started-1.png)
-<br>
+All the options about text are present in the _Text Tab_ in the Sidebar. You can access it by clicking on the text tab in the Sidebar. 
+
 <br>
 
-These divide the functionality provided by Mulyankan into two parts.
-<br>
-<br>
-\`\`\`
-The Marking Tab contains:
-
-1. Symbols
-2. Quick Marking
-3. Favourites
-\`\`\`
-
-\`\`\`
-The Text Tab contains:
-
-1. Textbox
-2. Markbox
-3. Font Family
-\`\`\`
-<br>
-<br>
-In this section, we will discuss the basic functionality in Marking and Text tabs.<br>
-More advanced functionality will be covered in separate sections.
-<br>
-<br>
-<br>
-
-### Adding Symbols
-
-Click on the Select Files button. This will open a file picker where you can pick files. Once you have selected them, they should appear in the grey section like so.
-
-![Mulyankan File Selection](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/getting-started/getting-started-3.png)
-
+![Switching to Text Tab](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/text-and-marks/text-and-marks-1.webp)
 
 <br>
 <br>
 
-You can add more files by the same process. You can also remove files by clicking on the **×** symbol on the file. <br>
-Once you're done, click **Proceed**. You will see the loading screen for a brief time and then the Mulyankan Editing Interface will appear as follows.
+### Adding Textboxes
+Adding textboxes is similar to adding symbols. You can drag the option from the Sidebar onto the editing area to add a textbox. You can _single click_ a textbox to select and and _double click_ a textbox to edit it.
+<br>
+<br>
 
-![Mulyankan Editing Interface](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/getting-started/getting-started-4.png)
+![Adding Textboxes](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/text-and-marks/text-and-marks-2.webp)
+
+<br>
+Textboxes can be removed in a similar way to symbols. You can _right-click_ and select remove or you can drag them out of the page.
 
 <br>
 <br>
 
-### Introduction to The Interface
-
-It may look daunting at first, but the Mulyankan interface is quite simple. Let's break it down. 
+### Adding Markboxes
+Markboxes are meant specifically for marking. They are added in the same way as textboxes. If you enter a number in the markbox, Mulyankan will automatically add it up to the total of the marks. The total marks are visible in the _Marking Tab_.
 <br>
 <br>
-\`\`\`
-It is divided into 3 main parts.
-
-1. The Editing Area
-2. The Sidebar
-3. The Menu Bar
-\`\`\`
-
-![Mulyankan Editing Interface Description](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/getting-started/getting-started-5.png)
-
+![Removing Symbols](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/basic-usage/basic-usage-2.webp)
 <br>
 <br>
-
-1. **The Editing Area**: The editing area is where all the magic happens. This is the area when you drag the symbols (check, cross, underline, etc.) from the sidebar to insert them on the exam paper.
+### Zooming
+Sometimes, a PDF has a large/small size page. You can zoom in/out to make the page smaller or bigger. You can click _Zoom In_ button in the Menu Bar to zoom in. You can click the _Zoom Out_ button in the Menu Bar to zoom out.
 <br>
 <br>
-
-
-2. **The Sidebar**: The Sidebar provides all the utilities you need for checking the exam paper. We'll explore these in detail in subsequent sections. The utilities include various symbols, textbox (for comments), markbox (for marking) and more.
+![Zooming In and Out](https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/basic-usage/basic-usage-3.webp)
 <br>
-<br>
-
-
-3. **The Menu Bar**: The Menu Bar helps you in navigating through Mulyankan easily. The Zoom In and Zoom out options do exactly what they say. They can increase / decrease the size of the exam paper to help you view it more clearly. It also includes the download button which will be covered in detail in a  later section.
-
-
+Clicking the _Reset Zoom_ button sets the size of page to initial size (the one you say when the pdf opened).
 <br>
 <br>
 <br>
 
+In the next section, we will cover adding text and using Mulyankans automatic marking system.
 
-Not so scary now right ? <br>
-Good. In the next section, we'll start checking the exam paper using symbols in the Sidebar.
 `;
 
   useEffect(() => {
-    // let newStr = str;
     setLoading(true);
-    axios
-      .get(
-        `https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/${id}/${id}.md`
-      )
-      .then(({ data }) => {
-        let str = data;
-        // console.log(data);
-        // str = str.replaceAll('\n', '  ');
-        setContent(str);
-        console.log('this ran');
-        setLoading(false);
-      });
-    // setContent(newStr);
+    // axios
+    //   .get(
+    //     `https://raw.githubusercontent.com/skadewdl3/mulyankan-rewrite/docs/${id}/${id}.md`
+    //   )
+    //   .then(({ data }) => {
+    //     let str = data;
+    //     setContent(str);
+    //     setLoading(false);
+    //   });
+
+    // NOTE: The below code is only for testing and writing documentation. Use the above code in production.
+    let newStr = str;
+    setContent(newStr);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
     window.scrollTo(0, 0);
   }, [id]);
 
@@ -292,39 +252,60 @@ Good. In the next section, we'll start checking the exam paper using symbols in 
                 children={content}
               ></ReactMarkdown>
               <div className="docs__content__buttons">
-                <button
-                  className="docs__content__button"
-                  onClick={() => {
-                    if (id == docsOptions[0].id) return;
-                    let newId =
-                      docsOptions[
-                        docsOptions.indexOf(
-                          docsOptions.find(doc => doc.id == id)
-                        ) - 1
-                      ].id;
-                    // setId(newId);
-                    document.querySelector(`.docs-${newId}-link`).click();
-                  }}
-                >
-                  <LeftOutlined />
-                  <span>Previous</span>
-                </button>
-                <button
-                  className="docs__content__button"
-                  onClick={() => {
-                    if (id == docsOptions[docsOptions.length - 1].id) return;
-                    let newId =
-                      docsOptions[
-                        docsOptions.indexOf(
-                          docsOptions.find(doc => doc.id == id)
-                        ) + 1
-                      ].id;
-                    document.querySelector(`.docs-${newId}-link`).click();
-                  }}
-                >
-                  <span>Next</span>
-                  <RightOutlined />
-                </button>
+                {!(id == docsOptions[0].id) && (
+                  <button
+                    className="docs__content__button"
+                    onClick={() => {
+                      if (id == docsOptions[0].id) return;
+                      let newId =
+                        docsOptions[
+                          docsOptions.indexOf(
+                            docsOptions.find(doc => doc.id == id)
+                          ) - 1
+                        ].id;
+                      // setId(newId);
+                      document.querySelector(`.docs-${newId}-link`).click();
+                    }}
+                  >
+                    <LeftOutlined />
+                    <span>
+                      {
+                        docsOptions[
+                          docsOptions.indexOf(
+                            docsOptions.find(doc => doc.id == id)
+                          ) - 1
+                        ].name
+                      }
+                    </span>
+                  </button>
+                )}
+
+                {!(id == docsOptions[docsOptions.length - 1].id) && (
+                  <button
+                    className="docs__content__button"
+                    onClick={() => {
+                      if (id == docsOptions[docsOptions.length - 1].id) return;
+                      let newId =
+                        docsOptions[
+                          docsOptions.indexOf(
+                            docsOptions.find(doc => doc.id == id)
+                          ) + 1
+                        ].id;
+                      document.querySelector(`.docs-${newId}-link`).click();
+                    }}
+                  >
+                    <span>
+                      {
+                        docsOptions[
+                          docsOptions.indexOf(
+                            docsOptions.find(doc => doc.id == id)
+                          ) + 1
+                        ].name
+                      }
+                    </span>
+                    <RightOutlined />
+                  </button>
+                )}
               </div>
             </>
           ) : (

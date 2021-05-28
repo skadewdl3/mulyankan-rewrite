@@ -59,17 +59,18 @@ const FileUpload = ({
     const postProcessing = res => {
       if (shouldPreprocess) {
         setPreprocess(res);
-        setFileName(files[0].name);
+        console.log(files);
+        setFileName(files[0][0].name);
       } else {
         setFCanvases(res);
-        setFileName(files[0].name);
+        setFileName(files[0][0].name);
       }
       setTimeout(() => {
         setLoading(false);
       }, 2000);
     };
     setTimeout(() => {
-      convertFiles(newArr, postProcessing).catch(err => {});
+      convertFiles(newArr, postProcessing).catch(err => console.log(err));
     }, 2000);
   };
 
@@ -222,11 +223,6 @@ const FileUpload = ({
                   className="file__proceed__btn"
                   onClick={() => {
                     uploadFiles();
-                    if (files.length == 0) return;
-                    else {
-                      let name = files[0][0].name.replace(/\.[^/.]+$/, '');
-                      setFileName(name);
-                    }
                   }}
                 >
                   <span>Proceed</span>

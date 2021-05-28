@@ -76,7 +76,7 @@ export const convertFiles = async (files, callback) => {
             [...Array(pdf.numPages)].forEach(async (_, index, arr) => {
               // COnfigure pdf.js page
               let pageIndex = index + 1;
-              let scale = 2;
+              let scale = 1.5;
               let page = await pdf.getPage(pageIndex);
               let viewport = page.getViewport({ scale });
 
@@ -109,7 +109,6 @@ export const convertFiles = async (files, callback) => {
 
               // If all pages have been converted and sorted, call setFiles in Editor.js
               if (convertedIndex == targetIndex) {
-                console.log('finally its done');
                 callback(sorter(convertedFiles));
               }
             });
@@ -127,7 +126,6 @@ export const convertFiles = async (files, callback) => {
             // If all pages (including images) have been converted and sorted, call setFiles in Editor.js
             if (convertedIndex == targetIndex) {
               callback(sorter(convertedFiles));
-              console.log('finally its done');
             }
           });
         }
