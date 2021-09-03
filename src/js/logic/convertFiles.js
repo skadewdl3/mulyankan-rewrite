@@ -74,7 +74,7 @@ export const convertFiles = async (files, callback) => {
 
             // Converting it to Images
             [...Array(pdf.numPages)].forEach(async (_, index, arr) => {
-              // COnfigure pdf.js page
+              // Configure pdf.js page
               let pageIndex = index + 1;
               let scale = 1.5;
               let page = await pdf.getPage(pageIndex);

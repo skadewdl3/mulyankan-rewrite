@@ -10,7 +10,6 @@ const App = () => {
     <BrowserRouter>
       <Route exact path="/" component={Landing} />
       <Route path="/editor" component={Editor} />
-      {/* <Route path="/docs" component={Docs} /> */}
       <Route path="/docs/:id?" component={Docs} />
     </BrowserRouter>
   );
