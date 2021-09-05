@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import hotkeys from 'hotkeys-js';
 
 // Layouts
 import FileUpload from './FileUpload';
@@ -92,9 +93,7 @@ export class Editor extends Component {
 
   setFileName = fileName => {
     this.setState({ fileName });
-    setInterval(() => {
-      console.log(this.state.fileName);
-    }, 1000);
+    console.log(`Setting file name to : '${fileName}'`);
   };
 
   // Showing Loading screen while switching between screens
@@ -174,6 +173,15 @@ export class Editor extends Component {
     });
   };
 
+  removeObjectMovieListeners = () => {
+    console.log('this ran');
+    window.editorIsFocused = false;
+    hotkeys.unbind('up');
+    hotkeys.unbind('down');
+    hotkeys.unbind('left');
+    hotkeys.unbind('right');
+  };
+
   render() {
     return (
       <div className="editor__wrapper">
@@ -219,8 +227,12 @@ export class Editor extends Component {
               color={this.state.color}
               setColor={this.setColor}
               cleanup={this.cleanup}
+              removeObjectMovieListeners={this.removeObjectMovieListeners}
             />
-            <div className="editor__container__wrapper">
+            <div
+              className="editor__container__wrapper"
+              onClick={() => (window.editorIsFocused = true)}
+            >
               <div className="editor__container">
                 {this.state.files.map((cur, index, arr) => (
                   <Canvas

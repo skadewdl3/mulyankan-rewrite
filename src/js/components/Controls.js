@@ -26,6 +26,7 @@ const Controls = ({
   color,
   setColor,
   cleanup,
+  removeObjectMovieListeners,
 }) => {
   const [tab, setTab] = useState('marking');
   const colors = [
@@ -57,7 +58,6 @@ const Controls = ({
     tabs.forEach((cur, index, arr) => {
       cur.style.width = `calc(100% - ${arr.length}%)`;
     });
-    // setFileName(fileName);
   }, []);
 
   let symbols = [
@@ -69,9 +69,13 @@ const Controls = ({
     'arrow',
   ];
 
-  const debouncedSearch = debounce(val => {
+  const debouncedSetFileName = debounce(val => {
     setFileName(val);
   }, 500);
+
+  useEffect(() => {
+    document.querySelector('.controls__top__filename').textContent = fileName;
+  }, [fileName]);
 
   return (
     <>
@@ -98,7 +102,10 @@ const Controls = ({
           </div>
         ))}
       </div>
-      <div className="controls__top">
+      <div
+        className="controls__top"
+        onClick={() => removeObjectMovieListeners()}
+      >
         <div className="controls__top--left">
           <button
             className="controls__btn"
@@ -109,14 +116,14 @@ const Controls = ({
             <ArrowLeftOutlined style={{ margin: '0 1rem' }} />
           </button>
           <div className="controls__top__vertical-divider"></div>
-          <input
+          <span
+            role="textbox"
             className="controls__top__filename"
-            defaultValue={fileName}
-            onChange={e => {
-              e.target.style.width = `${e.target.value.length + 1}ch`;
-              debouncedSearch(e.target.value.trim());
+            onInput={e => {
+              debouncedSetFileName(e.target.textContent.trim());
             }}
-          />
+            contentEditable={true}
+          ></span>
         </div>
         <div className="controls__top--center"></div>
         <div className="controls__top--right">

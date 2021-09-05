@@ -43,6 +43,14 @@ const Downloading = ({
   }, [isOpen]);
 
   useEffect(() => {
+    let fileNameInput = document.querySelector('.downloading__file-name');
+    console.log(fileNameInput);
+    if (fileNameInput) {
+      fileNameInput.textContent = fileName;
+    }
+  }, [shouldRender]);
+
+  useEffect(() => {
     if (downloadData !== '') {
       if (document.querySelector('.downloading__options__item')) {
         if (document.querySelector('.downloading__options__item--active')) {
@@ -128,17 +136,14 @@ const Downloading = ({
                 <>
                   <div className="downloading__message">Enter File Name</div>
                   <div className="downloading__input">
-                    <input
+                    <span
                       type="text"
                       className="downloading__file-name"
                       onInput={e => {
-                        e.target.style.width = `${e.target.value.length + 1}ch`;
+                        updateFileName(e.target.textContent);
                       }}
-                      defaultValue={fileName}
-                      onChange={e => {
-                        updateFileName(e.target.value);
-                      }}
-                    />
+                      contentEditable={true}
+                    ></span>
                   </div>
                   <div className="downloading__message">
                     Select Download Method

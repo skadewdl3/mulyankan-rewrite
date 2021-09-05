@@ -253,13 +253,15 @@ export const moveObjectWithArrowKeys = ({
   if (!shouldAddEventListeners) return;
   document.body.addEventListener('keydown', e => {
     if (e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40) {
-      e.preventDefault();
+      if (window.editorIsFocused) {
+        e.preventDefault();
+        hotkeys('up', () => moveActiveObject('up'));
+        hotkeys('down', () => moveActiveObject('down'));
+        hotkeys('left', () => moveActiveObject('left'));
+        hotkeys('right', () => moveActiveObject('right'));
+      }
     }
   });
-  hotkeys('up', () => moveActiveObject('up'));
-  hotkeys('down', () => moveActiveObject('down'));
-  hotkeys('left', () => moveActiveObject('left'));
-  hotkeys('right', () => moveActiveObject('right'));
 };
 
 export const contextMenuListsners = (

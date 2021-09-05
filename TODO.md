@@ -2,8 +2,6 @@
 
 # Urgent
 
-- BUGFIX: Name of Document is lost after preprocessing
-- BUGFIX: Name input in downloads page isn't of right initial size
 - Complete Landing Page
 - Make Landing Page responsive
 - Make Docs responsive
