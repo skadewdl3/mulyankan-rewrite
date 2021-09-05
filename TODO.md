@@ -2,11 +2,9 @@
 
 # Urgent
 
+- Make documents downloadable as JSON
 - Complete Landing Page
 - Make Landing Page responsive
-- Make Docs responsive
-- Add more random fact sources for loading components
-- Make documents downloadable as JSON
 - Make Docs responsive
 
 # Not Urgent
