@@ -2,7 +2,6 @@
 
 # Urgent
 
-- Make documents downloadable as JSON
 - Complete Landing Page
 - Make Landing Page responsive
 - Make Docs responsive
