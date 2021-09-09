@@ -8,33 +8,98 @@ import {
   removeObjectOutsideCanvas,
   moveObjectWithArrowKeys,
   favourite,
-  changeFont,
   changeColor,
   contextMenuListsners,
   textChange,
+  defaultObjectConfig,
 } from './canvasEventListeners';
 
-export const createCanvas = (id, canvasData) => {
-  let { addCanvas, src, height, width } = canvasData;
+export const createCanvas = (id, data) => {
+  let {
+    addCanvas,
+    src,
+    height,
+    width,
+    uploadMethod,
+    json,
+    setUploadMethod,
+    isLast,
+    addJSONCanvas,
+  } = data;
+  let canvasData = data;
 
   // Initialize fcanvas
   let fcanvas = new fabric.Canvas(id);
 
-  // Set width and height of fcanvas
-  fcanvas.setDimensions({
-    width,
-    height,
-  });
+  if (uploadMethod === 'json') {
+    fcanvas.loadFromJSON(JSON.stringify(json), () => {
+      // Set Dimensions of canvas to the dimensions of the background image
+      let width = fcanvas._objects[0].width;
+      let height = fcanvas._objects[0].height;
+      let backgroundImage = fcanvas._objects[0];
+      fcanvas.setDimensions({
+        width,
+        height,
+      });
 
-  // Make background image unmovable, unselectable and a bunch of other stuff
-  configureBackgroundImage(src, fcanvas, width, height);
+      fabric.util.enlivenObjects(fcanvas._objects, () => {
+        console.log('objects enlivened');
+      });
+
+      // Update canvasData object to reflect changes in dimensions
+      canvasData = { ...canvasData, height, width };
+
+      // Make the background image unselectable, unmovable and a bunch of other stuff
+      const backgroundImageConfig = {
+        evented: false,
+        selectable: false,
+        hasBorders: false,
+        hasControls: false,
+        hasRotatingPoint: false,
+        originX: 'center',
+        originY: 'center',
+        top: height / 2,
+        left: width / 2,
+      };
+      backgroundImage.set(backgroundImageConfig);
+
+      // Set some defaults for all objects except background image
+      fcanvas._objects.forEach((obj, i) => {
+        if (i !== 0) {
+          obj.set({
+            ...defaultObjectConfig,
+          });
+        }
+      });
+      fcanvas.renderAll();
+    });
+  } else {
+    // Set width and height of fcanvas
+    fcanvas.setDimensions({
+      width,
+      height,
+    });
+
+    // Make background image unmovable, unselectable and a bunch of other stuff
+    configureBackgroundImage(src, fcanvas, width, height);
+  }
 
   // set some defautl properties like activeCanvas which are used for event listeners
   setDefaultProperties(fcanvas, canvasData);
+
+  // Add Event Listeners
   addEventListeners(fcanvas, canvasData);
 
   // Add canvas to fcanvases in the state
-  addCanvas(fcanvas);
+  if (uploadMethod === 'json') {
+    addJSONCanvas(fcanvas, isLast);
+  } else {
+    addCanvas(fcanvas);
+  }
+
+  if (canvasData.isLast) {
+    setUploadMethod('pdf');
+  }
 };
 
 const configureBackgroundImage = (src, fcanvas, width, height) => {
@@ -83,6 +148,8 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('selection:created', ({ selected }) => {
     let obj = selected[0];
     if (!obj) return;
+    canvasData.setActiveCanvas(canvasData.index);
+    canvasData.setActiveObject(obj);
     prevActiveObj = obj;
     if (!obj.textType) return;
     canvasData.updateDefaultTextOptions({
@@ -96,6 +163,9 @@ const addEventListeners = (fcanvas, canvasData) => {
   fcanvas.on('selection:updated', ({ selected }) => {
     let obj = selected[0];
     if (!obj) return;
+    canvasData.setActiveCanvas(canvasData.index);
+    canvasData.setActiveObject(obj);
+
     prevActiveObj = obj;
     if (!obj.textType) return;
     canvasData.updateDefaultTextOptions({
@@ -107,6 +177,8 @@ const addEventListeners = (fcanvas, canvasData) => {
     });
   });
   fcanvas.on('selection:cleared', () => {
+    canvasData.setActiveObject(null);
+    // canvasData.setActiveCanvas(canvasData.index);
     canvasData.updateDefaultTextOptions({
       font: 'Roboto',
       bold: false,

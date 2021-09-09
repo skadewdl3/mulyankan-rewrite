@@ -27,6 +27,8 @@ const Controls = ({
   setColor,
   cleanup,
   removeObjectMovieListeners,
+  getTotalMarks,
+  setTotalMarks,
 }) => {
   const [tab, setTab] = useState('marking');
   const colors = [
@@ -195,6 +197,8 @@ const Controls = ({
             colors={colors}
             setColor={setColor}
             color={color}
+            getTotalMarks={getTotalMarks}
+            setTotalMarks={setTotalMarks}
           />
         )}
         {tab == 'text' && (

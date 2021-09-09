@@ -6,7 +6,7 @@ import {
   FileZipOutlined,
 } from '@ant-design/icons';
 
-import { download } from './../logic/convertFiles';
+import { download, downloadAsJSON } from './../logic/convertFiles';
 import { randomFact } from './../logic/loadingFacts';
 
 const Downloading = ({
@@ -16,6 +16,7 @@ const Downloading = ({
   fileName,
   setFileName,
   fcanvases,
+  getTotalMarks,
 }) => {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [dropdown, setDropdown] = useState(false);
@@ -44,7 +45,6 @@ const Downloading = ({
 
   useEffect(() => {
     let fileNameInput = document.querySelector('.downloading__file-name');
-    console.log(fileNameInput);
     if (fileNameInput) {
       fileNameInput.textContent = fileName;
     }
@@ -193,19 +193,15 @@ const Downloading = ({
                         setZoom(1.1, true);
                         if (downloadData == 'json') {
                           setDownloading(true);
-                          var json = { fcanvases };
-                          var data =
-                            'text/json;charset=utf-8,' +
-                            encodeURIComponent(JSON.stringify(json));
-
-                          var a = document.createElement('a');
-                          a.href = 'data:' + data;
-                          a.download = `${fileName}.json`;
-
-                          document.body.appendChild(a);
-                          a.click();
-                          document.body.removeChild(a);
-                          setDownloading(false);
+                          setTimeout(() => {
+                            let totalMarks = getTotalMarks();
+                            downloadAsJSON(
+                              fileName,
+                              totalMarks,
+                              fcanvases,
+                              () => setDownloading(false)
+                            );
+                          }, 500);
                         } else {
                           setDownloading(true);
 

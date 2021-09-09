@@ -1,20 +1,23 @@
 // Verify whether markbox contains marks
-const checkMark = object => {
-  if (!object.isOnScreen()) return 0; // don't change marks if markbox is outside canvas
-  if (object.text == '') return 0; // don't change marks if markbox is empty
-  if (isNaN(object.text)) return 0; // don't chnage marks if markbox contains text not numbers
-  return parseFloat(object.text);
+export const checkMark = text => {
+  if (text == '') return 0; // don't change marks if markbox is empty
+  if (isNaN(text)) return 0; // don't chnage marks if markbox contains text not numbers
+  return parseFloat(text);
 };
 
 export const changeMarks = ({ state, setMarks }) => {
-  // Marks of each markbox will be added to this array
-  let marksArray = [];
+  // Create array of all markboxes from all canvases
+  let markBoxArray = [];
   state.fcanvases.forEach(fcanvas => {
-    let markBoxes = fcanvas
-      .getObjects()
-      .filter(object => object.textType == 'mark');
-    marksArray = [...marksArray, ...markBoxes.map(cur => checkMark(cur))];
+    fcanvas._objects.forEach(obj => {
+      if (obj.textType == 'mark') {
+        markBoxArray.push(obj);
+      }
+    });
   });
+
+  // Createarray of marks from markboxes in markBoxArray
+  let marksArray = markBoxArray.map(obj => checkMark(obj.text));
 
   // Add up all the marks
   let totalMarks = marksArray.reduce((a, b) => a + b, 0);

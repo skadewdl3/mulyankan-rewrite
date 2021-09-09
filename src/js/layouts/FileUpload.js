@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
-import { chunk } from 'lodash';
+import { chunk, first } from 'lodash';
 import pretty from 'prettysize';
 import {
   ArrowLeftOutlined,
   CloseOutlined,
+  SaveOutlined,
   FilePdfOutlined,
   FileImageOutlined,
 } from '@ant-design/icons';
@@ -16,6 +17,8 @@ const FileUpload = ({
   setLoading,
   setPreprocess,
   setFileName,
+  setUploadMethod,
+  setTotalMarks,
 }) => {
   const chunkSize = 6;
 
@@ -51,27 +54,54 @@ const FileUpload = ({
     setFiles(newFilesArr);
   };
 
+  const updateFileName = () => {
+    let rawFileName = files[0][0].name;
+    var newFileName = rawFileName.substr(0, rawFileName.lastIndexOf('.'));
+    setFileName(newFileName);
+  };
+
   const uploadFiles = async () => {
     setLoading(true);
     let newArr = [];
     files.forEach(arr => arr.forEach(cur => newArr.push(cur)));
 
+    let firstFile = newArr[0];
+
     const postProcessing = res => {
       if (shouldPreprocess) {
         setPreprocess(res);
-        console.log(files);
-        setFileName(files[0][0].name);
+        updateFileName();
       } else {
         setFCanvases(res);
-        setFileName(files[0][0].name);
+        updateFileName();
       }
       setTimeout(() => {
         setLoading(false);
       }, 2000);
     };
-    setTimeout(() => {
-      convertFiles(newArr, postProcessing).catch(err => console.log(err));
-    }, 2000);
+
+    if (firstFile.name.endsWith('json')) {
+      setTimeout(() => {
+        let reader = new FileReader();
+        reader.readAsText(firstFile);
+        reader.onload = () => {
+          let obj = JSON.parse(reader.result);
+          let { fcanvases, totalMarks } = obj;
+          setTotalMarks(totalMarks);
+          console.log(totalMarks);
+          setUploadMethod('json');
+          updateFileName();
+          setFCanvases(fcanvases);
+          setTimeout(() => {
+            setLoading(false);
+          }, 2000);
+        };
+      }, 2000);
+    } else {
+      setTimeout(() => {
+        convertFiles(newArr, postProcessing).catch(err => console.log(err));
+      }, 2000);
+    }
   };
 
   return (
@@ -83,7 +113,6 @@ const FileUpload = ({
         }}
         onDrop={e => {
           e.preventDefault();
-          console.log(e.dataTransfer.files);
           updateFiles(e.dataTransfer.files);
         }}
       >
@@ -92,7 +121,7 @@ const FileUpload = ({
           style={{ display: 'none' }}
           name="pdf"
           className="file-input"
-          accept="application/pdf, image/png, image/jpg, image/jfif, image/webp, image/jpeg"
+          accept="application/pdf, image/png, image/jpg, image/jfif, image/webp, image/jpeg, application/json"
           onChange={e => {
             updateFiles(e.target.files);
           }}
@@ -168,9 +197,19 @@ const FileUpload = ({
                           <FilePdfOutlined
                             style={{ fontSize: '3.5rem', marginBottom: '1rem' }}
                           />
+                        ) : cur.type.endsWith('json') ? (
+                          <SaveOutlined
+                            style={{
+                              fontSize: '3.5rem',
+                              marginBottom: '1rem',
+                            }}
+                          />
                         ) : (
                           <FileImageOutlined
-                            style={{ fontSize: '3.5rem', marginBottom: '1rem' }}
+                            style={{
+                              fontSize: '3.5rem',
+                              marginBottom: '1rem',
+                            }}
                           />
                         )}
                       </div>

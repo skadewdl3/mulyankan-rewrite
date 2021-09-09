@@ -28,6 +28,7 @@ import {
   pasteObject,
   removeObject,
   updateQuickAccess,
+  checkMark,
 } from './../logic/miscellaneous';
 
 export class Editor extends Component {
@@ -62,6 +63,7 @@ export class Editor extends Component {
       loadingMessage: "We're processing your documents.",
       downloading: false,
       marks: 0,
+      totalMarks: '',
       quickAccess,
       color,
       defaultTextOptions: {
@@ -85,7 +87,9 @@ export class Editor extends Component {
   // Used as an initial phase before setPreprocess or setFCanvases
   setFiles = files => this.setState({ files });
 
-  setFCanvases = fcanvases => this.setState({ fcanvases });
+  setFCanvases = fcanvases => {
+    this.setState({ fcanvases });
+  };
 
   getFCanvases = () => [...this.state.fcanvases];
 
@@ -93,7 +97,6 @@ export class Editor extends Component {
 
   setFileName = fileName => {
     this.setState({ fileName });
-    console.log(`Setting file name to : '${fileName}'`);
   };
 
   // Showing Loading screen while switching between screens
@@ -104,8 +107,20 @@ export class Editor extends Component {
   setDownloading = downloading => this.setState({ downloading });
 
   // Add canvas to fcanvases (used in setupCanvas.js)
-  addCanvas = canvas =>
+  addCanvas = canvas => {
     this.setState({ fcanvases: [...this.state.fcanvases, canvas] });
+  };
+
+  tempArr = [];
+  addJSONCanvas = (canvas, isLast) => {
+    this.tempArr.push(canvas);
+    if (isLast) {
+      console.log(this.tempArr);
+      this.setState({ fcanvases: this.tempArr });
+      this.tempArr = [];
+    }
+    console.log(canvas);
+  };
 
   setZoom = (val, reset = false) => setZoomLevel(val, reset, this);
 
@@ -114,6 +129,13 @@ export class Editor extends Component {
   setMarks = marks => this.setState({ marks });
 
   getMarks = () => this.state.marks;
+
+  setTotalMarks = text => {
+    let totalMarks = checkMark(text);
+    this.setState({ totalMarks });
+  };
+
+  getTotalMarks = () => this.state.totalMarks;
 
   setActiveCanvas = index => changeActiveCanvas(index, this);
 
@@ -174,13 +196,27 @@ export class Editor extends Component {
   };
 
   removeObjectMovieListeners = () => {
-    console.log('this ran');
     window.editorIsFocused = false;
     hotkeys.unbind('up');
     hotkeys.unbind('down');
     hotkeys.unbind('left');
     hotkeys.unbind('right');
   };
+
+  setActiveObject = obj => {
+    let fcanvas = [...this.state.fcanvases].filter(cur => cur.activeCanvas)[0];
+    if (!obj) {
+      fcanvas.discardActiveObject();
+      return;
+    }
+    let index = fcanvas._objects.reduce(
+      (prev, cur, i) => (obj == cur ? prev + i : prev),
+      0
+    );
+    fcanvas.setActiveObject(fcanvas.item(index));
+  };
+
+  getFiles = () => [...this.state.files];
 
   render() {
     return (
@@ -196,6 +232,7 @@ export class Editor extends Component {
           setFileName={this.setFileName}
           setZoom={this.setZoom}
           fcanvases={this.state.fcanvases}
+          getTotalMarks={this.getTotalMarks}
         />
 
         {!this.state.fcanvases[0] &&
@@ -206,6 +243,8 @@ export class Editor extends Component {
             setLoading={this.setLoading}
             setPreprocess={this.setPreprocess}
             setFileName={this.setFileName}
+            setUploadMethod={this.setUploadMethod}
+            setTotalMarks={this.setTotalMarks}
           />
         ) : null}
 
@@ -219,6 +258,8 @@ export class Editor extends Component {
               fileName={this.state.fileName}
               setZoom={this.setZoom}
               marks={this.state.marks}
+              getTotalMarks={this.getTotalMarks}
+              setTotalMarks={this.setTotalMarks}
               setDownloading={this.setDownloading}
               quickAccess={this.state.quickAccess}
               removeFromFavourites={this.removeFromFavourites}
@@ -237,8 +278,11 @@ export class Editor extends Component {
                 {this.state.files.map((cur, index, arr) => (
                   <Canvas
                     src={cur}
+                    getJSON={this.getFiles}
                     key={index}
+                    setActiveObject={this.setActiveObject}
                     index={index}
+                    uploadMethod={this.state.uploadMethod}
                     setFCanvases={this.setFCanvases}
                     addCanvas={this.addCanvas}
                     setZoom={this.setZoom}
@@ -253,6 +297,10 @@ export class Editor extends Component {
                     moveActiveObject={this.moveActiveObject}
                     favouriteItem={this.favouriteItem}
                     updateDefaultTextOptions={this.updateDefaultTextOptions}
+                    getFCanvases={this.getFCanvases}
+                    setUploadMethod={this.setUploadMethod}
+                    isLast={index === arr.length - 1}
+                    addJSONCanvas={this.addJSONCanvas}
                   />
                 ))}
               </div>

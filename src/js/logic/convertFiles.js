@@ -5,7 +5,6 @@ GlobalWorkerOptions.workerSrc = 'bundle.worker.js';
 
 const sorter = arr => {
   let toSort = arr.map(el => el.order);
-  console.log(toSort);
   toSort.sort((a, b) => {
     if (a[0] < b[0]) {
       return -1;
@@ -60,7 +59,6 @@ export const convertFiles = async (files, callback) => {
   const waitForRawFiles = () => {
     if (noOfFiles == rawFiles.length) {
       rawFiles.forEach(({ file, index: sortIndex }) => {
-        console.log(file);
         if (file.type.includes('pdf')) {
           // Reading The PDF
           let pdf = null;
@@ -167,5 +165,28 @@ export const download = (fileName, fcanvases, callback) => {
   doc.save(fileName);
 
   // Hide the loading text which shows when file is processing
+  callback();
+};
+
+export const downloadAsJSON = (fileName, totalMarks, fcanvases, callback) => {
+  // Convert fcanvases to JSON while retaining custom properties like textType and originalDimensions
+  let jsonArr = fcanvases.map(fcanvas =>
+    fcanvas.toJSON(['textType', 'originalDimensions'])
+  );
+
+  // Convert jsonArr to JSON string
+  var json = { totalMarks, fcanvases: jsonArr };
+  var data =
+    'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
+
+  // Download the JSON string as a .json file
+  var a = document.createElement('a');
+  a.href = 'data:' + data;
+  a.download = `${fileName}.json`;
+
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
   callback();
 };

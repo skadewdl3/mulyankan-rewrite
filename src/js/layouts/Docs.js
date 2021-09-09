@@ -139,10 +139,8 @@ const Docs = props => {
         '#root > div.generic__wrapper > div > span:nth-child(2)'
       );
       if (!isInViewport(span)) {
-        console.log('scrolled past');
         setShowDocsSubLink(true);
       } else if (isInViewport(span)) {
-        console.log('this ran');
         setShowDocsSubLink(false);
       }
     }, 50);

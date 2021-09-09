@@ -20,6 +20,11 @@ const Canvas = ({
   addToQuickAccess,
   favouriteItem,
   updateDefaultTextOptions,
+  uploadMethod,
+  isLast,
+  setUploadMethod,
+  addJSONCanvas,
+  setActiveObject,
 }) => {
   const [showMenu, setShowMenu] = useState({
     show: false, // Context Menu is visible or not
@@ -49,18 +54,30 @@ const Canvas = ({
       moveActiveObject,
       favouriteItem,
       updateDefaultTextOptions,
+      uploadMethod,
+      isLast,
+      addJSONCanvas,
+      setUploadMethod,
+      setActiveObject,
     };
 
-    // Load image from dataurl and render it to Fabric.js canvas when image is loaded
-    let img = new Image();
-    img.src = src;
-    img.addEventListener('load', () => {
+    if (uploadMethod === 'json') {
       createCanvas(`canvas-${index}`, {
         ...canvasData,
-        width: img.width,
-        height: img.height,
+        json: src,
       });
-    });
+    } else {
+      // Load image from dataurl and render it to Fabric.js canvas when image is loaded
+      let img = new Image();
+      img.src = src;
+      img.addEventListener('load', () => {
+        createCanvas(`canvas-${index}`, {
+          ...canvasData,
+          width: img.width,
+          height: img.height,
+        });
+      });
+    }
   }, []);
 
   const updateShowMenu = config => [setShowMenu({ ...showMenu, ...config })];

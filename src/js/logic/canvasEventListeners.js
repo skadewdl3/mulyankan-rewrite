@@ -12,7 +12,7 @@ const automarkConfig = {
   textWidth: 200,
   textHeight: 30,
 };
-const defaultObjectConfig = {
+export const defaultObjectConfig = {
   fireRightClick: true,
   transparentCorners: false,
   cornerColor: '#6c5ce7',
@@ -144,6 +144,7 @@ const addImage = (data, dropCoords, fcanvas) => {
     left: dropCoords.x - (img.width * scale) / 2,
     top: dropCoords.y - (img.height * scale) / 2,
     ...defaultObjectConfig,
+    color,
   };
   img.set(imageConfig);
   img.filters.push(
@@ -173,11 +174,12 @@ const addMark = (dropCoords, fill, fcanvas) => {
   let mark = new fabric.Textbox('1', {
     left: dropCoords.x - defaultTextConfig.width / 2,
     top: dropCoords.y - defaultTextConfig.height / 2,
-    textType: 'mark',
     ...defaultObjectConfig,
     ...defaultTextConfig,
     fill,
   });
+  mark.textType = 'mark';
+  console.log(mark);
   fcanvas.add(mark);
 };
 
@@ -389,7 +391,6 @@ export const textChange = (type, data, canvasData, fcanvas) => {
     obj.setSubscript();
   } else if ('align') {
     let { align } = data;
-    console.log(align);
     obj.set({
       textAlign: align,
     });
@@ -400,9 +401,11 @@ export const textChange = (type, data, canvasData, fcanvas) => {
 // Miscellaneous Event Listeners
 export const changeColor = (hex, fcanvas) => {
   let obj = fcanvas.getActiveObject();
+  console.log(obj);
   if (!obj) return;
-  if (obj.textType) obj.set({ fill: hex });
-  else {
+  if (obj.textType) {
+    obj.set({ fill: hex });
+  } else {
     obj.filters.push(
       new fabric.Image.filters.BlendColor({
         color: hex,
@@ -412,5 +415,6 @@ export const changeColor = (hex, fcanvas) => {
     );
     obj.applyFilters();
   }
+  // fcanvas.discardActiveObject();
   fcanvas.renderAll();
 };

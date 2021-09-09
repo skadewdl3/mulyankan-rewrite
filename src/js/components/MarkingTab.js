@@ -13,6 +13,8 @@ const MarkingTab = ({
   colors,
   color,
   setColor,
+  getTotalMarks,
+  setTotalMarks,
 }) => {
   return (
     <>
@@ -45,6 +47,8 @@ const MarkingTab = ({
         <input
           type="text"
           className="quickmarking__total"
+          defaultValue={getTotalMarks()}
+          onChange={e => setTotalMarks(e.target.value)}
           onDragStart={e => {
             e.dataTransfer.setData('type', 'automark');
           }}
