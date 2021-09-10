@@ -46,11 +46,9 @@ const Landing = () => {
             Features
           </li>
           <li
-            /*
-            TODO: Create Contact Page (Uncomment this once done)
-            
-            onClick={() => document.querySelector('.contact-link').click()}
-            */
+            onClick={() =>
+              document.querySelector('.landing__contact').scrollIntoView()
+            }
             className="landing__nav__item"
           >
             Get in Touch
@@ -116,7 +114,39 @@ const Landing = () => {
           </div>
         </div>
 
-        <div className="landing__reviews"></div>
+        {/* <div className="landing__reviews"></div> */}
+
+        <div className="landing__contact">
+          <div className="landing__contact__header">Get In Touch</div>
+          <div className="landing__contact__grid">
+            <div className="landing__contact__text">
+              <div className="landing__contact__text--docs">
+                Do you need help regarding any feature of Mulyankan ? Check out
+                the extensive documentation - <br />
+                <br />
+                <Link
+                  className="landing__contact__text--documentation-link"
+                  to="/docs"
+                >
+                  Documentation
+                </Link>
+              </div>
+
+              <div className="landing__contact__text--email">
+                If it doesn't help, we would be happy to. Be it a query, a
+                feature request, a bug report or just your reviews - do drop us
+                an email at{' '}
+                <a href="mailto:mulyankanweb@gmail.com">
+                  mulyankanweb@gmail.com
+                </a>{' '}
+                and we'll get back to you ASAP.
+              </div>
+            </div>
+            <div className="landing__contact__image">
+              <img src="./images/contact.svg" alt="Get In Touch" />
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
