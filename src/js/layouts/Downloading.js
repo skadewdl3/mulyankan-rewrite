@@ -146,7 +146,7 @@ const Downloading = ({
                     ></span>
                   </div>
                   <div className="downloading__message">
-                    Select Download Method
+                    Select Download Method (more will be added soon...)
                   </div>
                   <div className="downloading__options">
                     <div
@@ -167,7 +167,7 @@ const Downloading = ({
                         </div>
                       </div>
                     </div>
-                    <div
+                    {/* <div
                       className="downloading__options__item  downloading__options__item--json"
                       onClick={() => {
                         setDownloadData('json');
@@ -184,7 +184,7 @@ const Downloading = ({
                           Wanna work on your document later? Pick Me!
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="downloading__cta-wrapper">
                     <button
